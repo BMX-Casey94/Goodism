@@ -314,9 +314,13 @@ def build_index(
             )
             rebuilt.append(doc.meta.id)
 
-        # Rebuild FTS for the new snapshot rows. The FTS table is
-        # contentless ('' content mode) so rows must be deleted by rowid.
-        conn.execute("DELETE FROM chunks_fts WHERE rowid NOT IN (SELECT id FROM chunks WHERE snapshot_id = ?)", (snapshot_id,))
+        # Rebuild FTS for the new snapshot rows. A contentless FTS5 table
+        # cannot be selectively deleted, so drop and recreate it fresh for
+        # the pinned snapshot (search always targets the pinned snapshot).
+        conn.execute("DROP TABLE IF EXISTS chunks_fts")
+        conn.execute(
+            "CREATE VIRTUAL TABLE chunks_fts USING fts5(display, content='', tokenize='unicode61')"
+        )
         conn.execute(
             "INSERT INTO chunks_fts (rowid, display)"
             " SELECT id, display FROM chunks WHERE snapshot_id = ?",

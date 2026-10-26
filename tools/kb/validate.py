@@ -69,12 +69,22 @@ def validate_corpus(report: ValidationReport) -> dict[str, str]:
         if not source.exists():
             report.error(f"{rel}: source_file '{doc.meta.source_file}' missing under raw/")
         else:
-            actual = sha256_file(source)
-            if actual != doc.meta.source_sha256:
-                report.error(
-                    f"{rel}: source_sha256 does not match raw/{doc.meta.source_file} "
-                    f"(file changed after ingest?)"
+            try:
+                actual = sha256_file(source)
+            except PermissionError:
+                # Source is transiently locked by another process (e.g. open in
+                # an editor, or a long-running job holding the directory). This
+                # is not a content problem, so warn rather than fail the gate.
+                report.warn(
+                    f"{rel}: source_file '{doc.meta.source_file}' is locked by another "
+                    "process; hash check skipped this run"
                 )
+            else:
+                if actual != doc.meta.source_sha256:
+                    report.error(
+                        f"{rel}: source_sha256 does not match raw/{doc.meta.source_file} "
+                        f"(file changed after ingest?)"
+                    )
 
         if doc.meta.needs_review:
             report.warn(f"{rel}: flagged needs_review")

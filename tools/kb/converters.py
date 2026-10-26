@@ -70,7 +70,31 @@ def convert_pdf(path: Path) -> Conversion:
     return Conversion(text=body, extraction_method="native-text", confidence=None, notes=notes)
 
 
-def convert_image_vision(path: Path, client, *, role: str = "extractor") -> Conversion:
+# Shared transcription instruction. main_text_only drops running heads,
+# footers, page numbers and reference footnotes at transcription time so
+# they never reach the corpus (per project decision: only the main text is
+# kept from scanned pages).
+def _transcription_system(main_text_only: bool) -> str:
+    base = (
+        "You are a meticulous transcription engine. Transcribe the document image "
+        "VERBATIM: preserve the original spelling (including errors), punctuation, "
+        "capitalisation, hyphenation and line structure. Do not correct, modernise, "
+        "summarise or comment. Mark any illegible word as [illegible]."
+    )
+    if main_text_only:
+        base += (
+            " Transcribe ONLY the main body text of the page. EXCLUDE running heads, "
+            "page headers and footers, page numbers, and reference footnotes/endnotes "
+            "or citation footers. Do not transcribe those marginal regions at all. "
+            "If you are unsure whether a region is body text or a footer/reference, "
+            "include it and wrap it in [marginal]...[/marginal] so a human can decide."
+        )
+    return base + " Output only the transcription."
+
+
+def convert_image_vision(
+    path: Path, client, *, role: str = "extractor", main_text_only: bool = True
+) -> Conversion:
     """Image -> text via a vision model. One pass; the pipeline runs two.
 
     The model is instructed to transcribe verbatim, preserving spelling,
@@ -81,13 +105,7 @@ def convert_image_vision(path: Path, client, *, role: str = "extractor") -> Conv
     if not isinstance(client, LLMClient):
         raise TypeError("convert_image_vision requires an LLMClient")
 
-    system = (
-        "You are a meticulous transcription engine. Transcribe the document image "
-        "VERBATIM: preserve the original spelling (including errors), punctuation, "
-        "capitalisation, hyphenation and line structure. Do not correct, modernise, "
-        "summarise or comment. Mark any illegible word as [illegible]. Output only "
-        "the transcription."
-    )
+    system = _transcription_system(main_text_only)
     text = client.chat(
         role=role,
         system=system,
@@ -108,8 +126,76 @@ def convert_image_vision(path: Path, client, *, role: str = "extractor") -> Conv
     )
 
 
+def pdf_page_images(path: Path, dpi: int = 200) -> list[bytes]:
+    """Render a scanned PDF's pages to PNG byte strings for the vision path."""
+    try:
+        import pymupdf
+    except ImportError as exc:
+        raise RuntimeError(
+            "PyMuPDF is required to render scanned PDFs: pip install PyMuPDF"
+        ) from exc
+    images: list[bytes] = []
+    with pymupdf.open(path) as doc:
+        for page in doc:
+            pixmap = page.get_pixmap(dpi=dpi)
+            images.append(pixmap.tobytes("png"))
+    return images
+
+
+def _count_marginal(text: str) -> int:
+    return text.count("[marginal]")
+
+
+def convert_pdf_scanned_vision(
+    path: Path, client, *, role: str = "extractor", main_text_only: bool = True
+) -> Conversion:
+    """Scanned PDF -> text by rendering each page and running the vision path.
+
+    Returns the concatenated page transcriptions. Confidence is lowered by
+    [illegible] and [marginal] marks; the pipeline runs a second pass and
+    flags disagreements.
+    """
+    from .llm import LLMClient
+
+    if not isinstance(client, LLMClient):
+        raise TypeError("convert_pdf_scanned_vision requires an LLMClient")
+
+    page_images = pdf_page_images(path)
+    system = _transcription_system(main_text_only)
+    pages: list[str] = []
+    illegible = 0
+    marginal = 0
+    for image in page_images:
+        text = client.chat(
+            role=role,
+            system=system,
+            user="Transcribe this document page verbatim.",
+            images=[image],
+            max_tokens=8192,
+        )
+        illegible += text.count("[illegible]")
+        marginal += _count_marginal(text)
+        pages.append(text)
+    body = "\n\n".join(pages)
+    words = max(len(body.split()), 1)
+    confidence = max(0.5, 1.0 - (illegible / words) * 10 - (marginal * 0.02))
+    return Conversion(
+        text=body,
+        extraction_method="vision",
+        confidence=round(confidence, 3),
+        notes=(
+            f"scanned PDF, {len(page_images)} page(s), {illegible} illegible, "
+            f"{marginal} marginal region(s)"
+        ),
+    )
+
+
 def convert(path: Path, client=None) -> Conversion:
-    """Dispatch on file type. Images/scans require an LLMClient."""
+    """Dispatch on file type. Images/scans require an LLMClient.
+
+    A PDF with no extractable text is a scan: it is rendered to images and
+    transcribed via the vision path automatically.
+    """
     suffix = path.suffix.lower()
     if suffix == ".txt":
         return convert_txt(path)
@@ -117,11 +203,12 @@ def convert(path: Path, client=None) -> Conversion:
         return convert_docx(path)
     if suffix == ".pdf":
         conversion = convert_pdf(path)
-        if not conversion.text.strip() and client is not None:
-            raise RuntimeError(
-                f"{path.name} appears to be a scanned PDF; render pages to images "
-                "and use the vision path"
-            )
+        if not conversion.text.strip():
+            if client is None:
+                raise RuntimeError(
+                    f"{path.name} appears to be a scanned PDF; an LLMClient is required"
+                )
+            return convert_pdf_scanned_vision(path, client)
         return conversion
     if suffix in IMAGE_SUFFIXES:
         if client is None:

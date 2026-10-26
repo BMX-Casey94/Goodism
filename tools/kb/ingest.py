@@ -234,9 +234,24 @@ def _load_vocabs() -> dict:
 # ---------------------------------------------------------------------------
 
 def ocr_double_pass(path: Path, client: LLMClient) -> tuple[Conversion, list[str]]:
-    """Two independent vision passes; disagreements become review flags."""
-    first = convert_image_vision(path, client, role="extractor")
-    second = convert_image_vision(path, client, role="verifier")
+    """Two independent vision passes; disagreements become review flags.
+
+    Works for both standalone images and scanned PDFs (which are rendered
+    to page images first). Routes each pass through the matching converter.
+    """
+    from .converters import convert_pdf_scanned_vision
+
+    is_pdf = path.suffix.lower() == ".pdf"
+    first = (
+        convert_pdf_scanned_vision(path, client, role="extractor")
+        if is_pdf
+        else convert_image_vision(path, client, role="extractor")
+    )
+    second = (
+        convert_pdf_scanned_vision(path, client, role="verifier")
+        if is_pdf
+        else convert_image_vision(path, client, role="verifier")
+    )
     flags: list[str] = []
     ratio = difflib.SequenceMatcher(
         None, first.text.split(), second.text.split(), autojunk=False
@@ -250,6 +265,12 @@ def ocr_double_pass(path: Path, client: LLMClient) -> tuple[Conversion, list[str
     chosen.notes += f"; double-pass similarity {ratio:.3f}"
     if ratio < 0.98:
         chosen.confidence = min(chosen.confidence or 1.0, 0.9)
+    # Regions the model was unsure were body vs footer are flagged so a
+    # human confirms the main-text filter didn't clip real content.
+    if "[marginal]" in chosen.text:
+        flags.append(
+            "transcription contains [marginal] region(s); confirm body/footer split"
+        )
     return chosen, flags
 
 
@@ -274,11 +295,27 @@ def ingest_file(
     review_flags: list[str] = []
 
     is_image = path.suffix.lower() in {".jpg", ".jpeg", ".png", ".gif", ".webp", ".tif", ".tiff", ".bmp"}
+    is_pdf = path.suffix.lower() == ".pdf"
     if is_image:
         if client is None:
             raise RuntimeError(f"{path.name}: images require an LLM client (vision path)")
         conversion, ocr_flags = ocr_double_pass(path, client)
         review_flags.extend(ocr_flags)
+    elif is_pdf:
+        # A PDF with extractable text is native; a scan is routed through the
+        # double-pass vision path. Detect by attempting native extraction.
+        from .converters import convert_pdf
+
+        native = convert_pdf(path)
+        if native.text.strip():
+            conversion = native
+        else:
+            if client is None:
+                raise RuntimeError(
+                    f"{path.name}: scanned PDF requires an LLM client (vision path)"
+                )
+            conversion, ocr_flags = ocr_double_pass(path, client)
+            review_flags.extend(ocr_flags)
     else:
         conversion = convert(path, client)
 

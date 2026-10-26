@@ -1,0 +1,1 @@
+"""Goodism MCP server package."""

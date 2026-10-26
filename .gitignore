@@ -1,0 +1,22 @@
+# Generated index (rebuildable from corpus — never committed)
+index/
+eval/results/
+
+# Python
+__pycache__/
+*.pyc
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+
+# Environment / secrets
+.env
+.env.*
+
+# OS
+Thumbs.db
+.DS_Store
+
+# OCR staging (reviewed outputs are promoted into corpus/)
+corpus/.staging/

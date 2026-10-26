@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://goodism.local/schema/manifest.schema.json",
+  "title": "Goodism on-chain provenance manifest record (one JSONL line per published section)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "doc_id", "version", "section_path", "file_path",
+    "section_sha256", "file_sha256",
+    "txid", "vout", "status", "published_at"
+  ],
+  "properties": {
+    "doc_id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+    "version": { "type": "integer", "minimum": 1 },
+    "section_path": {
+      "type": "string",
+      "description": "Slash-joined heading path, e.g. 'Equity/Section 9'."
+    },
+    "file_path": {
+      "type": "string",
+      "description": "Path to the published corpus file, relative to repository root."
+    },
+    "section_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "SHA-256 of the canonical section bytes (UTF-8, NFC, LF)."
+    },
+    "file_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "SHA-256 of the whole canonical file bytes at publication time."
+    },
+    "txid": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "BSV transaction id containing this section's plaintext output."
+    },
+    "vout": { "type": "integer", "minimum": 0 },
+    "block_hash": { "type": ["string", "null"], "pattern": "^[0-9a-f]{64}$" },
+    "block_height": { "type": ["integer", "null"], "minimum": 0 },
+    "proof_file": {
+      "type": ["string", "null"],
+      "description": "Path to manifest/proofs/<txid>.json holding BUMP/BEEF proof data."
+    },
+    "supersedes_txid": {
+      "type": ["string", "null"],
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["published", "superseded"]
+    },
+    "published_at": {
+      "type": "string",
+      "description": "RFC 3339 UTC timestamp."
+    }
+  }
+}

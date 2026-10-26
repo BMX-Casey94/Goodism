@@ -1,0 +1,14 @@
+# Controlled vocabulary: document types
+doc_types:
+  core-writing:
+    description: Primary in-house text. Highest authenticity bar.
+  legal-extract:
+    description: Extract or scan from a published legal reference (e.g. CJS sections).
+  statute-reference:
+    description: Statute, act, or code material (e.g. UCC articles, Cestui Que Vie Act).
+  commentary:
+    description: Analysis or commentary on primary material.
+  template:
+    description: Practical template or exemplar document.
+  reference:
+    description: Background/contextual reference work.

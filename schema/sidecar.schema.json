@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://goodism.local/schema/sidecar.schema.json",
+  "title": "Goodism document sidecar metadata (agents may write here freely)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["doc_id", "section_map"],
+  "properties": {
+    "doc_id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+    "section_map": {
+      "type": "array",
+      "description": "Anchors into the text by character range. Never a rewrite of the text.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["heading", "start", "end"],
+        "properties": {
+          "heading": { "type": "string" },
+          "level": { "type": "integer", "minimum": 1, "maximum": 6, "default": 1 },
+          "start": { "type": "integer", "minimum": 0 },
+          "end": { "type": "integer", "minimum": 0 },
+          "summary": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "key_terms": { "type": "array", "items": { "type": "string" }, "default": [] },
+    "aliases": { "type": "array", "items": { "type": "string" }, "default": [] },
+    "conflict_candidates": {
+      "type": "array",
+      "description": "Machine-flagged only. Promoted to front matter conflicts_with by a human.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["doc_id", "note"],
+        "properties": {
+          "doc_id": { "type": "string" },
+          "note": { "type": "string" },
+          "status": { "type": "string", "enum": ["pending", "confirmed", "rejected"], "default": "pending" }
+        }
+      },
+      "default": []
+    },
+    "notes": { "type": ["string", "null"] }
+  }
+}

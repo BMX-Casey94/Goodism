@@ -1,0 +1,1 @@
+"""Goodism KB core package."""

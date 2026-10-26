@@ -1,0 +1,14 @@
+# Controlled vocabulary: domains (top-level corpus folders live under corpus/<domain>/)
+domains:
+  goodism:
+    description: In-house Goodism writings — foundational texts, essays, organisational documents.
+  trusts-equity:
+    description: Trust law, equity jurisprudence, CJS Equity extracts, cestui que vie material.
+  commercial-law:
+    description: UCC, limitations of actions, commercial instruments, contract materials.
+  language-grammar:
+    description: Parse-syntax-grammar and related language-method writings (e.g. D. W. Miller).
+  historical:
+    description: Historical and contextual reference works (e.g. Epperson).
+  administrative:
+    description: Practical templates and administrative documents (e.g. passport material).

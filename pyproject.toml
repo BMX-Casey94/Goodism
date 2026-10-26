@@ -1,0 +1,34 @@
+[project]
+name = "goodism-kb"
+version = "0.1.0"
+description = "Goodism knowledge base: ingest, index, and serve a versioned corpus to LLMs via MCP, with BSV provenance anchoring."
+requires-python = ">=3.11"
+dependencies = [
+    "pydantic>=2.6",
+    "pyyaml>=6.0",
+    "typer>=0.9",
+    "mcp>=1.2",
+    "openai>=1.12",
+    "python-dotenv>=1.0",
+]
+
+[project.optional-dependencies]
+ingest = [
+    "mammoth>=1.7",
+    "pdfplumber>=0.11",
+    "Pillow>=10.0",
+    "wordfreq>=3.1",
+]
+dev = [
+    "pytest>=8.0",
+]
+
+[project.scripts]
+kb = "tools.kb.cli:app"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["tools.kb"]

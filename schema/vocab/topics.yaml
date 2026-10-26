@@ -1,0 +1,20 @@
+# Controlled vocabulary: topics. Extend as the corpus grows; keep plural nouns where natural.
+topics:
+  - trust-law
+  - equity
+  - cestui-que-vie
+  - three-trusts
+  - ucc
+  - limitations-of-actions
+  - contract-law
+  - parse-syntax-grammar
+  - quantum-grammar
+  - legal-status
+  - citizenship
+  - identity-documents
+  - goodism-doctrine
+  - goodism-community
+  - new-world-order
+  - legal-history
+  - jurisdiction
+  - remedies

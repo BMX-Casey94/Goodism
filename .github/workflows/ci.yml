@@ -1,0 +1,37 @@
+name: kb-ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install package
+        run: pip install -e ".[ingest,dev]" sentence-transformers
+
+      - name: Cache embedding model
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/torch/sentence_transformers
+          key: ${{ runner.os }}-sbert-bge-small
+
+      - name: Validate corpus and manifest
+        run: kb validate
+
+      - name: Unit tests
+        run: pytest tools/kb/tests/ -q
+
+      - name: Build index and run evaluation
+        env:
+          KB_EMBEDDING_MODEL: local:BAAI/bge-small-en-v1.5
+        run: |
+          kb build-index
+          python eval/run_eval.py --k 5

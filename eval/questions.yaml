@@ -1,0 +1,21 @@
+# Evaluation question set.
+#
+# Each case has a natural-language question, the doc_id(s) expected to answer
+# it, and optional key phrases a correct passage should contain. The harness
+# measures recall@k (did the expected document surface in the top k?) and
+# phrase-hit rate (did the retrieved text contain the key facts?).
+#
+# Grow this set from real usage: every time the bot fails a question, add it
+# here so the failure becomes a permanent regression test. Target 50-100
+# questions once the corpus is populated.
+
+questions:
+  - id: cqv-definition
+    question: "What is a cestui que vie trust?"
+    expected_docs: [understanding-cestui-que-vie-1666]
+    key_phrases: ["trust"]
+
+  - id: cqv-origin
+    question: "When was the Cestui Que Vie Act enacted and in what circumstances?"
+    expected_docs: [understanding-cestui-que-vie-1666]
+    key_phrases: ["1666", "London"]

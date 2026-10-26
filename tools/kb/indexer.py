@@ -19,6 +19,7 @@ from __future__ import annotations
 import json
 import math
 import os
+import re
 import sqlite3
 import struct
 import time
@@ -400,6 +401,18 @@ class Reranker:
         return hits[:keep]
 
 
+def _fts_escape(query: str) -> str:
+    """Build a safe FTS5 MATCH expression from a free-text query.
+
+    Splits into terms and double-quotes each one, joining with OR, so user
+    punctuation (?, ", *, etc.) can never be parsed as FTS5 operators.
+    """
+    terms = re.findall(r"[\w'-]+", query)
+    if not terms:
+        return '""'
+    return " OR ".join(f'"{t}"' for t in terms)
+
+
 def _pinned_snapshot(conn: sqlite3.Connection) -> int:
     row = conn.execute("SELECT value FROM meta WHERE key='pinned_snapshot'").fetchone()
     if row:
@@ -435,6 +448,7 @@ def search(
             doc_filter += " AND d.status != 'superseded' AND d.authority != 'superseded'"
 
         # Keyword leg (BM25; lower is better in FTS5, so negate).
+        match_expr = _fts_escape(query)
         keyword_rows = conn.execute(
             f"""
             SELECT c.id, bm25(chunks_fts) AS rank
@@ -445,7 +459,7 @@ def search(
             ORDER BY rank
             LIMIT ?
             """,
-            (query, *params, config.SEARCH_CANDIDATES_PER_LEG),
+            (match_expr, *params, config.SEARCH_CANDIDATES_PER_LEG),
         ).fetchall()
         keyword_rank = {row[0]: i + 1 for i, row in enumerate(keyword_rows)}
 

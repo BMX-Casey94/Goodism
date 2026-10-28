@@ -113,6 +113,70 @@ def search(
             typer.echo(f"    txid: {hit.provenance['txid']} (v{hit.provenance['version']})")
 
 
+@app.command(name="check-llm")
+def check_llm() -> None:
+    """Verify the LLM config (text call and vision call) before ingesting scans."""
+    import base64
+    import os
+    import struct
+    import zlib
+
+    from .llm import LLMClient, LLMError
+
+    config.load_dotenv_if_present()
+    missing = [
+        name
+        for name in ("KB_LLM_BASE_URL", "KB_LLM_API_KEY", "KB_MODEL_BULK")
+        if not os.environ.get(name)
+    ]
+    if missing:
+        typer.echo(f"missing in .env: {', '.join(missing)} (see .env.example)", err=True)
+        raise typer.Exit(1)
+
+    client = LLMClient()
+    typer.echo(f"endpoint: {client.base_url}")
+    typer.echo(f"bulk model: {client.bulk_model} | strong model: {client.strong_model}")
+
+    try:
+        reply = client.chat(
+            role="structurer", system="Reply with the single word OK.", user="ping", max_tokens=8
+        )
+        typer.echo(f"text call: ok ({reply.strip()[:20]!r})")
+    except LLMError as exc:
+        typer.echo(f"text call FAILED: {exc}", err=True)
+        raise typer.Exit(1)
+
+    # Vision call with a tiny generated 8x8 white PNG (no external files).
+    def _png(width: int = 8, height: int = 8) -> bytes:
+        raw = b"".join(b"\x00" + b"\xff" * (width * 3) for _ in range(height))
+
+        def chunk(tag: bytes, data: bytes) -> bytes:
+            body = tag + data
+            return struct.pack(">I", len(data)) + body + struct.pack(">I", zlib.crc32(body))
+
+        return (
+            b"\x89PNG\r\n\x1a\n"
+            + chunk(b"IHDR", struct.pack(">IIBBBBB", width, height, 8, 2, 0, 0, 0))
+            + chunk(b"IDAT", zlib.compress(raw))
+            + chunk(b"IEND", b"")
+        )
+
+    for role in ("extractor", "verifier"):
+        try:
+            client.chat(
+                role=role,
+                system="Describe the image in three words.",
+                user="What is this?",
+                images=[_png()],
+                max_tokens=16,
+            )
+            typer.echo(f"vision call ({role}, {client.model_for(role)}): ok")
+        except LLMError as exc:
+            typer.echo(f"vision call ({role}) FAILED: {exc}", err=True)
+            raise typer.Exit(1)
+    typer.echo("LLM config OK: ready for `kb ingest` on scans")
+
+
 @app.command()
 def status() -> None:
     """Show the pinned index snapshot."""

@@ -7,6 +7,7 @@ headings preserved; they never "improve" the content.
 """
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -26,8 +27,49 @@ def convert_txt(path: Path) -> Conversion:
     return Conversion(text=text, extraction_method="native-text", confidence=None)
 
 
+# Mammoth escapes Markdown special characters with backslashes, which some
+# viewers render literally. These escapes are conversion artefacts, not
+# content: removing the backslash renders identically. Intra-word hyphens
+# (e.g. "plane-t") and all wording are left strictly alone.
+_BACKSLASH_ESCAPES = {
+    "\\-": "-",
+    "\\(": "(",
+    "\\)": ")",
+    "\\[": "[",
+    "\\]": "]",
+    "\\.": ".",
+    "\\!": "!",
+    "\\#": "#",
+    "\\+": "+",
+}
+
+
+def _clean_docx_artefacts(text: str) -> str:
+    """Remove DOCX-conversion artefacts without touching wording.
+
+    - Unescape mammoth's over-escaped punctuation (renders identically).
+    - Convert matched __text__ underline pairs to **text** (underline is not
+      Markdown; __ reads as bold). Dangling __ markers (no closing pair) are
+      dropped because they render as literal underscores.
+    - Intra-word hyphens, numbers and every word are preserved verbatim.
+    """
+    for esc, plain in _BACKSLASH_ESCAPES.items():
+        text = text.replace(esc, plain)
+
+    # Matched underline pairs first.
+    text = re.sub(r"__(.+?)__", r"**\1**", text)
+    # Remaining dangling __ (line-initial emphasis mammoth could not close).
+    text = text.replace("__", "")
+    return text
+
+
 def convert_docx(path: Path) -> Conversion:
-    """DOCX -> markdown preserving headings, lists and tables via mammoth."""
+    """DOCX -> markdown preserving headings, lists and tables via mammoth.
+
+    Conversion artefacts (backslash escapes, dangling underline markers) are
+    cleaned; the author's wording, hyphenation and punctuation choices are
+    preserved verbatim.
+    """
     try:
         import mammoth
     except ImportError as exc:
@@ -36,9 +78,10 @@ def convert_docx(path: Path) -> Conversion:
         ) from exc
     with path.open("rb") as handle:
         result = mammoth.convert_to_markdown(handle)
+    cleaned = _clean_docx_artefacts(result.value)
     notes = "; ".join(m.message for m in result.messages) if result.messages else ""
     return Conversion(
-        text=result.value, extraction_method="native-text", confidence=None, notes=notes
+        text=cleaned, extraction_method="native-text", confidence=None, notes=notes
     )
 
 

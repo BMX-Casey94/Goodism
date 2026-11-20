@@ -6,6 +6,9 @@ never alter the corpus, the index, or the manifest. The LLM copies
 ready-made provenance records; it never generates a TXID.
 
 Tools:
+  research(queries, context, max_hits)   PREFERRED: multi-query, merged Markdown evidence
+  read_around(doc_id, chunk, before, after) neighbouring chunks of one document
+  list_documents()                         what the knowledge base covers
   search_knowledge(query, top_k, domain)   hybrid search -> passages + provenance
   get_document(doc_id)                     full document text + metadata
   get_section(doc_id, heading_path)        one section's verbatim text
@@ -30,7 +33,13 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from tools.kb import config  # noqa: E402
 from tools.kb.conflicts import confirmed_conflicts  # noqa: E402
 from tools.kb.frontmatter import iter_corpus_files, load_document  # noqa: E402
-from tools.kb.indexer import index_status, search  # noqa: E402
+from tools.kb.indexer import (  # noqa: E402
+    get_neighbours,
+    index_status,
+    list_indexed_documents,
+    search,
+)
+from tools.kb.retrieval import retrieve  # noqa: E402
 from tools.kb.manifest import provenance_for, read_manifest  # noqa: E402
 
 try:
@@ -89,6 +98,63 @@ def search_knowledge(query: str, top_k: int = 8, domain: str | None = None) -> s
             }
         )
     return json.dumps({"results": results}, indent=2)
+
+
+@mcp.tool()
+def research(
+    queries: list[str],
+    context: int = 1,
+    max_hits: int = 16,
+    domain: str | None = None,
+) -> str:
+    """PREFERRED retrieval tool. Search several focused queries at once.
+
+    Use this for almost every user message. Split a compound message into one
+    short query per question or topic (up to 8). For each, use the user's own
+    words, and add a second query with likely wording from the texts (their
+    vocabulary is archaic and idiosyncratic, for example "birth certificate"
+    is also "certificate of an entry of a birth"). Questions that span several
+    documents should get one query per document or angle.
+
+    Returns one Markdown evidence pack: passages grouped by relevance, each
+    with its document, section, authority, which query it answers, and any
+    on-chain provenance. Every query keeps its best hits, so a narrow query
+    is never crowded out. `context` adds neighbouring chunks either side
+    (0 to 3) because the exact fact is often just beside the best match.
+    Quote verbatim, cite document and section, and never invent a citation.
+    """
+    config.load_dotenv_if_present()
+    return retrieve(queries, context=context, max_hits=max_hits, domain=domain)
+
+
+@mcp.tool()
+def read_around(doc_id: str, chunk: int, before: int = 2, after: int = 2) -> str:
+    """Read the chunks around a position in one document.
+
+    Use after `research` when a passage starts or stops mid-topic. `chunk` is
+    a number from the `chunks a–b` line of a result. Returns verbatim text in
+    document order.
+    """
+    before = max(0, min(before, 10))
+    after = max(0, min(after, 10))
+    rows = get_neighbours(doc_id, chunk, before=before, after=after)
+    if not rows:
+        return json.dumps({"error": f"no chunks near {doc_id} #{chunk}"})
+    parts = [f"# {doc_id}: chunks {rows[0]['ordinal']}–{rows[-1]['ordinal']}", ""]
+    for row in rows:
+        parts += [f"## [{row['ordinal']}] {row['heading_path']}", "", _DELIM_START,
+                  row["text"].strip(), _DELIM_END, ""]
+    return "\n".join(parts)
+
+
+@mcp.tool()
+def list_documents() -> str:
+    """List every indexed document with its summary, topics and section count.
+
+    Call this first if you are unsure what the knowledge base covers, or to
+    choose which document to read in full with `get_document`.
+    """
+    return json.dumps({"documents": list_indexed_documents()}, indent=2)
 
 
 @mcp.tool()

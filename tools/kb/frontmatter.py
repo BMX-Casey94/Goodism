@@ -59,6 +59,7 @@ class DocumentMeta(BaseModel):
     summary: str = Field(min_length=1)
     key_terms: list[str] = Field(default_factory=list)
     aliases: list[str] = Field(default_factory=list)
+    chunk_max_tokens: int | None = Field(default=None, ge=40, le=800)
 
     @field_validator("authority")
     @classmethod

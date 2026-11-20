@@ -111,8 +111,19 @@ def _split_blocks(section_text: str, section_start: int) -> list[_Block]:
     return blocks
 
 
-def chunk_document(doc_id: str, title: str, body: str) -> list[Chunk]:
-    """Chunk one document body. Offsets are relative to *body*."""
+_DATA_URI_RE = re.compile(r"!\[[^\]]*\]\(data:image/[^)]*\)")
+_IMAGE_PLACEHOLDER = "[embedded image omitted from index]"
+
+
+def chunk_document(
+    doc_id: str, title: str, body: str, max_tokens: int | None = None
+) -> list[Chunk]:
+    """Chunk one document body. Offsets are relative to *body*.
+
+    ``max_tokens`` overrides the global chunk size for this document (for
+    example a dictionary where each entry should be its own chunk).
+    """
+    limit = max_tokens or config.CHUNK_MAX_TOKENS
     lines = body.split("\n")
     # Find heading line positions.
     headings: list[tuple[int, int, str]] = []  # (line_index, level, text)
@@ -158,7 +169,7 @@ def chunk_document(doc_id: str, title: str, body: str) -> list[Chunk]:
         parent_ordinal = parent_for_level.get(level - 1)
 
         # Section fits in one chunk?
-        if _estimate_tokens(section_text) <= config.CHUNK_MAX_TOKENS:
+        if _estimate_tokens(section_text) <= limit:
             chunks.append(
                 Chunk(
                     doc_id=doc_id,
@@ -206,7 +217,7 @@ def chunk_document(doc_id: str, title: str, body: str) -> list[Chunk]:
 
         for block in blocks:
             block_tokens = _estimate_tokens(block.text)
-            if buffer and buffer_tokens + block_tokens > config.CHUNK_MAX_TOKENS:
+            if buffer and buffer_tokens + block_tokens > limit:
                 flush_buffer()
             buffer.append(block)
             buffer_tokens += block_tokens
@@ -214,5 +225,60 @@ def chunk_document(doc_id: str, title: str, body: str) -> list[Chunk]:
 
     # Contextual prefix (index-time only; never written to the corpus).
     for chunk in chunks:
+        # Embedded base64 images are not searchable text; keep them out of the
+        # index (the corpus file itself is untouched).
+        chunk.text = _DATA_URI_RE.sub(_IMAGE_PLACEHOLDER, chunk.text)
         chunk.display = f"{title} — {chunk.heading_path}\n\n{chunk.text}"
+    if config.INDEX_KEYWORDS:
+        for chunk, terms in zip(chunks, _distinctive_terms(chunks)):
+            if terms:
+                chunk.display += "\n\nKeywords: " + ", ".join(terms)
     return chunks
+
+
+_STOP = frozenset(
+    "the a an and or of to in on at for with by from as is are was were be been being this that these those "
+    "it its he she they them his her their we our you your i not no nor but if then than so such which who whom "
+    "what when where why how all any each every both more most other some into over under about against between "
+    "through during before after above below up down out off again further once only own same too very can will "
+    "just should now has have had do does did also may shall must upon thereof herein hereof said one two".split()
+)
+_TOKEN = re.compile(r"[A-Za-z][A-Za-z'’-]{2,}")
+
+
+def _distinctive_terms(chunks: list[Chunk], top_n: int = 10) -> list[list[str]]:
+    """Top distinctive words and word pairs per chunk (TF-IDF within the document).
+
+    Index-time only: these terms help keyword search and embeddings match the
+    words a user is likely to type. They are never written to the corpus.
+    """
+    import math
+    from collections import Counter
+
+    docs: list[list[str]] = []
+    for chunk in chunks:
+        words = [w.lower() for w in _TOKEN.findall(chunk.text)]
+        words = [w for w in words if w not in _STOP]
+        pairs = [f"{a} {b}" for a, b in zip(words, words[1:])]
+        docs.append(words + pairs)
+    df: Counter = Counter()
+    for terms in docs:
+        df.update(set(terms))
+    n = max(len(docs), 1)
+    out: list[list[str]] = []
+    for terms in docs:
+        tf = Counter(terms)
+        scored = sorted(
+            ((tf[t] * math.log((n + 1) / (df[t] + 0.5)), t) for t in tf if tf[t] >= 1 and df[t] < n),
+            reverse=True,
+        )
+        # Prefer pairs that repeat; keep unigrams otherwise.
+        picked: list[str] = []
+        for _, term in scored:
+            if len(picked) >= top_n:
+                break
+            if any(term in p or p in term for p in picked):
+                continue
+            picked.append(term)
+        out.append(picked)
+    return out

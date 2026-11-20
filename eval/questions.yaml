@@ -10,12 +10,287 @@
 # questions once the corpus is populated.
 
 questions:
-  - id: cqv-definition
-    question: "What is a cestui que vie trust?"
-    expected_docs: [understanding-cestui-que-vie-1666]
-    key_phrases: ["trust"]
-
-  - id: cqv-origin
-    question: "When was the Cestui Que Vie Act enacted and in what circumstances?"
-    expected_docs: [understanding-cestui-que-vie-1666]
-    key_phrases: ["1666", "London"]
+- id: cqv-definition
+  question: What is a cestui que vie trust?
+  expected_docs:
+  - understanding-cestui-que-vie-1666
+  key_phrases:
+  - trust
+- id: cqv-origin
+  question: When was the Cestui Que Vie Act enacted and in what circumstances?
+  expected_docs:
+  - understanding-cestui-que-vie-1666
+  key_phrases:
+  - '1666'
+  - London
+- id: caps-in-court-names
+  question: When a court summons arrives with a name written entirely in capitals, what does the commentary say
+    that practice signifies?
+  expected_docs:
+  - understanding-cestui-que-vie-1666
+  key_phrases:
+  - ALL CAPITAL LETTERS
+  - similar to Tombstones in Graveyards
+- id: trust-maximum-lifespan
+  question: For how long may this type of trust be allowed to exist under accepted traditions?
+  expected_docs:
+  - understanding-cestui-que-vie-1666
+  key_phrases:
+  - years in accepted traditions
+- id: crown-organisation-type
+  question: What form of organisation does the commentary say the Crown actually is, and on what basis is it called
+    private?
+  expected_docs:
+  - understanding-cestui-que-vie-1666
+  key_phrases:
+  - UNINCORPORATED ASSOCIATION
+- id: 1666-act-backdrop
+  question: Which two disasters in London form the background given for the passing of the 1666 Act?
+  expected_docs:
+  - understanding-cestui-que-vie-1666
+  key_phrases:
+  - Black Plague and Great Fires
+- id: three-trusts-on-birth
+  question: What three entitlements are said to be denied to a child by the trusts set up at birth in 1933 onwards?
+  expected_docs:
+  - understanding-cestui-que-vie-1666
+  - three-trusts-of-the-world
+  key_phrases:
+  - Since 1933
+  - three ( 3 ) Cestui Que
+- id: pinecone-headdress
+  question: What object did Pope Boniface have made to mark his claim of worldwide authority, and what shape did
+    it take?
+  expected_docs:
+  - three-trusts-of-the-world
+  key_phrases:
+  - in the shape of a pinecone
+- id: eternal-crown-bull
+  question: Which papal bull has a name that translates as Everlasting Crown, and which crown did it establish?
+  expected_docs:
+  - three-trusts-of-the-world
+  key_phrases:
+  - Aeterni Regis
+  - Eternal Crown
+- id: baptism-trust
+  question: Which of the three crowns is said to arise when a baby is baptised?
+  expected_docs:
+  - three-trusts-of-the-world
+  key_phrases:
+  - created when a child is Baptised
+- id: unam-sanctam-1302
+  question: Which papal document issued in 1302 is identified as the earliest express trust?
+  expected_docs:
+  - three-trusts-of-the-world
+  - book-5-trust-is-everything-01
+  key_phrases:
+  - Unam Sanct
+- id: what-is-a-cqv-trust
+  question: What does the text say this kind of trust actually is, and which statute first brought it into being?
+  expected_docs:
+  - three-trusts-of-the-world
+  key_phrases:
+  - Temporary Testamentary
+  - Cestui Que Vie Act of 1540
+- id: three-certainties
+  question: What three elements must be present before a privately written trust is lawfully created?
+  expected_docs:
+  - book-5-trust-is-everything-01
+  key_phrases:
+  - certainty of intension
+  - certainty of subject matter
+  - certainty of objects
+- id: guthrie-test-samples
+  question: What newborn screening procedure is described, and how many samples of blood does it involve?
+  expected_docs:
+  - book-5-trust-is-everything-01
+  key_phrases:
+  - unwittingly took from the heel
+  - blood spot- samples
+- id: dying-without-a-will
+  question: What governs how someone's estate is shared out when they leave no valid will?
+  expected_docs:
+  - book-5-trust-is-everything-01
+  key_phrases:
+  - dies without a valid
+  - rules of intestacy
+- id: meaning-of-register
+  question: In the book's word guide, what does the act of registering something mean?
+  expected_docs:
+  - book-5-trust-is-everything-01
+  key_phrases:
+  - transfer of title by deed
+- id: legal-name-illegal-heading
+  question: What does the short bracketed heading above the birth certificate chapter state about using a legal
+    name?
+  expected_docs:
+  - book-5-trust-is-everything-01
+  - good-boi-f02
+  key_phrases:
+  - illegal to use a legal name
+- id: glossary-definition-person
+  question: How does the book's glossary of terms define the word person?
+  expected_docs:
+  - book-5-trust-is-everything-01
+  key_phrases:
+  - registered birth certificate
+- id: black-ink-meaning
+  question: What does the chapter on signatures claim is signified when a document is signed in black ink?
+  expected_docs:
+  - good-boi-f02
+  key_phrases:
+  - denotes death
+- id: habeas-corpus-latin
+  question: What is the English meaning given for the Latin words habeas corpus ad subjiciendum?
+  expected_docs:
+  - good-boi-f02
+  key_phrases:
+  - that you have the body
+- id: three-ways-to-bond
+  question: What methods does the book list for turning a paper document into a bond?
+  expected_docs:
+  - good-boi-f02
+  key_phrases:
+  - 'First: Brass bond'
+  - cotton or ribbon through hole punch
+- id: four-corner-rule-meaning
+  question: Under the four corner rule, from where may a contract's meaning be taken, and from where may it not?
+  expected_docs:
+  - good-boi-f02
+  key_phrases:
+  - not from isolated parts thereof
+- id: cruden-v-neale-rule
+  question: What did the 1796 decision in Cruden v Neale say about whether people are bound by institutions made
+    by others without their agreement?
+  expected_docs:
+  - good-boi-f02
+  - passport-for-unregistered-baby
+  key_phrases:
+  - Cruden v
+  - prescribed by nature
+- id: autograph-versus-signature
+  question: How does the chapter distinguish an autograph from a signature?
+  expected_docs:
+  - good-boi-f02
+  key_phrases:
+  - Autograph is a hand-written mark
+- id: ucc-holder-definition
+  question: Under the article of general definitions, who counts as a holder of a negotiable instrument?
+  expected_docs:
+  - complete-ucc-1-9
+  key_phrases:
+  - General Definitions
+  - '"Holder" means'
+- id: ucc-good-faith
+  question: Apart from the special rule for letters of credit, what two things together make up good faith?
+  expected_docs:
+  - complete-ucc-1-9
+  key_phrases:
+  - honesty in fact
+- id: ucc-sale-of-goods-threshold
+  question: Above what price does a contract for the sale of goods require a signed record before it can be enforced?
+  expected_docs:
+  - complete-ucc-1-9
+  key_phrases:
+  - Statute of Frauds
+  - $5,000 or more is not enforceable
+- id: ucc-security-interest-enforceable
+  question: What conditions must be satisfied before a security interest can be enforced against a debtor and third
+    parties?
+  expected_docs:
+  - complete-ucc-1-9
+  key_phrases:
+  - ATTACHMENT AND ENFORCEABILITY
+  - value has been given
+- id: ucc-holder-in-due-course
+  question: What must be true about an instrument and about the way a person took it for that person to be a holder
+    in due course?
+  expected_docs:
+  - complete-ucc-1-9
+  key_phrases:
+  - HOLDER IN DUE COURSE
+  - '"holder in due course" means'
+- id: ucc-negotiable-instrument
+  question: What features must a promise or order have before it qualifies as a negotiable instrument?
+  expected_docs:
+  - complete-ucc-1-9
+  key_phrases:
+  - NEGOTIABLE INSTRUMENT
+  - '"negotiable instrument" means'
+- id: quantum-adjective
+  question: How does the grammar dictionary define the word adjective?
+  expected_docs:
+  - dw-miller-parse-syntax-a-x
+  key_phrases:
+  - ADJECTIVE [SIC] IS WITH THIS CLAIM
+- id: quantum-adverb
+  question: How does the grammar dictionary define the word adverb?
+  expected_docs:
+  - dw-miller-parse-syntax-a-x
+  key_phrases:
+  - WITH THIS CHANGE OF A FACT
+- id: quantum-authority
+  question: How does the grammar dictionary define the word authority?
+  expected_docs:
+  - dw-miller-parse-syntax-a-x
+  key_phrases:
+  - THIS POWER OR CONTROL.
+- id: quantum-y-to-z-page
+  question: What does the dictionary say about the entries for the letters Y and Z?
+  expected_docs:
+  - dw-miller-parse-syntax-a-x
+  key_phrases:
+  - CURRENTLY THERE ARE NO ENTRIES
+- id: birth-registration-not-required
+  question: According to the information pack, is there any legal duty to register a baby's birth?
+  expected_docs:
+  - passport-for-unregistered-baby
+  key_phrases:
+  - no obligation to register the
+- id: unregistered-baby-passport-age
+  question: How old was the baby in the reported case when she was issued her first British passport?
+  expected_docs:
+  - passport-for-unregistered-baby
+  key_phrases:
+  - got her first British passport
+- id: us-judge-passport-ruling
+  question: What did the American district judge decide about the documents that may be demanded before a passport
+    is issued?
+  expected_docs:
+  - passport-for-unregistered-baby
+  key_phrases:
+  - TREVOR N. McFADDEN
+  - July 29th 2025
+- id: passport-post-office-upu
+  question: Where are British passports actually issued, and which international postal rules govern the procedure?
+  expected_docs:
+  - passport-for-unregistered-baby
+  key_phrases:
+  - it is not even a governmental
+  - UPU (Universal Postal
+- id: maitreya-world-leader
+  question: What name is given to the figure expected to become the leader of a single worldwide religion?
+  expected_docs:
+  - the-new-world-order-epperson
+  key_phrases:
+  - worldwide leader
+  - Lord Maitreya
+- id: illuminati-founder
+  question: Who founded the Illuminati, and what position did he hold at the University of Ingolstadt?
+  expected_docs:
+  - the-new-world-order-epperson
+  key_phrases:
+  - founded on May 1st, 1776, by
+  - a teacher of Canon Law
+- id: obelisk-definition
+  question: How is the monument form found in Washington, New York and Rome described in shape?
+  expected_docs:
+  - the-new-world-order-epperson
+  key_phrases:
+  - four-sided stone pillar tapering
+- id: esoteric-meaning
+  question: What does the author mean by describing something as esoteric?
+  expected_docs:
+  - the-new-world-order-epperson
+  key_phrases:
+  - understood by only a chosen few

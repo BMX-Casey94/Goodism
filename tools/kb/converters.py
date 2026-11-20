@@ -41,7 +41,60 @@ _BACKSLASH_ESCAPES = {
     "\\!": "!",
     "\\#": "#",
     "\\+": "+",
+    "\\_": "_",
 }
+
+# Empty bookmark anchors mammoth emits for Word bookmarks, e.g. <a id="_Toc1"></a>.
+# They contain no words and render as noise in some viewers.
+_EMPTY_ANCHOR_RE = re.compile(r'<a id="[^"]*"></a>')
+
+
+_WS = " \t\u00a0"
+
+
+def repair_emphasis_line(line: str) -> str:
+    """Make ``**bold**`` spans valid CommonMark without touching any word.
+
+    CommonMark ignores a bold span if whitespace follows the opening ``**`` or
+    precedes the closing ``**``, so the asterisks print literally. Word keeps
+    such whitespace inside the run. This moves the whitespace outside the
+    markers, merges ``****`` joins, and drops markers around whitespace-only
+    spans. Lines with an odd number of ``**`` are left alone.
+    """
+    if "**" not in line:
+        return line
+    line = line.replace("****", "")
+    if line.count("**") % 2:
+        return line
+    parts = line.split("**")
+    res: list[str] = []
+    carry = ""
+    for i, piece in enumerate(parts):
+        if i % 2 == 0:
+            if carry and piece[:1] in tuple(_WS):
+                carry = ""  # the following text already starts with a space
+            res.append(carry + piece)
+            carry = ""
+            continue
+        core = piece.strip(_WS)
+        if not core:
+            res.append(piece)  # whitespace-only span: drop the markers
+            continue
+        lead = piece[: len(piece) - len(piece.lstrip(_WS))]
+        trail = piece[len(piece.rstrip(_WS)):]
+        before = "".join(res)
+        if lead and before and before[-1] not in _WS:
+            res.append(lead)  # never add indentation at the start of a line
+        res.append("**" + core + "**")
+        carry = trail
+    out = "".join(res)
+    if not line.endswith(tuple(_WS)):
+        out = out.rstrip(_WS)
+    return out
+
+
+def repair_emphasis(text: str) -> str:
+    return "\n".join(repair_emphasis_line(l) for l in text.split("\n"))
 
 
 def _clean_docx_artefacts(text: str) -> str:
@@ -55,6 +108,9 @@ def _clean_docx_artefacts(text: str) -> str:
     """
     for esc, plain in _BACKSLASH_ESCAPES.items():
         text = text.replace(esc, plain)
+
+    text = _EMPTY_ANCHOR_RE.sub("", text)
+    text = repair_emphasis(text)
 
     # Matched underline pairs first.
     text = re.sub(r"__(.+?)__", r"**\1**", text)

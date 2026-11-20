@@ -28,3 +28,6 @@ corpus/.staging/
 # Optional: exclude specific corpus documents whose text must not be public
 # (e.g. third-party copyrighted sources). Uncomment and list paths as needed.
 # corpus/historical/the-new-world-order-epperson.md
+
+# Local manual-review copies (scans + transcripts); never commit
+review/

@@ -28,14 +28,14 @@ from tools.kb import config  # noqa: E402
 from tools.kb.indexer import index_status, search  # noqa: E402
 
 
-def load_questions() -> list[dict]:
-    path = config.EVAL_DIR / "questions.yaml"
+def load_questions(name: str = "questions.yaml") -> list[dict]:
+    path = config.EVAL_DIR / name
     data = yaml.safe_load(path.read_text(encoding="utf-8"))
     return data.get("questions", [])
 
 
-def evaluate(k: int = 5) -> dict:
-    questions = load_questions()
+def evaluate(k: int = 5, name: str = "questions.yaml") -> dict:
+    questions = load_questions(name)
     results = []
     recall_hits = 0
     mrr_sum = 0.0
@@ -48,7 +48,11 @@ def evaluate(k: int = 5) -> dict:
         phrases = case.get("key_phrases", [])
         hits = search(query, top_k=k)
 
-        ranks = {hit.doc_id: i + 1 for i, hit in enumerate(hits)}
+        # Rank of a document is the position of its FIRST hit; a plain dict
+        # comprehension would keep the last position instead.
+        ranks: dict[str, int] = {}
+        for i, hit in enumerate(hits):
+            ranks.setdefault(hit.doc_id, i + 1)
         hit_ranks = [ranks[d] for d in expected if d in ranks]
         recalled = bool(hit_ranks)
         recall_hits += int(recalled)
@@ -63,6 +67,7 @@ def evaluate(k: int = 5) -> dict:
         results.append(
             {
                 "id": case["id"],
+                "style": case.get("style"),
                 "question": query,
                 "recalled": recalled,
                 "first_rank": min(hit_ranks) if hit_ranks else None,
@@ -89,10 +94,11 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--k", type=int, default=5)
     parser.add_argument("--out", type=Path, default=None)
+    parser.add_argument("--questions", default="questions.yaml")
     args = parser.parse_args()
 
     config.load_dotenv_if_present()
-    report = evaluate(k=args.k)
+    report = evaluate(k=args.k, name=args.questions)
 
     config.EVAL_RESULTS_DIR.mkdir(parents=True, exist_ok=True)
     stamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())

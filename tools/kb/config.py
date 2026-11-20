@@ -33,7 +33,9 @@ INDEX_DB_PATH = INDEX_DIR / "kb.sqlite"
 
 # Chunking tunables (structure-aware; never split mid-table or mid-list).
 CHUNK_MIN_TOKENS = 300
-CHUNK_MAX_TOKENS = 800
+CHUNK_MAX_TOKENS = int(os.environ.get("KB_CHUNK_MAX_TOKENS", "800"))
+# Index-time keyword enrichment (distinctive terms appended to indexed text only).
+INDEX_KEYWORDS = os.environ.get("KB_INDEX_KEYWORDS", "0") == "1"
 # Rough token estimate: 1 token ~ 4 characters of English prose.
 CHARS_PER_TOKEN = 4
 

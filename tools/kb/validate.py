@@ -18,7 +18,7 @@ import sys
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from . import config
+from . import assets, config
 from .frontmatter import FrontMatterError, iter_corpus_files, load_document, load_sidecar
 from .hashing import canonical_bytes, sha256_file, sha256_text
 
@@ -61,13 +61,24 @@ def validate_corpus(report: ValidationReport) -> dict[str, str]:
             report.error(f"{rel}: {exc}")
             continue
 
+        raw_text = path.read_text(encoding="utf-8")
+        if "data:image" in raw_text:
+            report.error(f"{rel}: inline base64 image found; store images under corpus/assets/")
+        for problem in assets.check_references(path, raw_text):
+            report.error(f"{rel}: {problem}")
+
         if doc.meta.id in ids:
             report.error(f"{rel}: duplicate id '{doc.meta.id}' also used by {ids[doc.meta.id]}")
         ids[doc.meta.id] = path
 
         source = config.RAW_DIR / doc.meta.source_file
         if not source.exists():
-            report.error(f"{rel}: source_file '{doc.meta.source_file}' missing under raw/")
+            # raw/ is deliberately not committed, so a fresh clone has no
+            # originals. The recorded source_sha256 still identifies the source.
+            report.warn(
+                f"{rel}: source_file '{doc.meta.source_file}' not present under raw/ "
+                "(expected in a clone without the originals)"
+            )
         else:
             try:
                 actual = sha256_file(source)

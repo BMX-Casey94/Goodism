@@ -24,9 +24,10 @@ import sqlite3
 import struct
 import time
 from dataclasses import dataclass
+from functools import lru_cache
 from pathlib import Path
 
-from . import config
+from . import config, lexicon
 from .chunker import Chunk, chunk_document
 from .frontmatter import CorpusDocument, iter_corpus_files, load_document
 from .hashing import sha256_text
@@ -178,6 +179,19 @@ class BuildReport:
     full_rebuild: bool
 
 
+def _chunk_params() -> str:
+    """Fingerprint of everything that decides how documents are cut into chunks."""
+    overrides = []
+    for path in iter_corpus_files():
+        meta = load_document(path, check_vocab=False).meta
+        if meta.chunk_max_tokens:
+            overrides.append(f"{meta.id}={meta.chunk_max_tokens}")
+    return (
+        f"max_tokens={config.CHUNK_MAX_TOKENS};keywords={int(config.INDEX_KEYWORDS)};"
+        f"overrides={','.join(sorted(overrides))}"
+    )
+
+
 def build_index(
     *,
     full: bool = False,
@@ -190,15 +204,21 @@ def build_index(
     conn = _connect(db_path)
     try:
         _create_schema(conn)
-        embedder = embedder or Embedder()
+        embedder = embedder or get_embedder(config.EMBEDDING_MODEL)
 
         # Full rebuild triggers: explicit flag, or embedding model change.
         row = conn.execute("SELECT value FROM meta WHERE key='embedding_model'").fetchone()
         previous_model = row[0] if row else None
         full = full or (previous_model is not None and previous_model != embedder.model)
+        # Chunking settings change what a chunk is, so unchanged bodies must be re-chunked.
+        row = conn.execute("SELECT value FROM meta WHERE key='chunk_params'").fetchone()
+        full = full or (previous_model is not None and (row[0] if row else None) != _chunk_params())
 
         if full:
-            for table in ("chunks_fts", "chunks", "documents", "snapshots"):
+            # chunks_fts is contentless, so rows cannot be deleted; it is
+            # dropped here and recreated when the FTS index is rebuilt below.
+            conn.execute("DROP TABLE IF EXISTS chunks_fts")
+            for table in ("chunks", "documents", "snapshots"):
                 conn.execute(f"DELETE FROM {table}")
 
         previous_hashes: dict[str, str] = {}
@@ -272,7 +292,9 @@ def build_index(
                 skipped.append(doc.meta.id)
                 continue
 
-            chunks = chunk_document(doc.meta.id, doc.meta.title, doc.body)
+            chunks = chunk_document(
+                doc.meta.id, doc.meta.title, doc.body, doc.meta.chunk_max_tokens
+            )
             embeddings = embedder.embed([c.display for c in chunks]) if chunks else []
             for chunk, embedding in zip(chunks, embeddings):
                 conn.execute(
@@ -336,6 +358,10 @@ def build_index(
             (embedder.model,),
         )
         conn.execute(
+            "INSERT OR REPLACE INTO meta (key, value) VALUES ('chunk_params', ?)",
+            (_chunk_params(),),
+        )
+        conn.execute(
             "INSERT OR REPLACE INTO meta (key, value) VALUES ('pinned_snapshot', ?)",
             (str(snapshot_id),),
         )
@@ -373,6 +399,22 @@ class SearchHit:
     status: str
     source: str  # "keyword" | "vector" | "both"
     provenance: dict | None  # manifest record when the section is published
+    ordinal: int = -1  # position of the chunk within its document
+
+
+@lru_cache(maxsize=4)
+def get_embedder(model: str) -> "Embedder":
+    """One Embedder per model name for the life of the process.
+
+    Loading a sentence-transformers model takes seconds; doing it per query
+    would make every MCP search slow.
+    """
+    return Embedder(model)
+
+
+@lru_cache(maxsize=1)
+def get_reranker() -> "Reranker":
+    return Reranker()
 
 
 class Reranker:
@@ -405,16 +447,22 @@ class Reranker:
         return hits[:keep]
 
 
-def _fts_escape(query: str) -> str:
+def _fts_escape(query: str, extra_phrases: list[str] | None = None) -> str:
     """Build a safe FTS5 MATCH expression from a free-text query.
 
     Splits into terms and double-quotes each one, joining with OR, so user
     punctuation (?, ", *, etc.) can never be parsed as FTS5 operators.
+    ``extra_phrases`` (from the lexicon) are added as exact quoted phrases.
     """
     terms = re.findall(r"[\w'-]+", query)
-    if not terms:
+    parts = [f'"{t}"' for t in terms]
+    for phrase in extra_phrases or []:
+        phrase = " ".join(phrase.split())
+        if phrase:
+            parts.append('"' + phrase.replace('"', '""') + '"')
+    if not parts:
         return '""'
-    return " OR ".join(f'"{t}"' for t in terms)
+    return " OR ".join(parts)
 
 
 def _pinned_snapshot(conn: sqlite3.Connection) -> int:
@@ -441,7 +489,13 @@ def search(
     conn = _connect(db_path)
     try:
         snapshot_id = _pinned_snapshot(conn)
-        embedder = embedder or Embedder()
+        if embedder is None:
+            # Query vectors must come from the model that built the snapshot,
+            # whatever the environment says; mixing models gives meaningless scores.
+            row = conn.execute(
+                "SELECT embedding_model FROM snapshots WHERE id = ?", (snapshot_id,)
+            ).fetchone()
+            embedder = get_embedder(row[0] if row and row[0] else config.EMBEDDING_MODEL)
 
         doc_filter = ""
         params: list = [snapshot_id]
@@ -452,7 +506,7 @@ def search(
             doc_filter += " AND d.status != 'superseded' AND d.authority != 'superseded'"
 
         # Keyword leg (BM25; lower is better in FTS5, so negate).
-        match_expr = _fts_escape(query)
+        match_expr = _fts_escape(query, lexicon.expansions(query))
         keyword_rows = conn.execute(
             f"""
             SELECT c.id, bm25(chunks_fts) AS rank
@@ -511,7 +565,7 @@ def search(
         detail_rows = conn.execute(
             f"""
             SELECT c.id, c.doc_id, d.title, c.heading_path, c.text,
-                   d.authority, d.precedence, d.status
+                   d.authority, d.precedence, d.status, c.ordinal
             FROM chunks c
             JOIN documents d ON d.doc_id = c.doc_id AND d.snapshot_id = c.snapshot_id
             WHERE c.id IN ({id_list})
@@ -526,7 +580,7 @@ def search(
             row = details.get(chunk_id)
             if row is None:
                 continue
-            _, doc_id, title, heading_path, text, authority, precedence, status = row
+            _, doc_id, title, heading_path, text, authority, precedence, status, ordinal = row
             provenance = manifest_records.get((doc_id, heading_path))
             hits.append(
                 SearchHit(
@@ -540,6 +594,7 @@ def search(
                     status=status,
                     source=source,
                     provenance=provenance,
+                    ordinal=ordinal,
                 )
             )
 
@@ -547,11 +602,54 @@ def search(
         hits.sort(key=lambda h: (h.score, -h.precedence), reverse=True)
 
         if rerank:
-            reranker = Reranker()
+            reranker = get_reranker()
             if reranker.available():
                 hits = reranker.rerank(query, hits, keep=top_k)
                 return hits
         return hits[:top_k]
+    finally:
+        conn.close()
+
+
+def get_neighbours(
+    doc_id: str,
+    ordinal: int,
+    before: int = 1,
+    after: int = 1,
+    db_path: Path | None = None,
+) -> list[dict]:
+    """Chunks around ``ordinal`` in the pinned snapshot, in document order."""
+    conn = _connect(db_path)
+    try:
+        snapshot_id = _pinned_snapshot(conn)
+        rows = conn.execute(
+            "SELECT ordinal, heading_path, text FROM chunks"
+            " WHERE snapshot_id = ? AND doc_id = ? AND ordinal BETWEEN ? AND ?"
+            " ORDER BY ordinal",
+            (snapshot_id, doc_id, ordinal - max(0, before), ordinal + max(0, after)),
+        ).fetchall()
+        return [{"ordinal": r[0], "heading_path": r[1], "text": r[2]} for r in rows]
+    finally:
+        conn.close()
+
+
+def list_indexed_documents(db_path: Path | None = None) -> list[dict]:
+    conn = _connect(db_path)
+    try:
+        snapshot_id = _pinned_snapshot(conn)
+        rows = conn.execute(
+            "SELECT d.doc_id, d.title, d.domain, d.authority, d.meta_json,"
+            " (SELECT COUNT(*) FROM chunks c WHERE c.snapshot_id = d.snapshot_id AND c.doc_id = d.doc_id)"
+            " FROM documents d WHERE d.snapshot_id = ? ORDER BY d.domain, d.title",
+            (snapshot_id,),
+        ).fetchall()
+        out = []
+        for doc_id, title, domain, authority, meta_json, n in rows:
+            meta = json.loads(meta_json)
+            out.append({"doc_id": doc_id, "title": title, "domain": domain,
+                        "authority": authority, "summary": meta.get("summary"),
+                        "topics": meta.get("topics", []), "sections": n})
+        return out
     finally:
         conn.close()
 

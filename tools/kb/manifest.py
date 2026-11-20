@@ -78,7 +78,9 @@ def prepare_publication(doc_id: str | None = None) -> list[PreparedSection]:
         if doc_id and doc.meta.id != doc_id:
             continue
 
-        chunks = chunk_document(doc.meta.id, doc.meta.title, doc.body)
+        chunks = chunk_document(
+            doc.meta.id, doc.meta.title, doc.body, doc.meta.chunk_max_tokens
+        )
         file_sha = _file_sha256(path)
         for chunk in chunks:
             section_bytes = canonical_bytes(chunk.text)

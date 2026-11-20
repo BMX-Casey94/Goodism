@@ -103,6 +103,12 @@
       "items": { "type": "string" },
       "default": [],
       "description": "Synonyms and alternate phrasings used for query expansion."
+    },
+    "chunk_max_tokens": {
+      "type": "integer",
+      "minimum": 40,
+      "maximum": 800,
+      "description": "Optional per-document override of the maximum chunk size. Use a small value for glossaries and dictionaries so each entry is its own retrievable chunk."
     }
   },
   "allOf": [

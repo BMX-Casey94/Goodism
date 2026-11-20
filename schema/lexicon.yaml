@@ -1,0 +1,188 @@
+# Phrase lexicon. Query-time keyword expansion only; it never changes a document.
+# Every phrase must appear verbatim in the corpus (checked by tools/kb/verify_lexicon.py).
+# Drafted by a DeepSeek 4.1 agent, curated by hand: broad single words and loosely
+# related variants were removed because they add noise rather than recall.
+terms:
+  - canonical: "cestui que vie trust"
+    variants: ["cestui que vie trusts"]
+    docs: [book-5-trust-is-everything-01, three-trusts-of-the-world, understanding-cestui-que-vie-1666]
+  - canonical: "cestui que vie"
+    variants: ["cestui que", "cqv"]
+    docs: [book-5-trust-is-everything-01, good-boi-f02, three-trusts-of-the-world, understanding-cestui-que-vie-1666]
+  - canonical: "cestui que vie act 1666"
+    variants: ["cestui que vie act of 1666", "the cestui que vie act 1666"]
+    docs: [three-trusts-of-the-world, understanding-cestui-que-vie-1666]
+  - canonical: "cestui que vie act of 1540"
+    variants: ["the cestui que vie act of 1540"]
+    docs: [good-boi-f02, three-trusts-of-the-world, understanding-cestui-que-vie-1666]
+  - canonical: "testamentary trust"
+    variants: ["temporary testamentary trust", "testamentary trusts"]
+    docs: [three-trusts-of-the-world]
+  - canonical: "foreign situs trust"
+    variants: ["foreign situs trusts", "fide commissary trust", "fide commissary trusts"]
+    docs: [understanding-cestui-que-vie-1666]
+  - canonical: "lost at sea"
+    variants: ["abandoned at sea", "dead, lost at sea"]
+    docs: [book-5-trust-is-everything-01, understanding-cestui-que-vie-1666]
+  - canonical: "strawman"
+    variants: ["straw-man"]
+    docs: [book-5-trust-is-everything-01, dw-miller-parse-syntax-a-x, understanding-cestui-que-vie-1666]
+  - canonical: "legal entity"
+    variants: ["legal entities", "juristic person", "ens legis", "legal person", "artificial person"]
+    docs: [book-5-trust-is-everything-01, complete-ucc-1-9, good-boi-f02, understanding-cestui-que-vie-1666]
+  - canonical: "capital letters"
+    variants: ["all capital letters", "capitalised", "capitalising"]
+    docs: [book-5-trust-is-everything-01, good-boi-f02, understanding-cestui-que-vie-1666]
+  - canonical: "executor"
+    variants: ["executors", "sole executive administrator"]
+    docs: [book-5-trust-is-everything-01, complete-ucc-1-9, three-trusts-of-the-world, understanding-cestui-que-vie-1666]
+  - canonical: "beneficiary"
+    variants: ["beneficiaries", "tertiary beneficiaries", "beneficial entitlements"]
+    docs: [book-5-trust-is-everything-01, complete-ucc-1-9, good-boi-f02, three-trusts-of-the-world]
+  - canonical: "trustee"
+    variants: ["trustees", "trustee certificate", "trust certificate"]
+    docs: [book-5-trust-is-everything-01, complete-ucc-1-9, good-boi-f02, three-trusts-of-the-world, understanding-cestui-que-vie-1666]
+  - canonical: "settlor"
+    variants: ["settlors"]
+    docs: [book-5-trust-is-everything-01, complete-ucc-1-9]
+  - canonical: "three (3) trusts of the world"
+    variants: ["trusts of the world", "three (3) trusts"]
+    docs: [three-trusts-of-the-world]
+  - canonical: "papal bull"
+    variants: ["papal bulls", "unam sanctam", "aeterni regis", "romanus pontifex"]
+    docs: [three-trusts-of-the-world]
+  - canonical: "papal tiara"
+    variants: ["the papal tiara", "triregnum"]
+    docs: [three-trusts-of-the-world]
+  - canonical: "crown of aragon"
+    variants: ["crown of spain", "the crown of spain", "union of crowns"]
+    docs: [three-trusts-of-the-world, understanding-cestui-que-vie-1666]
+  - canonical: "lost souls"
+    variants: ["grim reapers"]
+    docs: [book-5-trust-is-everything-01, three-trusts-of-the-world]
+  - canonical: "temple bar"
+    variants: ["bar associations", "crown bar"]
+    docs: [three-trusts-of-the-world, understanding-cestui-que-vie-1666]
+  - canonical: "three certainties"
+    variants: ["the three certainties", "certainty of intention", "certainty of subject matter", "certainty of objects"]
+    docs: [book-5-trust-is-everything-01]
+  - canonical: "intestacy"
+    variants: ["laws of intestacy", "rules of intestacy", "intestacy rules", "dies intestate"]
+    docs: [book-5-trust-is-everything-01]
+  - canonical: "probate"
+    variants: ["grant of probate", "last will and testament"]
+    docs: [book-5-trust-is-everything-01, the-new-world-order-epperson]
+  - canonical: "trust registration service"
+    variants: ["trs"]
+    docs: [book-5-trust-is-everything-01, good-boi-f02]
+  - canonical: "birth certificate"
+    variants: ["birth certificates", "birth-certificate", "registered birth certificate"]
+    docs: [book-5-trust-is-everything-01, good-boi-f02, passport-for-unregistered-baby, three-trusts-of-the-world, understanding-cestui-que-vie-1666]
+  - canonical: "certificate of an entry of a birth"
+    variants: ["certificate of an entry", "certified copy of an entry"]
+    docs: [book-5-trust-is-everything-01, good-boi-f02, passport-for-unregistered-baby]
+  - canonical: "live birth record"
+    variants: ["live borne record", "live birth certificate", "certificate of live birth"]
+    docs: [passport-for-unregistered-baby, three-trusts-of-the-world, understanding-cestui-que-vie-1666]
+  - canonical: "birth certificate scam"
+    variants: ["birth-certificate-scam", "birth-slavery-scam", "paper slavery"]
+    docs: [book-5-trust-is-everything-01, good-boi-f02]
+  - canonical: "inter vivos trust"
+    variants: ["inter vivos", "private irrevocable settlement in trust"]
+    docs: [book-5-trust-is-everything-01]
+  - canonical: "express trust"
+    variants: ["express trust deed", "express private trusts", "express inter vivos trust"]
+    docs: [book-5-trust-is-everything-01, three-trusts-of-the-world]
+  - canonical: "constructive trust"
+    variants: ["constructive trusts"]
+    docs: [book-5-trust-is-everything-01, complete-ucc-1-9]
+  - canonical: "secret trust"
+    variants: ["secret trusts", "private secret trusts"]
+    docs: [understanding-cestui-que-vie-1666]
+  - canonical: "settlement certificate"
+    variants: ["claim of settlement"]
+    docs: [book-5-trust-is-everything-01, understanding-cestui-que-vie-1666]
+  - canonical: "thumb print"
+    variants: ["thumb-print", "thumbprint", "ink impression"]
+    docs: [book-5-trust-is-everything-01, good-boi-f02, three-trusts-of-the-world, understanding-cestui-que-vie-1666]
+  - canonical: "four corner rule"
+    variants: ["four-(4)-corner rule", "four corners", "four-corner"]
+    docs: [book-5-trust-is-everything-01, good-boi-f02]
+  - canonical: "habeas corpus"
+    variants: ["writ of habeas corpus", "habeas corpus ad subjiciendum", "great writ"]
+    docs: [good-boi-f02]
+  - canonical: "now-time jurisdiction"
+    variants: ["now-time-jurisdiction"]
+    docs: [dw-miller-parse-syntax-a-x, good-boi-f02]
+  - canonical: "treasury direct account"
+    variants: ["treasury direct", "tda"]
+    docs: [book-5-trust-is-everything-01, good-boi-f02]
+  - canonical: "personal representative"
+    variants: ["persons personal representative", "authorised signatory"]
+    docs: [book-5-trust-is-everything-01, complete-ucc-1-9, good-boi-f02]
+  - canonical: "good faith"
+    variants: ["honesty in fact", "reasonable commercial standards of fair dealing"]
+    docs: [book-5-trust-is-everything-01, complete-ucc-1-9, good-boi-f02]
+  - canonical: "holder in due course"
+    variants: ["due course"]
+    docs: [book-5-trust-is-everything-01, complete-ucc-1-9]
+  - canonical: "negotiable instrument"
+    variants: ["negotiable instruments", "negotiable-script"]
+    docs: [complete-ucc-1-9, dw-miller-parse-syntax-a-x, good-boi-f02]
+  - canonical: "security interest"
+    variants: ["secured party", "security agreement"]
+    docs: [book-5-trust-is-everything-01, complete-ucc-1-9, good-boi-f02, the-new-world-order-epperson]
+  - canonical: "statute of frauds"
+    variants: ["formal requirements"]
+    docs: [complete-ucc-1-9]
+  - canonical: "uniform commercial code"
+    variants: ["universal commercial code", "u.c.c.", "ucc"]
+    docs: [book-5-trust-is-everything-01, complete-ucc-1-9, dw-miller-parse-syntax-a-x]
+  - canonical: "quantum-grammar"
+    variants: ["quantum dictionary", "quantum-math", "quantum-math-language"]
+    docs: [dw-miller-parse-syntax-a-x, good-boi-f02]
+  - canonical: "statutory declaration"
+    variants: ["sample statutory declaration", "statutory declaration of non-consent"]
+    docs: [passport-for-unregistered-baby]
+  - canonical: "declaration of denial of consent"
+    variants: ["denial of consent", "denial of consent to register"]
+    docs: [passport-for-unregistered-baby]
+  - canonical: "midwife witness statement"
+    variants: ["baby birth record"]
+    docs: [passport-for-unregistered-baby]
+  - canonical: "doula"
+    variants: ["birthkeeper", "independent witness"]
+    docs: [passport-for-unregistered-baby]
+  - canonical: "unregistered baby"
+    variants: ["no obligation to register", "registrar office", "registration office"]
+    docs: [book-5-trust-is-everything-01, passport-for-unregistered-baby]
+  - canonical: "universal postal union"
+    variants: ["upu"]
+    docs: [book-5-trust-is-everything-01, good-boi-f02, passport-for-unregistered-baby]
+  - canonical: "unlienable rights"
+    variants: ["unlienable", "unlienable inherent rights"]
+    docs: [book-5-trust-is-everything-01, dw-miller-parse-syntax-a-x, good-boi-f02, passport-for-unregistered-baby, the-new-world-order-epperson, three-trusts-of-the-world]
+  - canonical: "new world order"
+    variants: ["novus ordo seclorum", "one world government", "new world government", "one world religion"]
+    docs: [the-new-world-order-epperson]
+  - canonical: "great seal"
+    variants: ["annuit coeptis", "all-seeing eye"]
+    docs: [the-new-world-order-epperson]
+  - canonical: "illuminati"
+    variants: ["illuminated ones", "adam weishaupt"]
+    docs: [the-new-world-order-epperson]
+  - canonical: "freemasons"
+    variants: ["masonic order", "masonry", "scottish rite"]
+    docs: [the-new-world-order-epperson]
+  - canonical: "secret societies"
+    variants: ["secret society", "hidden societies"]
+    docs: [the-new-world-order-epperson]
+  - canonical: "lucifer"
+    variants: ["lucis trust", "sun god"]
+    docs: [the-new-world-order-epperson]
+  - canonical: "maitreya"
+    variants: ["lord maitreya", "new age messiah"]
+    docs: [the-new-world-order-epperson]
+  - canonical: "obelisk"
+    variants: ["obelisks", "washington monument"]
+    docs: [the-new-world-order-epperson]

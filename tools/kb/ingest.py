@@ -25,6 +25,7 @@ from pathlib import Path
 
 from . import config
 from .converters import Conversion, convert, convert_image_vision
+from . import assets
 from .frontmatter import dump_sidecar, validate_meta
 from .hashing import canonicalise, sha256_file, sha256_text
 from .integrity import GateResult, Verdict, compare
@@ -318,6 +319,18 @@ def ingest_file(
             review_flags.extend(ocr_flags)
     else:
         conversion = convert(path, client)
+
+    # Images become real files under corpus/assets/ before anything else sees
+    # the text, so no base64 reaches the proofreader, the corpus or the index.
+    # Corpus and staging files are both one level below corpus/, so the
+    # relative link is identical for either destination.
+    asset_doc_id = overrides.get("id") or _slugify(path.stem)
+    conversion.text = assets.externalise_images(
+        conversion.text, asset_doc_id, config.CORPUS_DIR / "_" / "x.md",
+        source=path.suffix.lstrip(".").lower() or "docx",
+    )
+    if path.suffix.lower() == ".pdf":
+        assets.extract_pdf_figures(path, asset_doc_id)
 
     original_text = canonicalise(conversion.text)
 

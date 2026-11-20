@@ -5,18 +5,50 @@ domain: language-grammar
 topics:
 - parse-syntax-grammar
 - quantum-grammar
+- jurisdiction
+- ucc
 doc_type: reference
 source_file: inbox/david wynn.-Miller.- parse syntex A-X.docx
 source_sha256: ba9d120ea15d8d67cc6262f4e0d5dd860e73de8c11fd7255ecaf50557dd4b156
 authority: supporting
 precedence: 40
+chunk_max_tokens: 60
 status: draft
 extraction_method: native-text
-summary: D. W. Miller — Parse Syntax Grammar A–X
+summary: David Wynn Miller's parse syntax (quantum grammar) dictionary lists entries A to X in a fixed
+  formula, each defining a word or symbol under the heading 'for this claim of this word'. Entries cover
+  grammar categories, punctuation marks and commercial, maritime and court terms such as vessel, conveyance,
+  treaty-trust, bills of lading and judgment-claim. The Y to Z page is empty.
+key_terms:
+- FOR THIS CLAIM OF THIS WORD
+- Quantum Dictionary
+- adjective
+- adverb
+- noun
+- pronoun
+- positional
+- vessel
+- conveyance
+- livery
+- ception
+- autograph
+- Treaty-Trust
+- BILLS OF THESE LADINGS
+- CERTIORARI
+- QUO-WARRANTO
+- Quantum-Math-Language-Format
+- SERF
+- MONAD
+aliases:
+- David Wynn Miller parse syntax
+- quantum grammar dictionary
+- parse syntax A-X
+- Miller's quantum language
+- the DW Miller dictionary
 ---
 
 
-**this is : david wynn.-Miller.- parse syntex A-X**
+# this is : david wynn.-Miller.- parse syntex A-X
 
 **1** FOR THIS CLAIM OF THIS WORD: ADJECTIVE [SIC] IS WITH THIS CLAIM OF THIS MODIFICATION WITH THIS FACT OF THIS CREATION FOR THIS LOCATION OF THESE OPINIONS SIC, ASSUMPTIONS SIC AND PRESUMPTIONS [SIC] WITH THIS DAMAGE OF THESE FACTS.
 
@@ -232,11 +264,11 @@ summary: D. W. Miller — Parse Syntax Grammar A–X
 
 **~21: LOW** IS WITH THIS CLAIM OF THIS SOURCE.
 
-**: MAELSTROM **IS WITH THIS CLAIM OF ALL LARGE AND VIOLENT-WHIRLPOOL-FICTION BY THIS CLAIM.
+**: MAELSTROM** IS WITH THIS CLAIM OF ALL LARGE AND VIOLENT-WHIRLPOOL-FICTION BY THIS CLAIM.
 
 **~2: MAIL** IS WITH THIS CLAIM OF THIS VALUE-SCRIPT.
 
-**~3: MAINTAIN **IS WITH THIS CLAIM OF THIS HELP.
+**~3: MAINTAIN** IS WITH THIS CLAIM OF THIS HELP.
 
 **~4: MALICE** IS WITH THIS VOLITION-HATE AND ILL-WILL OF THIS STATE WITH THIS MIND WITH THIS RECKLESSNESS OF THIS LAW AND LEGAL-CLAIMS OF THIS PARTY-PERSON-VESSEL.
 
@@ -262,7 +294,7 @@ summary: D. W. Miller — Parse Syntax Grammar A–X
 
 **~16: NATION** IS WITH THIS CLAIM OF THESE UNITY-STATES WITH THIS CONDITION OF THIS QUALITY.
 
-**~16: NEGOTIABLE **IS WITH THIS CLAIM OF THIS SCRIPT WITH THIS CONVEYANCE AS THIS VALUE.
+**~16: NEGOTIABLE** IS WITH THIS CLAIM OF THIS SCRIPT WITH THIS CONVEYANCE AS THIS VALUE.
 
 **~17: NEVARIETUR** IS WITH THIS CLAIM OF A STOP AND CHANGE BY THIS CLAIM.
 
@@ -306,7 +338,7 @@ summary: D. W. Miller — Parse Syntax Grammar A–X
 
 **~37: PORT** IS WITH THIS CLAIM OF THIS PLACE AND LOCATION WITH THIS MERCHANDISE, CARGO, MANIFESTS, CHARTER-VESSELS, AND BILLS OF THESE LADINGS BY ALL METHODS [PROCESS].
 
-**~38: POSITION **IS WITH THIS CLAIM OF THIS LOCATION.
+**~38: POSITION** IS WITH THIS CLAIM OF THIS LOCATION.
 
 **~39: POST** IS WITH THIS STATION FOR THIS CONVEYANCE AND CONVEYANCE OF ALL LETTERS WITH ANY POSTAGE WITHIN THIS NEUTRAL-TERRITORY OF ALL WORLD-PORTS.
 
@@ -322,7 +354,7 @@ summary: D. W. Miller — Parse Syntax Grammar A–X
 
 **~45: PUNISHMENT** IS WITH THIS CLAIM OF THIS PENALTY WITH THIS AUTHORIZATION OF THIS LAW.
 
-**~46: PURCHASE **IS WITH THIS CLAIM OF THIS GAIN WITH THIS VALUE OF THIS MATTER.
+**~46: PURCHASE** IS WITH THIS CLAIM OF THIS GAIN WITH THIS VALUE OF THIS MATTER.
 
 **~47: PURCHASER** IS WITH THIS CLAIM OF THIS VESSEL WITH THIS CONVEYANCE OF THIS PURCHASE.
 
@@ -330,7 +362,7 @@ summary: D. W. Miller — Parse Syntax Grammar A–X
 
 .
 
-  **Quantum Dictionary: Q - T**
+## Quantum Dictionary: Q - T
 
 **~1: QUALIFICATION** IS WITH THIS CLAIM OF THIS POSSESSION WITH THESE QUALITIES AND UNITY OF THIS DUTY WITH THIS JOB-POSITION BY THIS VESSEL.
 
@@ -422,7 +454,7 @@ summary: D. W. Miller — Parse Syntax Grammar A–X
 
 **~45: TEGERE** IS WITH THIS CLAIM OF A COVER-UP BY THIS CLAIM.
 
-**~46:TILDE~ **IS WITH THIS CLAIM OF THIS LOCATION.
+**~46:TILDE~** IS WITH THIS CLAIM OF THIS LOCATION.
 
 **~47: TORT** IS WITH THIS PRIVATE, CIVIL-WRONG, AND DAMAGE OF THIS CONSPIRACY WITH ANY CLAIM IN THIS FORM OF AN ACTION FOR THESE DAMAGES OF THIS VIOLATION OF THIS DUTY, PARTY, PERSON, VESSEL, CONTRACT, CONSTITUTION, OR CHARTER WITH THESE CLAIMS BY ANY FIDUCIARIES.
 
@@ -436,7 +468,7 @@ summary: D. W. Miller — Parse Syntax Grammar A–X
 
 **~52: TRUST** IS WITH THIS CLAIM OF THIS HONOR WITH THIS CONVEYANCE OF THIS VOLITION.
 
-Quantum Dictionary: U - X
+## Quantum Dictionary: U - X
 
 **~1: UNIT** IS WITH THIS CLAIM OF THIS FIX-QUANTITY WITH THIS STANDARD BY THIS MEASUREMENT.
 
@@ -468,6 +500,6 @@ Quantum Dictionary: U - X
 
 **~15: WRONG** IS WITH THIS CLAIM OF THIS VIOLATION OR DAMAGE WITH THIS CONVEYANCE OF THIS COMMUNICATION-KNOWLEDGE.
 
-Quantum Dictionary: Y - Z
+## Quantum Dictionary: Y - Z
 
 CURRENTLY THERE ARE NO ENTRIES FOR THIS PAGE (**Y - Z**)

@@ -21,12 +21,19 @@ Content is returned as clearly delimited data with fence-escape protection.
 """
 from __future__ import annotations
 
+import asyncio
+import functools
 import hmac
 import json
 import os
 import re
 import sys
+import threading
+import weakref
 from pathlib import Path
+from typing import Any, Callable, TypeVar
+
+import anyio
 
 # Allow running both as `python -m server.mcp_server` and as a script.
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -55,6 +62,62 @@ except ImportError as exc:  # pragma: no cover
 _HEX64_RE = re.compile(r"^[0-9a-f]{64}$")
 _MIN_TOKEN_LEN = 32
 _MAX_CHUNK_ORDINAL = 1_000_000
+
+# Every tool implementation touches blocking resources (HTTP embedding and
+# reranking calls, SQLite queries, file reads). Running them directly inside an
+# `async def` would stall the event loop and serialise all concurrent clients.
+# They are offloaded to a worker thread instead, bounded by a per-event-loop
+# semaphore so one busy client cannot monopolise the thread pool.
+_DEFAULT_MAX_CONCURRENCY = 4
+_MAX_CONCURRENCY_CEILING = 32
+
+_T = TypeVar("_T")
+
+# Keyed by the running loop: an anyio.Semaphore is bound to the event loop that
+# first awaits it, and older anyio/backend combinations raise "bound to a
+# different event loop" when one crosses loops (current versions happen to
+# tolerate it). Each `anyio.run` in a test session is a new loop, so per-loop
+# keying is the safe contract rather than a shared singleton. Weak keys also
+# drop the semaphore once its loop is collected.
+_semaphores: "weakref.WeakKeyDictionary[Any, anyio.Semaphore]" = weakref.WeakKeyDictionary()
+_semaphores_lock = threading.Lock()
+
+
+def _max_concurrency() -> int:
+    """Worker-thread cap for blocking tool work, clamped to 1..32."""
+    raw = os.environ.get("KB_MCP_MAX_CONCURRENCY", "")
+    try:
+        value = int(str(raw).strip())
+    except (TypeError, ValueError):
+        return _DEFAULT_MAX_CONCURRENCY
+    return max(1, min(value, _MAX_CONCURRENCY_CEILING))
+
+
+def _loop_semaphore() -> anyio.Semaphore:
+    """Return the concurrency semaphore belonging to the running event loop."""
+    try:
+        key: Any = asyncio.get_running_loop()
+    except RuntimeError:
+        # Non-asyncio backend (trio): a thread runs one loop at a time, so the
+        # thread is a stable enough key and nothing here depends on asyncio.
+        key = threading.current_thread()
+    with _semaphores_lock:
+        semaphore = _semaphores.get(key)
+        if semaphore is None:
+            semaphore = anyio.Semaphore(_max_concurrency())
+            _semaphores[key] = semaphore
+        return semaphore
+
+
+async def _run_blocking(fn: Callable[..., _T], *args: Any, **kwargs: Any) -> _T:
+    """Run a blocking callable in a worker thread without stalling the loop.
+
+    The semaphore is held until the worker actually returns, so a cancelled
+    request cannot free its slot while the thread is still busy; that keeps
+    ``KB_MCP_MAX_CONCURRENCY`` a real cap rather than a target.
+    """
+    async with _loop_semaphore():
+        return await anyio.to_thread.run_sync(functools.partial(fn, *args, **kwargs))
 
 
 class StaticTokenVerifier(TokenVerifier):
@@ -179,14 +242,7 @@ def _status_caveat(status: str, needs_review: bool = False) -> str | None:
     return None
 
 
-@mcp.tool()
-def search_knowledge(query: str, top_k: int = 8, domain: str | None = None) -> str:
-    """Hybrid search across the knowledge base.
-
-    Returns ranked passages with their source document, section, authority
-    and, when the section has been published on-chain, its provenance
-    record (TXID etc). Quote passages verbatim; never invent citations.
-    """
+def _search_knowledge(query: str, top_k: int, domain: str | None) -> str:
     config.load_dotenv_if_present()
     if not isinstance(query, str) or not query.strip():
         return json.dumps({"results": [], "error": "query must be non-empty"}, indent=2)
@@ -222,7 +278,35 @@ def search_knowledge(query: str, top_k: int = 8, domain: str | None = None) -> s
 
 
 @mcp.tool()
-def research(
+async def search_knowledge(query: str, top_k: int = 8, domain: str | None = None) -> str:
+    """Hybrid search across the knowledge base.
+
+    Returns ranked passages with their source document, section, authority
+    and, when the section has been published on-chain, its provenance
+    record (TXID etc). Quote passages verbatim; never invent citations.
+    """
+    return await _run_blocking(_search_knowledge, query, top_k, domain)
+
+
+def _research(
+    queries: list[str],
+    context: int,
+    max_hits: int,
+    domain: str | None,
+) -> str:
+    config.load_dotenv_if_present()
+    if not isinstance(queries, list) or not queries:
+        return json.dumps({"error": "queries must be a non-empty list of strings"})
+    if any(not isinstance(q, str) or len(q) > 512 for q in queries):
+        return json.dumps({"error": "each query must be a string of at most 512 characters"})
+    try:
+        return retrieve(queries, context=context, max_hits=max_hits, domain=domain)
+    except Exception:
+        return json.dumps({"error": "retrieval failed"})
+
+
+@mcp.tool()
+async def research(
     queries: list[str],
     context: int = 1,
     max_hits: int = 16,
@@ -244,25 +328,10 @@ def research(
     (0 to 3) because the exact fact is often just beside the best match.
     Quote verbatim, cite document and section, and never invent a citation.
     """
-    config.load_dotenv_if_present()
-    if not isinstance(queries, list) or not queries:
-        return json.dumps({"error": "queries must be a non-empty list of strings"})
-    if any(not isinstance(q, str) or len(q) > 512 for q in queries):
-        return json.dumps({"error": "each query must be a string of at most 512 characters"})
-    try:
-        return retrieve(queries, context=context, max_hits=max_hits, domain=domain)
-    except Exception:
-        return json.dumps({"error": "retrieval failed"})
+    return await _run_blocking(_research, queries, context, max_hits, domain)
 
 
-@mcp.tool()
-def read_around(doc_id: str, chunk: int, before: int = 2, after: int = 2) -> str:
-    """Read the chunks around a position in one document.
-
-    Use after `research` when a passage starts or stops mid-topic. `chunk` is
-    a number from the `chunks a–b` line of a result. Returns verbatim text in
-    document order.
-    """
+def _read_around(doc_id: str, chunk: int, before: int, after: int) -> str:
     if not isinstance(chunk, int) or isinstance(chunk, bool) or not (0 <= chunk <= _MAX_CHUNK_ORDINAL):
         return json.dumps({"error": "chunk must be an integer between 0 and 1000000"})
     before = max(0, min(int(before), 10))
@@ -288,12 +357,17 @@ def read_around(doc_id: str, chunk: int, before: int = 2, after: int = 2) -> str
 
 
 @mcp.tool()
-def list_documents() -> str:
-    """List every indexed document with its summary, topics and section count.
+async def read_around(doc_id: str, chunk: int, before: int = 2, after: int = 2) -> str:
+    """Read the chunks around a position in one document.
 
-    Call this first if you are unsure what the knowledge base covers, or to
-    choose which document to read in full with `get_document`.
+    Use after `research` when a passage starts or stops mid-topic. `chunk` is
+    a number from the `chunks a–b` line of a result. Returns verbatim text in
+    document order.
     """
+    return await _run_blocking(_read_around, doc_id, chunk, before, after)
+
+
+def _list_documents() -> str:
     try:
         return json.dumps({"documents": list_indexed_documents()}, indent=2)
     except Exception:
@@ -301,8 +375,16 @@ def list_documents() -> str:
 
 
 @mcp.tool()
-def get_document(doc_id: str) -> str:
-    """Fetch a full document's verbatim text and metadata by id."""
+async def list_documents() -> str:
+    """List every indexed document with its summary, topics and section count.
+
+    Call this first if you are unsure what the knowledge base covers, or to
+    choose which document to read in full with `get_document`.
+    """
+    return await _run_blocking(_list_documents)
+
+
+def _get_document(doc_id: str) -> str:
     for path in iter_corpus_files():
         try:
             doc = load_document(path, check_vocab=False)
@@ -329,8 +411,12 @@ def get_document(doc_id: str) -> str:
 
 
 @mcp.tool()
-def get_section(doc_id: str, heading_path: str) -> str:
-    """Fetch one section's verbatim text plus its hash-verified provenance record."""
+async def get_document(doc_id: str) -> str:
+    """Fetch a full document's verbatim text and metadata by id."""
+    return await _run_blocking(_get_document, doc_id)
+
+
+def _get_section(doc_id: str, heading_path: str) -> str:
     for path in iter_corpus_files():
         try:
             doc = load_document(path, check_vocab=False)
@@ -372,15 +458,23 @@ def get_section(doc_id: str, heading_path: str) -> str:
 
 
 @mcp.tool()
-def list_conflicts(topic: str | None = None) -> str:
-    """List confirmed contradictions and which document prevails."""
+async def get_section(doc_id: str, heading_path: str) -> str:
+    """Fetch one section's verbatim text plus its hash-verified provenance record."""
+    return await _run_blocking(_get_section, doc_id, heading_path)
+
+
+def _list_conflicts(topic: str | None) -> str:
     conflicts = confirmed_conflicts(topic)
     return json.dumps({"conflicts": conflicts, "count": len(conflicts)}, indent=2)
 
 
 @mcp.tool()
-def list_topics() -> str:
-    """List domains and topics for discovery and query filtering."""
+async def list_conflicts(topic: str | None = None) -> str:
+    """List confirmed contradictions and which document prevails."""
+    return await _run_blocking(_list_conflicts, topic)
+
+
+def _list_topics() -> str:
     import yaml
 
     domains = yaml.safe_load((config.VOCAB_DIR / "domains.yaml").read_text("utf-8"))["domains"]
@@ -395,13 +489,12 @@ def list_topics() -> str:
 
 
 @mcp.tool()
-def get_index_status() -> str:
-    """Return the pinned snapshot: version, embedding model, counts.
+async def list_topics() -> str:
+    """List domains and topics for discovery and query filtering."""
+    return await _run_blocking(_list_topics)
 
-    Callers must check this before trusting results — if the configured
-    embedding model differs from the pinned snapshot's model, a rebuild is
-    pending and results may mix representations.
-    """
+
+def _get_index_status() -> str:
     try:
         return json.dumps(index_status(), indent=2)
     except Exception:
@@ -409,18 +502,33 @@ def get_index_status() -> str:
 
 
 @mcp.tool()
-def get_provenance(doc_id: str, section_path: str) -> str:
+async def get_index_status() -> str:
+    """Return the pinned snapshot: version, embedding model, counts.
+
+    Callers must check this before trusting results — if the configured
+    embedding model differs from the pinned snapshot's model, a rebuild is
+    pending and results may mix representations.
+    """
+    return await _run_blocking(_get_index_status)
+
+
+def _get_provenance(doc_id: str, section_path: str) -> str:
+    record = provenance_for(doc_id, section_path)
+    prov, _ = _format_provenance(record)
+    if prov is None:
+        return json.dumps({"error": f"no valid provenance record for {doc_id} :: {section_path}"})
+    return json.dumps(prov, indent=2)
+
+
+@mcp.tool()
+async def get_provenance(doc_id: str, section_path: str) -> str:
     """Return the on-chain provenance record for a published section.
 
     This is the record the bot copies verbatim when citing a source. The
     `verified` flag is true only once the transaction is confirmed in a
     block (valid 64-hex block_hash, positive height) AND a proof file exists.
     """
-    record = provenance_for(doc_id, section_path)
-    prov, _ = _format_provenance(record)
-    if prov is None:
-        return json.dumps({"error": f"no valid provenance record for {doc_id} :: {section_path}"})
-    return json.dumps(prov, indent=2)
+    return await _run_blocking(_get_provenance, doc_id, section_path)
 
 
 def main() -> None:

@@ -7,6 +7,7 @@ import json
 import time
 from pathlib import Path
 
+import anyio
 import pytest
 
 from server import mcp_server
@@ -248,7 +249,7 @@ def test_delimiter_breakout_and_query_injection_are_escaped():
 
 
 def test_read_around_rejects_huge_chunk_without_overflow():
-    res = json.loads(mcp_server.read_around("complete-ucc-1-9", 10**30))
+    res = json.loads(anyio.run(mcp_server.read_around, "complete-ucc-1-9", 10**30))
     assert "error" in res
-    res_neg = json.loads(mcp_server.read_around("complete-ucc-1-9", -1))
+    res_neg = json.loads(anyio.run(mcp_server.read_around, "complete-ucc-1-9", -1))
     assert "error" in res_neg

@@ -19,7 +19,7 @@ import sys
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from . import assets, config
+from . import assets, config, lexicon
 from .frontmatter import FrontMatterError, iter_corpus_files, load_document, load_sidecar
 from .hashing import canonical_bytes, sha256_file, sha256_text
 
@@ -285,10 +285,135 @@ def _published_docs() -> list[tuple[str, Path]]:
     return docs
 
 
+def _display_path(path: Path) -> str:
+    """Repo-relative path where possible, so messages match the other checks."""
+    try:
+        return path.relative_to(config.ROOT).as_posix()
+    except ValueError:
+        return path.as_posix()
+
+
+def _load_yaml_mapping(report: ValidationReport, path: Path, label: str) -> dict | None:
+    """Parse a YAML file and require a top-level mapping."""
+    import yaml
+
+    rel = _display_path(path)
+    try:
+        text = path.read_text(encoding="utf-8")
+    except OSError as exc:
+        report.error(f"{rel}: cannot read {label}: {exc}")
+        return None
+    try:
+        data = yaml.safe_load(text)
+    except yaml.YAMLError as exc:
+        report.error(f"{rel}: invalid YAML: {exc}")
+        return None
+    if data is None:
+        report.error(f"{rel}: {label} is empty; expected a YAML mapping")
+        return None
+    if not isinstance(data, dict):
+        report.error(f"{rel}: {label} must be a YAML mapping, got {type(data).__name__}")
+        return None
+    return data
+
+
+def _non_empty_str(value: object) -> bool:
+    return isinstance(value, str) and bool(value.strip())
+
+
+def _validate_lexicon_terms(report: ValidationReport, data: dict, rel: str) -> None:
+    terms = data.get("terms")
+    if not isinstance(terms, list):
+        report.error(f"{rel}: 'terms' must be a list")
+        return
+    seen: dict[str, int] = {}
+    for index, entry in enumerate(terms):
+        where = f"{rel}: terms[{index}]"
+        if not isinstance(entry, dict):
+            report.error(f"{where}: must be a mapping with 'canonical' and 'variants'")
+            continue
+        canonical = entry.get("canonical")
+        if not _non_empty_str(canonical):
+            report.error(f"{where}: 'canonical' must be a non-empty string")
+            continue
+        key = canonical.strip().casefold()
+        if key in seen:
+            report.error(
+                f"{where}: duplicate canonical '{canonical.strip()}' "
+                f"(first defined at terms[{seen[key]}])"
+            )
+        else:
+            seen[key] = index
+
+        variants = entry.get("variants")
+        if not isinstance(variants, list) or not variants:
+            report.error(f"{where}: 'variants' must be a non-empty list of strings")
+            continue
+        if not all(_non_empty_str(v) for v in variants):
+            report.error(f"{where}: every 'variants' entry must be a non-empty string")
+            continue
+
+        phrases = [canonical.strip(), *[v.strip() for v in variants]]
+        try:
+            lexicon._compile(phrases)
+        except re.error as exc:
+            report.error(f"{where}: phrases do not compile to a regex: {exc}")
+
+
+def _validate_triggers(report: ValidationReport, data: dict, rel: str) -> None:
+    triggers = data.get("triggers")
+    if not isinstance(triggers, list):
+        report.error(f"{rel}: 'triggers' must be a list")
+        return
+    for index, entry in enumerate(triggers):
+        where = f"{rel}: triggers[{index}]"
+        if not isinstance(entry, dict):
+            report.error(f"{where}: must be a mapping with 'user_phrases' and 'corpus_phrases'")
+            continue
+        validated: dict[str, list[str]] = {}
+        for field_name in ("user_phrases", "corpus_phrases"):
+            phrases = entry.get(field_name)
+            if not isinstance(phrases, list) or not phrases:
+                report.error(f"{where}: '{field_name}' must be a non-empty list of strings")
+                continue
+            if not all(_non_empty_str(p) for p in phrases):
+                report.error(f"{where}: every '{field_name}' entry must be a non-empty string")
+                continue
+            validated[field_name] = [p.strip() for p in phrases]
+
+        # Only the user phrases become a regex; corpus phrases are plain text.
+        if "user_phrases" in validated:
+            try:
+                lexicon._compile(validated["user_phrases"])
+            except re.error as exc:
+                report.error(f"{where}: user_phrases do not compile to a regex: {exc}")
+
+
+def validate_lexicon(report: ValidationReport) -> None:
+    """Validate the query-expansion vocabulary in schema/lexicon.yaml and triggers.yaml.
+
+    A malformed entry does not corrupt any document, but it silently disables
+    recall and can raise ``re.error`` inside the retrieval path, so it belongs
+    in the CI gate. Missing files are not an error: expansion is optional.
+    """
+    if lexicon.LEXICON_PATH.exists():
+        rel = _display_path(lexicon.LEXICON_PATH)
+        data = _load_yaml_mapping(report, lexicon.LEXICON_PATH, "lexicon")
+        if data is not None:
+            _validate_lexicon_terms(report, data, rel)
+
+    if lexicon.TRIGGERS_PATH.exists():
+        rel = _display_path(lexicon.TRIGGERS_PATH)
+        data = _load_yaml_mapping(report, lexicon.TRIGGERS_PATH, "triggers")
+        if data is not None:
+            _validate_triggers(report, data, rel)
+
+
 def run_validation() -> ValidationReport:
     report = ValidationReport()
     corpus_hashes = validate_corpus(report)
     validate_manifest(report, corpus_hashes)
+    validate_lexicon(report)
     return report
 
 

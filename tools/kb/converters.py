@@ -8,10 +8,22 @@ headings preserved; they never "improve" the content.
 from __future__ import annotations
 
 import re
+import zipfile
+from collections.abc import Iterator
 from dataclasses import dataclass
 from pathlib import Path
 
 IMAGE_SUFFIXES = {".jpg", ".jpeg", ".png", ".gif", ".webp", ".tif", ".tiff", ".bmp"}
+
+# A DOCX is a ZIP, so an untrusted file can be a decompression bomb: a few
+# kilobytes on disk that expands to gigabytes of XML once mammoth reads it.
+# These limits bound the work done before any parsing starts.
+DOCX_MAX_ENTRIES = 2000
+DOCX_MAX_UNCOMPRESSED_BYTES = 100 * 1024 * 1024  # 100 MiB
+DOCX_MAX_COMPRESSION_RATIO = 100.0
+# The ratio check only applies to members large enough for a ratio to mean
+# anything; small XML parts compress enormously without being a threat.
+_DOCX_RATIO_MIN_BYTES = 1_048_576
 
 
 @dataclass
@@ -119,6 +131,63 @@ def _clean_docx_artefacts(text: str) -> str:
     return text
 
 
+def _docx_member_is_safe(name: str) -> bool:
+    """Reject absolute member names and any ``..`` component (zip-slip)."""
+    if not name or name.startswith("/") or name.startswith("\\"):
+        return False
+    if re.match(r"^[A-Za-z]:", name):  # Windows drive-qualified name
+        return False
+    parts = name.replace("\\", "/").split("/")
+    return ".." not in parts
+
+
+def _check_docx_archive(path: Path) -> None:
+    """Refuse DOCX files that could exhaust memory or escape the archive root.
+
+    Called before mammoth opens the file: mammoth expands the whole package, so
+    a zip bomb would already be in memory by the time its own limits apply.
+    """
+    try:
+        with zipfile.ZipFile(path, "r") as archive:
+            infos = archive.infolist()
+    except zipfile.BadZipFile as exc:
+        raise ValueError(f"{path.name}: not a valid DOCX/ZIP archive: {exc}") from exc
+    except OSError as exc:
+        raise ValueError(f"{path.name}: cannot open DOCX archive: {exc}") from exc
+
+    if len(infos) > DOCX_MAX_ENTRIES:
+        raise ValueError(
+            f"{path.name}: DOCX has {len(infos)} entries, exceeding the limit of "
+            f"{DOCX_MAX_ENTRIES}"
+        )
+
+    total_uncompressed = 0
+    for info in infos:
+        if not _docx_member_is_safe(info.filename):
+            raise ValueError(
+                f"{path.name}: DOCX contains an unsafe member name: {info.filename!r}"
+            )
+        total_uncompressed += info.file_size
+        if total_uncompressed > DOCX_MAX_UNCOMPRESSED_BYTES:
+            raise ValueError(
+                f"{path.name}: DOCX expands to more than "
+                f"{DOCX_MAX_UNCOMPRESSED_BYTES} bytes uncompressed"
+            )
+        if info.file_size <= _DOCX_RATIO_MIN_BYTES:
+            continue
+        if info.compress_size == 0:
+            raise ValueError(
+                f"{path.name}: DOCX member {info.filename!r} is {info.file_size} bytes "
+                "with no compressed size (zip bomb)"
+            )
+        ratio = info.file_size / info.compress_size
+        if ratio > DOCX_MAX_COMPRESSION_RATIO:
+            raise ValueError(
+                f"{path.name}: DOCX member {info.filename!r} has compression ratio "
+                f"{ratio:.0f}:1, exceeding the limit of {DOCX_MAX_COMPRESSION_RATIO:.0f}:1"
+            )
+
+
 def convert_docx(path: Path) -> Conversion:
     """DOCX -> markdown preserving headings, lists and tables via mammoth.
 
@@ -126,6 +195,7 @@ def convert_docx(path: Path) -> Conversion:
     cleaned; the author's wording, hyphenation and punctuation choices are
     preserved verbatim.
     """
+    _check_docx_archive(path)
     try:
         import mammoth
     except ImportError as exc:
@@ -225,20 +295,22 @@ def convert_image_vision(
     )
 
 
-def pdf_page_images(path: Path, dpi: int = 200) -> list[bytes]:
-    """Render a scanned PDF's pages to PNG byte strings for the vision path."""
+def pdf_page_images(path: Path, dpi: int = 200) -> Iterator[bytes]:
+    """Render a PDF's pages to PNG bytes, one page at a time.
+
+    Yields rather than returning a list: a 400-page scan at 200 dpi is well
+    over a gigabyte of bitmaps, which must never be held in memory at once.
+    """
     try:
         import pymupdf
     except ImportError as exc:
         raise RuntimeError(
             "PyMuPDF is required to render scanned PDFs: pip install PyMuPDF"
         ) from exc
-    images: list[bytes] = []
     with pymupdf.open(path) as doc:
         for page in doc:
             pixmap = page.get_pixmap(dpi=dpi)
-            images.append(pixmap.tobytes("png"))
-    return images
+            yield pixmap.tobytes("png")
 
 
 def _count_marginal(text: str) -> int:
@@ -264,7 +336,9 @@ def convert_pdf_scanned_vision(
     pages: list[str] = []
     illegible = 0
     marginal = 0
+    page_count = 0
     for image in page_images:
+        page_count += 1
         text = client.chat(
             role=role,
             system=system,
@@ -283,7 +357,7 @@ def convert_pdf_scanned_vision(
         extraction_method="vision",
         confidence=round(confidence, 3),
         notes=(
-            f"scanned PDF, {len(page_images)} page(s), {illegible} illegible, "
+            f"scanned PDF, {page_count} page(s), {illegible} illegible, "
             f"{marginal} marginal region(s)"
         ),
     )

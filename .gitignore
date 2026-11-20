@@ -18,6 +18,15 @@ venv/
 .env
 .env.*
 !.env.example
+!web/.env.example
+
+# Next.js frontend (web/)
+web/node_modules/
+web/.next/
+web/.vercel/
+web/out/
+web/*.tsbuildinfo
+web/next-env.d.ts
 
 # OS
 Thumbs.db

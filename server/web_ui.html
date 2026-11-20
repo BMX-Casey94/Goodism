@@ -1,0 +1,1316 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Knowledge Base — Client Review</title>
+<style>
+  :root {
+    --paper: #fbfaf7;
+    --paper-2: #ffffff;
+    --ink: #17181a;
+    --ink-soft: #4a4d52;
+    --muted: #6d7278;
+    --rule: #e0ddd4;
+    --rule-strong: #c9c5b9;
+    --accent: #7a2e2e;
+    --accent-soft: #f3e9e7;
+    --ok: #2f6248;
+    --warn: #8a5a12;
+    --warn-bg: #fdf3e0;
+    --radius: 4px;
+    --serif: Georgia, "Iowan Old Style", "Times New Roman", serif;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #14151a;
+      --paper-2: #1b1d23;
+      --ink: #ececea;
+      --ink-soft: #c3c5ca;
+      --muted: #9a9da4;
+      --rule: #2b2e36;
+      --rule-strong: #3a3e48;
+      --accent: #d69a95;
+      --accent-soft: #2a1e1e;
+      --ok: #7fbf9c;
+      --warn: #e0b062;
+      --warn-bg: #2a2417;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.55;
+  }
+  .wrap { max-width: 62rem; margin: 0 auto; padding: 0 1.25rem 5rem; }
+  a { color: var(--accent); }
+
+  /* Header */
+  header.masthead {
+    border-bottom: 1px solid var(--rule);
+    padding: 1.35rem 0 1.1rem;
+    margin-bottom: 1.5rem;
+  }
+  .masthead-row {
+    display: flex; flex-wrap: wrap; gap: 1rem;
+    align-items: flex-start; justify-content: space-between;
+  }
+  .brand h1 {
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+  .brand p {
+    margin: 0.2rem 0 0;
+    color: var(--muted);
+    font-size: 0.82rem;
+    letter-spacing: 0.02em;
+  }
+  .snapshot {
+    display: flex; flex-wrap: wrap; gap: 0.4rem 0.55rem;
+    align-items: center; justify-content: flex-end;
+    font-size: 0.74rem; color: var(--muted);
+  }
+  .chip {
+    border: 1px solid var(--rule-strong);
+    border-radius: 999px;
+    padding: 0.16rem 0.55rem;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+  .chip strong { color: var(--ink-soft); font-weight: 600; }
+  .toolbar {
+    display: flex; flex-wrap: wrap; gap: 0.6rem;
+    align-items: center; justify-content: space-between;
+    margin-top: 1rem;
+  }
+  .segmented { display: inline-flex; border: 1px solid var(--rule-strong); border-radius: var(--radius); overflow: hidden; }
+  .segmented button {
+    font: inherit; font-size: 0.83rem; font-weight: 600;
+    padding: 0.42rem 0.85rem; border: 0; background: transparent;
+    color: var(--ink-soft); cursor: pointer;
+  }
+  .segmented button + button { border-left: 1px solid var(--rule-strong); }
+  .segmented button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+  .segmented button:disabled { color: var(--muted); cursor: not-allowed; opacity: 0.6; }
+  .segmented button:focus-visible, .linkish:focus-visible, button.primary:focus-visible,
+  input:focus-visible, textarea:focus-visible, select:focus-visible {
+    outline: 2px solid var(--accent); outline-offset: 2px;
+  }
+  .linkish {
+    font: inherit; font-size: 0.8rem; font-weight: 600;
+    background: none; border: 0; padding: 0.3rem 0.1rem;
+    color: var(--ink-soft); cursor: pointer;
+    border-bottom: 1px solid var(--rule-strong);
+  }
+  .linkish:hover { color: var(--accent); border-bottom-color: var(--accent); }
+  .toolbar-right { display: flex; flex-wrap: wrap; gap: 0.9rem; align-items: center; }
+
+  /* Query panel */
+  form.query { margin-bottom: 1.75rem; }
+  .field-label {
+    display: block; font-size: 0.75rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--muted); margin-bottom: 0.35rem;
+  }
+  textarea.entry, input.entry, select.entry {
+    width: 100%; font: inherit; color: var(--ink);
+    background: var(--paper-2);
+    border: 1px solid var(--rule-strong); border-radius: var(--radius);
+    padding: 0.7rem 0.8rem;
+  }
+  textarea.entry { min-height: 4.6rem; resize: vertical; line-height: 1.5; }
+  .hint { font-size: 0.76rem; color: var(--muted); margin: 0.35rem 0 0; }
+  .controls {
+    display: grid; gap: 0.9rem 1.2rem; margin-top: 0.9rem;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    align-items: end;
+  }
+  .slider-row { display: flex; align-items: center; gap: 0.6rem; }
+  input[type="range"] { flex: 1; accent-color: var(--accent); }
+  .slider-value {
+    font-variant-numeric: tabular-nums; font-size: 0.82rem;
+    color: var(--ink-soft); min-width: 1.4rem; text-align: center;
+    border: 1px solid var(--rule); border-radius: var(--radius);
+    padding: 0.1rem 0.35rem;
+  }
+  .submit-row { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; margin-top: 1rem; }
+  button.primary {
+    font: inherit; font-size: 0.9rem; font-weight: 600;
+    padding: 0.55rem 1.35rem; border-radius: var(--radius);
+    border: 1px solid var(--ink); background: var(--ink); color: var(--paper);
+    cursor: pointer;
+  }
+  button.primary:hover { background: var(--accent); border-color: var(--accent); }
+  button.primary:disabled { opacity: 0.55; cursor: progress; }
+  button.ghost {
+    font: inherit; font-size: 0.82rem; font-weight: 600;
+    padding: 0.4rem 0.8rem; border-radius: var(--radius);
+    border: 1px solid var(--rule-strong); background: transparent;
+    color: var(--ink-soft); cursor: pointer;
+  }
+  button.ghost:hover { border-color: var(--accent); color: var(--accent); }
+  .status-line { font-size: 0.8rem; color: var(--muted); }
+  .status-line.error { color: var(--accent); font-weight: 600; }
+
+  /* Banners */
+  .banner {
+    border-radius: var(--radius);
+    padding: 0.85rem 1rem;
+    margin: 0 0 1.1rem;
+    font-size: 0.86rem;
+    border: 1px solid var(--rule-strong);
+    background: var(--paper-2);
+  }
+  .banner h3 { margin: 0 0 0.35rem; font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; }
+  .banner p { margin: 0.3rem 0 0; }
+  .banner ul { margin: 0.4rem 0 0; padding-left: 1.1rem; }
+  .banner.warn { background: var(--warn-bg); border-color: var(--warn); color: var(--ink); }
+  .banner.warn h3 { color: var(--warn); }
+  .banner.conflict { background: var(--accent-soft); border-color: var(--accent); }
+  .banner.conflict h3 { color: var(--accent); }
+
+  /* Answer card */
+  .answer-card {
+    background: var(--paper-2); border: 1px solid var(--rule-strong);
+    border-left: 3px solid var(--accent);
+    border-radius: var(--radius); padding: 1.15rem 1.3rem; margin-bottom: 1.4rem;
+  }
+  .answer-card .eyebrow {
+    font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--muted); font-weight: 700; margin-bottom: 0.5rem;
+  }
+  .answer-body { font-size: 0.97rem; }
+  .answer-body > :first-child { margin-top: 0; }
+  .answer-body > :last-child { margin-bottom: 0; }
+  .answer-body h2 { font-family: var(--serif); font-size: 1.12rem; margin: 1.1rem 0 0.4rem; }
+  .answer-body h3 { font-size: 0.98rem; margin: 1rem 0 0.35rem; }
+  .answer-body p { margin: 0.6rem 0; }
+  .answer-body ul, .answer-body ol { margin: 0.6rem 0; padding-left: 1.3rem; }
+  .answer-body blockquote {
+    margin: 0.7rem 0; padding: 0.1rem 0 0.1rem 0.85rem;
+    border-left: 2px solid var(--rule-strong); color: var(--ink-soft);
+  }
+  .answer-body code {
+    font-family: var(--mono); font-size: 0.86em;
+    background: var(--accent-soft); padding: 0.08em 0.3em; border-radius: 2px;
+  }
+  .answer-body pre {
+    background: var(--accent-soft); padding: 0.7rem 0.8rem; border-radius: var(--radius);
+    overflow-x: auto; font-size: 0.82rem;
+  }
+  .answer-body pre code { background: none; padding: 0; }
+
+  /* Passages */
+  .section-head {
+    display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: baseline;
+    justify-content: space-between; margin: 0 0 0.8rem;
+    padding-bottom: 0.4rem; border-bottom: 1px solid var(--rule);
+  }
+  .section-head h2 {
+    font-family: var(--serif); font-size: 1.02rem; font-weight: 600; margin: 0;
+  }
+  .section-head .count { font-size: 0.78rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+  details.evidence-group > summary {
+    cursor: pointer; font-size: 0.85rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted);
+    padding: 0.5rem 0; margin-bottom: 0.7rem; list-style: none;
+  }
+  details.evidence-group > summary::-webkit-details-marker { display: none; }
+  details.evidence-group > summary::before { content: "▸ "; color: var(--accent); }
+  details.evidence-group[open] > summary::before { content: "▾ "; }
+
+  article.passage {
+    background: var(--paper-2); border: 1px solid var(--rule);
+    border-radius: var(--radius); padding: 1rem 1.1rem; margin-bottom: 1rem;
+  }
+  .passage-head { display: flex; flex-wrap: wrap; gap: 0.4rem 0.6rem; align-items: center; margin-bottom: 0.2rem; }
+  .passage-rank {
+    font-family: var(--mono); font-size: 0.74rem; color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .passage-title { font-family: var(--serif); font-size: 1.02rem; font-weight: 600; margin: 0; }
+  .passage-section { font-size: 0.8rem; color: var(--muted); margin: 0.1rem 0 0.55rem; word-break: break-word; }
+  .pill {
+    display: inline-block; font-size: 0.68rem; font-weight: 700;
+    letter-spacing: 0.05em; text-transform: uppercase;
+    padding: 0.1rem 0.45rem; border-radius: 999px;
+    border: 1px solid var(--rule-strong); color: var(--ink-soft); background: transparent;
+    white-space: nowrap;
+  }
+  .pill.authority-canonical { border-color: var(--ok); color: var(--ok); }
+  .pill.warn { border-color: var(--warn); color: var(--warn); background: var(--warn-bg); }
+  .pill.small { text-transform: none; letter-spacing: 0; font-weight: 600; }
+  .passage-text {
+    font-size: 0.94rem; line-height: 1.62; white-space: pre-wrap;
+    overflow-wrap: anywhere; margin: 0.35rem 0 0;
+    border-left: 2px solid var(--rule); padding-left: 0.8rem;
+  }
+  .passage-foot {
+    display: flex; flex-wrap: wrap; gap: 0.5rem 0.9rem; align-items: center;
+    margin-top: 0.7rem; font-size: 0.75rem; color: var(--muted);
+  }
+  .passage-foot .prov { font-family: var(--mono); font-size: 0.72rem; word-break: break-all; }
+  .read-around { margin-top: 0.75rem; }
+  .neighbours { margin-top: 0.6rem; border-top: 1px dashed var(--rule-strong); padding-top: 0.6rem; }
+  .neighbour { margin-bottom: 0.7rem; }
+  .neighbour-head {
+    font-size: 0.72rem; font-family: var(--mono); color: var(--muted); margin-bottom: 0.2rem;
+  }
+  .neighbour-text {
+    font-size: 0.9rem; white-space: pre-wrap; overflow-wrap: anywhere;
+    margin: 0; color: var(--ink-soft);
+  }
+  .empty {
+    border: 1px dashed var(--rule-strong); border-radius: var(--radius);
+    padding: 1.4rem; color: var(--muted); font-size: 0.88rem; text-align: center;
+  }
+
+  /* Feedback */
+  .feedback {
+    margin-top: 1.5rem; border-top: 1px solid var(--rule); padding-top: 0.9rem;
+  }
+  .feedback-title {
+    font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.09em;
+    font-weight: 700; color: var(--muted); margin: 0 0 0.5rem;
+  }
+  .feedback-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .feedback-row input.entry {
+    flex: 1 1 16rem; font-size: 0.85rem; padding: 0.45rem 0.6rem;
+  }
+  .rating-btn[aria-pressed="true"] {
+    background: var(--ink); color: var(--paper); border-color: var(--ink);
+  }
+  .feedback-note { font-size: 0.76rem; color: var(--muted); margin: 0.45rem 0 0; }
+
+  /* Drawers */
+  .drawer {
+    position: fixed; top: 0; right: 0; bottom: 0; width: min(28rem, 92vw);
+    background: var(--paper-2); border-left: 1px solid var(--rule-strong);
+    box-shadow: -8px 0 24px rgba(0,0,0,0.08);
+    transform: translateX(102%); transition: transform 160ms ease;
+    z-index: 40; display: flex; flex-direction: column;
+  }
+  .drawer[data-open="true"] { transform: translateX(0); }
+  .drawer-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 1.1rem; border-bottom: 1px solid var(--rule);
+  }
+  .drawer-head h2 { font-family: var(--serif); font-size: 1.02rem; margin: 0; }
+  .drawer-body { overflow-y: auto; padding: 0.9rem 1.1rem 2rem; }
+  .doc-item { padding: 0.6rem 0; border-bottom: 1px solid var(--rule); }
+  .doc-item h3 { font-size: 0.92rem; margin: 0 0 0.15rem; font-weight: 600; }
+  .doc-item .meta { font-size: 0.74rem; color: var(--muted); font-family: var(--mono); }
+  .doc-item p { font-size: 0.82rem; color: var(--ink-soft); margin: 0.3rem 0 0; }
+  .conflict-item { padding: 0.65rem 0; border-bottom: 1px solid var(--rule); font-size: 0.85rem; }
+  .conflict-item .pair { font-weight: 600; }
+  .conflict-item .reason { color: var(--ink-soft); font-size: 0.8rem; margin-top: 0.25rem; }
+  .conflict-item ul { margin: 0.3rem 0 0; padding-left: 1.1rem; font-size: 0.8rem; color: var(--ink-soft); }
+  .scrim {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.28);
+    opacity: 0; pointer-events: none; transition: opacity 160ms ease; z-index: 30;
+  }
+  .scrim[data-open="true"] { opacity: 1; pointer-events: auto; }
+
+  /* Auth modal */
+  .modal {
+    position: fixed; inset: 0; display: none; place-items: center;
+    background: rgba(10,10,12,0.55); z-index: 60; padding: 1rem;
+  }
+  .modal[data-open="true"] { display: grid; }
+  .modal-card {
+    background: var(--paper); border: 1px solid var(--rule-strong);
+    border-radius: 6px; padding: 1.5rem; width: min(24rem, 100%);
+  }
+  .modal-card h2 { font-family: var(--serif); font-size: 1.15rem; margin: 0 0 0.3rem; }
+  .modal-card p { font-size: 0.84rem; color: var(--muted); margin: 0 0 1rem; }
+  .modal-card .actions { display: flex; gap: 0.6rem; align-items: center; margin-top: 0.9rem; }
+
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+  [hidden] { display: none !important; }
+  footer.colophon {
+    margin-top: 3rem; padding-top: 0.9rem; border-top: 1px solid var(--rule);
+    font-size: 0.75rem; color: var(--muted);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="masthead">
+    <div class="masthead-row">
+      <div class="brand">
+        <h1>Goodism Knowledge Base</h1>
+        <p>Client review — verbatim evidence and grounded answers</p>
+      </div>
+      <div class="snapshot" id="snapshot" aria-live="polite">
+        <span class="chip">Loading index…</span>
+      </div>
+    </div>
+    <div class="toolbar">
+      <div class="segmented" role="group" aria-label="Answer mode">
+        <button type="button" id="mode-evidence" aria-pressed="true">Evidence Mode</button>
+        <button type="button" id="mode-qa" aria-pressed="false">Q&amp;A Mode</button>
+      </div>
+      <div class="toolbar-right">
+        <button type="button" class="linkish" id="open-documents">Documents</button>
+        <button type="button" class="linkish" id="open-conflicts">Conflicts</button>
+        <button type="button" class="linkish" id="sign-out" hidden>Sign out</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <form class="query" id="query-form" autocomplete="off">
+      <label class="field-label" for="entry" id="entry-label">Search the knowledge base</label>
+      <textarea class="entry" id="entry" name="entry" rows="3" spellcheck="false"
+        placeholder="One query per line. Use the documents' own wording where you can."></textarea>
+      <p class="hint" id="entry-hint">
+        One query per line, up to eight. Each keeps its own best passages.
+        Add a second line in the documents' vocabulary if a query comes back thin.
+      </p>
+      <div class="controls">
+        <div>
+          <label class="field-label" for="domain">Domain</label>
+          <select class="entry" id="domain">
+            <option value="">All domains</option>
+          </select>
+        </div>
+        <div>
+          <span class="field-label" id="context-label">Context (chunks either side)</span>
+          <div class="slider-row">
+            <input type="range" id="context" min="0" max="3" step="1" value="1"
+              aria-labelledby="context-label">
+            <output class="slider-value" id="context-value" for="context">1</output>
+          </div>
+        </div>
+      </div>
+      <div class="submit-row">
+        <button type="submit" class="primary" id="submit">Search evidence</button>
+        <span class="status-line" id="status" role="status" aria-live="polite"></span>
+      </div>
+    </form>
+
+    <div id="banners"></div>
+    <section id="results" aria-live="polite"></section>
+    <section id="feedback-slot"></section>
+  </main>
+
+  <footer class="colophon">
+    Read-only corpus. Passages are quoted verbatim; answers cite document and section.
+    This interface writes nothing to the knowledge base except your accuracy review.
+  </footer>
+</div>
+
+<!-- Documents drawer -->
+<div class="scrim" id="scrim" data-open="false"></div>
+<aside class="drawer" id="drawer-documents" data-open="false" aria-labelledby="drawer-documents-title" aria-hidden="true">
+  <div class="drawer-head">
+    <h2 id="drawer-documents-title">Documents</h2>
+    <button type="button" class="ghost" data-close-drawer>Close</button>
+  </div>
+  <div class="drawer-body" id="documents-body">
+    <p class="empty">Loading…</p>
+  </div>
+</aside>
+
+<!-- Conflicts drawer -->
+<aside class="drawer" id="drawer-conflicts" data-open="false" aria-labelledby="drawer-conflicts-title" aria-hidden="true">
+  <div class="drawer-head">
+    <h2 id="drawer-conflicts-title">Confirmed conflicts</h2>
+    <button type="button" class="ghost" data-close-drawer>Close</button>
+  </div>
+  <div class="drawer-body" id="conflicts-body">
+    <p class="empty">Loading…</p>
+  </div>
+</aside>
+
+<!-- Auth modal -->
+<div class="modal" id="auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-title">
+  <div class="modal-card">
+    <h2 id="auth-title">Sign in</h2>
+    <p>This knowledge base requires an access token. It is kept in memory for this page only and stored as a session cookie.</p>
+    <form id="auth-form" autocomplete="off">
+      <label class="field-label" for="auth-token">Access token</label>
+      <input class="entry" type="password" id="auth-token" name="token" autocomplete="current-password" required>
+      <div class="actions">
+        <button type="submit" class="primary" id="auth-submit">Unlock</button>
+        <span class="status-line" id="auth-status" role="status" aria-live="polite"></span>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var state = {
+    mode: "evidence",
+    authRequired: false,
+    qaEnabled: false,
+    documents: [],
+    lastRequest: null,
+    lastDocIds: [],
+    lastQuestion: "",
+    busy: false
+  };
+
+  var $ = function (id) { return document.getElementById(id); };
+
+  // ---------------------------------------------------------------------
+  // DOM helpers — every string from the API goes in via textContent.
+  // ---------------------------------------------------------------------
+  function el(tag, props, children) {
+    var node = document.createElement(tag);
+    if (props) {
+      Object.keys(props).forEach(function (key) {
+        var value = props[key];
+        if (value === null || value === undefined || value === false) return;
+        if (key === "class") node.className = value;
+        else if (key === "text") node.textContent = value;
+        else if (key === "dataset") {
+          Object.keys(value).forEach(function (k) { node.dataset[k] = value[k]; });
+        } else if (key === "on") {
+          Object.keys(value).forEach(function (evt) { node.addEventListener(evt, value[evt]); });
+        } else if (key === "attrs") {
+          Object.keys(value).forEach(function (attr) { node.setAttribute(attr, value[attr]); });
+        } else node[key] = value;
+      });
+    }
+    (children || []).forEach(function (child) {
+      if (child === null || child === undefined || child === false) return;
+      node.appendChild(typeof child === "string" ? document.createTextNode(child) : child);
+    });
+    return node;
+  }
+
+  function clear(node) {
+    while (node.firstChild) node.removeChild(node.firstChild);
+  }
+
+  function setStatus(message, isError) {
+    var node = $("status");
+    node.textContent = message || "";
+    node.className = "status-line" + (isError ? " error" : "");
+  }
+
+  function pill(text, extraClass) {
+    return el("span", { class: "pill" + (extraClass ? " " + extraClass : ""), text: text });
+  }
+
+  function banner(kind, title, bodyNodes) {
+    var heading = el("h3", { text: title });
+    var wrap = el("div", { class: "banner " + kind }, [heading].concat(bodyNodes || []));
+    return wrap;
+  }
+
+  // ---------------------------------------------------------------------
+  // API
+  // ---------------------------------------------------------------------
+  function api(path, options) {
+    var opts = options || {};
+    var init = {
+      method: opts.method || "GET",
+      credentials: "same-origin",
+      headers: { "Accept": "application/json" }
+    };
+    if (opts.body !== undefined) {
+      init.headers["Content-Type"] = "application/json";
+      init.body = JSON.stringify(opts.body);
+    }
+    return fetch(path, init).then(function (response) {
+      return response.text().then(function (raw) {
+        var data = null;
+        if (raw) {
+          try { data = JSON.parse(raw); } catch (err) { data = null; }
+        }
+        if (!response.ok) {
+          var message = (data && typeof data.error === "string") ? data.error
+            : "Request failed (" + response.status + ")";
+          var failure = new Error(message);
+          failure.status = response.status;
+          failure.data = data;
+          throw failure;
+        }
+        return data === null ? {} : data;
+      });
+    });
+  }
+
+  function openAuth() {
+    $("auth-modal").setAttribute("data-open", "true");
+    $("auth-token").focus();
+  }
+
+  function closeAuth() {
+    $("auth-modal").setAttribute("data-open", "false");
+    $("auth-token").value = "";
+    $("auth-status").textContent = "";
+  }
+
+  function handleError(err) {
+    if (err && err.status === 401 && state.authRequired) {
+      openAuth();
+      setStatus("Sign in to continue.", true);
+      return;
+    }
+    setStatus(err && err.message ? err.message : "Something went wrong.", true);
+  }
+
+  // ---------------------------------------------------------------------
+  // Header snapshot
+  // ---------------------------------------------------------------------
+  function renderSnapshot(status) {
+    var host = $("snapshot");
+    clear(host);
+    function chip(label, value) {
+      var node = el("span", { class: "chip" }, [label + " "]);
+      node.appendChild(el("strong", { text: String(value) }));
+      return node;
+    }
+    host.appendChild(chip("Version", status.pinned_snapshot === undefined ? "—" : status.pinned_snapshot));
+    host.appendChild(chip("Documents", status.documents === undefined ? "—" : status.documents));
+    host.appendChild(chip("Chunks", status.chunks === undefined ? "—" : status.chunks));
+    if (status.embedding_model) host.appendChild(chip("Embeddings", status.embedding_model));
+    if (status.qa_enabled && status.llm_model) host.appendChild(chip("Model", status.llm_model));
+  }
+
+  function renderSnapshotError(message) {
+    var host = $("snapshot");
+    clear(host);
+    host.appendChild(el("span", { class: "chip", text: message }));
+  }
+
+  // ---------------------------------------------------------------------
+  // Mode switching
+  // ---------------------------------------------------------------------
+  function applyMode(mode) {
+    if (mode === "qa" && !state.qaEnabled) return;
+    state.mode = mode;
+    $("mode-evidence").setAttribute("aria-pressed", mode === "evidence" ? "true" : "false");
+    $("mode-qa").setAttribute("aria-pressed", mode === "qa" ? "true" : "false");
+    var entry = $("entry");
+    if (mode === "qa") {
+      $("entry-label").textContent = "Your question";
+      entry.value = state.lastQuestion || "";
+      entry.rows = 2;
+      entry.placeholder = "Ask a question about the knowledge base.";
+      $("entry-hint").textContent =
+        "Answers are grounded in retrieved passages and cite document and section. " +
+        "Leave it plain: one question, in your own words.";
+      $("submit").textContent = "Ask";
+    } else {
+      $("entry-label").textContent = "Search the knowledge base";
+      entry.rows = 3;
+      entry.placeholder = "One query per line. Use the documents' own wording where you can.";
+      $("entry-hint").textContent =
+        "One query per line, up to eight. Each keeps its own best passages. " +
+        "Add a second line in the documents' vocabulary if a query comes back thin.";
+      $("submit").textContent = "Search evidence";
+    }
+    clearResults();
+  }
+
+  function setQaAvailability(enabled) {
+    state.qaEnabled = enabled;
+    var btn = $("mode-qa");
+    btn.disabled = !enabled;
+    if (enabled) {
+      btn.removeAttribute("title");
+      btn.removeAttribute("aria-disabled");
+    } else {
+      btn.setAttribute("title", "Q&A mode needs KB_LLM_API_KEY in .env. Evidence Mode works without it.");
+      btn.setAttribute("aria-disabled", "true");
+    }
+    if (!enabled && state.mode === "qa") applyMode("evidence");
+  }
+
+  // ---------------------------------------------------------------------
+  // Documents & conflicts
+  // ---------------------------------------------------------------------
+  function renderDocuments(documents) {
+    var host = $("documents-body");
+    clear(host);
+    if (!documents.length) {
+      host.appendChild(el("p", { class: "empty", text: "No documents are indexed." }));
+      return;
+    }
+    documents.forEach(function (doc) {
+      var metaBits = [doc.doc_id];
+      if (doc.domain) metaBits.push(doc.domain);
+      if (doc.authority) metaBits.push(doc.authority);
+      if (typeof doc.sections === "number") metaBits.push(doc.sections + " sections");
+      host.appendChild(el("div", { class: "doc-item" }, [
+        el("h3", { text: doc.title || doc.doc_id }),
+        el("div", { class: "meta", text: metaBits.join(" · ") }),
+        doc.summary ? el("p", { text: doc.summary }) : null
+      ]));
+    });
+  }
+
+  function populateDomains(documents) {
+    var select = $("domain");
+    var current = select.value;
+    var seen = [];
+    documents.forEach(function (doc) {
+      if (doc.domain && seen.indexOf(doc.domain) === -1) seen.push(doc.domain);
+    });
+    seen.sort();
+    clear(select);
+    select.appendChild(el("option", { value: "", text: "All domains" }));
+    seen.forEach(function (domain) {
+      select.appendChild(el("option", { value: domain, text: domain }));
+    });
+    if (current && seen.indexOf(current) !== -1) select.value = current;
+  }
+
+  function renderConflicts(conflicts) {
+    var host = $("conflicts-body");
+    clear(host);
+    if (!conflicts.length) {
+      host.appendChild(el("p", { class: "empty", text: "No confirmed conflicts are recorded." }));
+      return;
+    }
+    conflicts.forEach(function (item) {
+      var notes = Array.isArray(item.notes) ? item.notes : [];
+      var node = el("div", { class: "conflict-item" }, [
+        el("div", { class: "pair", text: (item.doc_id || "?") + "  ↔  " + (item.conflicts_with || "?") })
+      ]);
+      if (item.reason) node.appendChild(el("div", { class: "reason", text: item.reason }));
+      if (notes.length) {
+        node.appendChild(el("ul", null, notes.map(function (note) {
+          return el("li", { text: note });
+        })));
+      }
+      host.appendChild(node);
+    });
+  }
+
+  // ---------------------------------------------------------------------
+  // Drawers
+  // ---------------------------------------------------------------------
+  function openDrawer(id) {
+    $("scrim").setAttribute("data-open", "true");
+    var drawer = $(id);
+    drawer.setAttribute("data-open", "true");
+    drawer.setAttribute("aria-hidden", "false");
+    var btn = drawer.querySelector("button[data-close-drawer]");
+    if (btn) btn.focus();
+  }
+
+  function closeDrawers() {
+    $("scrim").setAttribute("data-open", "false");
+    ["drawer-documents", "drawer-conflicts"].forEach(function (id) {
+      var drawer = $(id);
+      drawer.setAttribute("data-open", "false");
+      drawer.setAttribute("aria-hidden", "true");
+    });
+  }
+
+  // ---------------------------------------------------------------------
+  // Markdown rendering for the grounded answer. Every piece of text is
+  // inserted as a text node, so model output can never be parsed as markup.
+  // ---------------------------------------------------------------------
+  var INLINE_RE = /(`[^`]+`|\*\*[^*]+\*\*|\*[^*\n]+\*|\[[^\]]+\]\([^)\s]+\))/g;
+
+  function appendInline(parent, text) {
+    var last = 0;
+    var match;
+    INLINE_RE.lastIndex = 0;
+    while ((match = INLINE_RE.exec(text)) !== null) {
+      if (match.index > last) parent.appendChild(document.createTextNode(text.slice(last, match.index)));
+      var token = match[0];
+      if (token.charAt(0) === "`") {
+        parent.appendChild(el("code", { text: token.slice(1, -1) }));
+      } else if (token.slice(0, 2) === "**") {
+        parent.appendChild(el("strong", { text: token.slice(2, -2) }));
+      } else if (token.charAt(0) === "*") {
+        parent.appendChild(el("em", { text: token.slice(1, -1) }));
+      } else {
+        var close = token.indexOf("](");
+        var label = token.slice(1, close);
+        var href = token.slice(close + 2, -1);
+        if (/^https?:\/\//i.test(href)) {
+          parent.appendChild(el("a", {
+            text: label,
+            href: href,
+            target: "_blank",
+            rel: "noopener noreferrer"
+          }));
+        } else {
+          parent.appendChild(document.createTextNode(label));
+        }
+      }
+      last = match.index + token.length;
+    }
+    if (last < text.length) parent.appendChild(document.createTextNode(text.slice(last)));
+  }
+
+  function renderMarkdown(raw) {
+    var container = el("div", { class: "answer-body" });
+    var lines = String(raw || "").replace(/\r\n/g, "\n").split("\n");
+    var paragraph = [];
+    var list = null;
+    var quote = null;
+    var i = 0;
+
+    function flushParagraph() {
+      if (!paragraph.length) return;
+      var p = el("p");
+      appendInline(p, paragraph.join(" "));
+      container.appendChild(p);
+      paragraph = [];
+    }
+    function flushList() {
+      if (!list) return;
+      container.appendChild(list);
+      list = null;
+    }
+    function flushQuote() {
+      if (!quote) return;
+      var q = el("blockquote");
+      quote.forEach(function (chunk, index) {
+        if (index > 0) q.appendChild(document.createElement("br"));
+        appendInline(q, chunk);
+      });
+      container.appendChild(q);
+      quote = null;
+    }
+    function flushAll() { flushParagraph(); flushList(); flushQuote(); }
+
+    while (i < lines.length) {
+      var line = lines[i];
+      var trimmed = line.trim();
+
+      if (trimmed.slice(0, 3) === "```") {
+        flushAll();
+        var buffer = [];
+        i += 1;
+        while (i < lines.length && lines[i].trim().slice(0, 3) !== "```") {
+          buffer.push(lines[i]);
+          i += 1;
+        }
+        container.appendChild(el("pre", null, [el("code", { text: buffer.join("\n") })]));
+        i += 1;
+        continue;
+      }
+      if (!trimmed) { flushAll(); i += 1; continue; }
+
+      var heading = /^(#{1,4})\s+(.*)$/.exec(trimmed);
+      if (heading) {
+        flushAll();
+        var level = heading[1].length;
+        var tag = level <= 2 ? "h2" : "h3";
+        var h = el(tag);
+        appendInline(h, heading[2]);
+        container.appendChild(h);
+        i += 1;
+        continue;
+      }
+      if (trimmed.charAt(0) === ">") {
+        flushParagraph(); flushList();
+        if (!quote) quote = [];
+        quote.push(trimmed.replace(/^>\s?/, ""));
+        i += 1;
+        continue;
+      }
+      var bullet = /^[-*+]\s+(.*)$/.exec(trimmed);
+      var numbered = /^(\d{1,3})[.)]\s+(.*)$/.exec(trimmed);
+      if (bullet || numbered) {
+        flushParagraph(); flushQuote();
+        var wantsOrdered = Boolean(numbered);
+        if (!list || (list.tagName === "OL") !== wantsOrdered) {
+          flushList();
+          list = el(wantsOrdered ? "ol" : "ul");
+        }
+        var li = el("li");
+        appendInline(li, bullet ? bullet[1] : numbered[2]);
+        list.appendChild(li);
+        i += 1;
+        continue;
+      }
+      flushList(); flushQuote();
+      paragraph.push(trimmed);
+      i += 1;
+    }
+    flushAll();
+    return container;
+  }
+
+  // ---------------------------------------------------------------------
+  // Results rendering
+  // ---------------------------------------------------------------------
+  function clearResults() {
+    clear($("banners"));
+    clear($("results"));
+    clear($("feedback-slot"));
+  }
+
+  function conflictBanner(conflicts) {
+    if (!conflicts || !conflicts.length) return null;
+    var items = conflicts.map(function (item) {
+      var line = el("li");
+      line.appendChild(el("strong", { text: (item.doc_id || "?") + " ↔ " + (item.conflicts_with || "?") }));
+      line.appendChild(document.createTextNode(". "));
+      if (item.prevails) {
+        line.appendChild(document.createTextNode("Prevails: "));
+        line.appendChild(el("strong", { text: item.prevails }));
+        line.appendChild(document.createTextNode(". "));
+      }
+      if (item.reason) line.appendChild(document.createTextNode(item.reason));
+      return line;
+    });
+    var notes = [];
+    conflicts.forEach(function (item) {
+      (Array.isArray(item.notes) ? item.notes : []).forEach(function (note) {
+        if (notes.indexOf(note) === -1) notes.push(note);
+      });
+    });
+    var body = [
+      el("p", { text: "These documents make incompatible claims about the same subject. Read both before relying on either." }),
+      el("ul", null, items)
+    ];
+    if (notes.length) {
+      body.push(el("p", { text: "Review notes:" }));
+      body.push(el("ul", null, notes.map(function (note) { return el("li", { text: note }); })));
+    }
+    return banner("conflict", "Cross-document conflict notice", body);
+  }
+
+  function weakBanner(queryScores) {
+    var weak = (queryScores || []).filter(function (item) { return item.weak_match; });
+    if (!weak.length) return null;
+    return banner("warn", "WEAK MATCH", [
+      el("p", { text: "The corpus may not cover this. Nearby passages are shown, but treat them as adjacent rather than answering." }),
+      el("ul", null, weak.map(function (item) {
+        var text = "“" + item.query + "”";
+        return el("li", { text: text + (item.best_score === null || item.best_score === undefined
+          ? "" : " — best match score " + item.best_score) });
+      }))
+    ]);
+  }
+
+  function passageCard(passage, rank) {
+    var caveat = passage.caveat;
+    var head = el("div", { class: "passage-head" }, [
+      el("span", { class: "passage-rank", text: String(rank) }),
+      el("h3", { class: "passage-title", text: passage.title || passage.doc_id })
+    ]);
+    if (passage.authority) {
+      head.appendChild(pill(String(passage.authority),
+        passage.authority === "canonical" ? "authority-canonical" : null));
+    }
+    if (typeof passage.precedence === "number") {
+      head.appendChild(pill("precedence " + passage.precedence, "small"));
+    }
+    if (caveat) head.appendChild(pill(String(caveat), "warn small"));
+    if (passage.weak_match) head.appendChild(pill("weak match", "warn small"));
+
+    var sections = Array.isArray(passage.sections) ? passage.sections.filter(Boolean) : [];
+    var unique = [];
+    sections.forEach(function (name) {
+      if (name && unique.indexOf(name) === -1) unique.push(name);
+    });
+    var sectionLabel = unique.length > 2
+      ? unique[0] + "  …  " + unique[unique.length - 1]
+      : unique.join("  ·  ");
+
+    var card = el("article", { class: "passage" }, [
+      head,
+      el("p", { class: "passage-section", text: sectionLabel || "(untitled section)" }),
+      el("p", { class: "passage-text", text: passage.text || "" })
+    ]);
+
+    var foot = el("div", { class: "passage-foot" }, [
+      el("span", { text: "chunks " + passage.start + "–" + passage.end }),
+      el("span", { text: "source " + passage.doc_id })
+    ]);
+    if (typeof passage.score === "number") {
+      foot.appendChild(el("span", { text: "score " + passage.score.toFixed(2) }));
+    }
+    var prov = Array.isArray(passage.provenance) ? passage.provenance : [];
+    if (prov.length) {
+      prov.forEach(function (record) {
+        var label = "txid " + record.txid + (record.verified ? " (verified)" : " (recorded)");
+        foot.appendChild(el("span", { class: "prov", text: label }));
+      });
+    } else {
+      foot.appendChild(el("span", { text: "no on-chain record for this section" }));
+    }
+    card.appendChild(foot);
+
+    // Read surrounding context
+    var panel = el("div", { class: "neighbours", hidden: true });
+    var button = el("button", {
+      type: "button",
+      class: "ghost read-around",
+      text: "Read surrounding context"
+    });
+    button.addEventListener("click", function () {
+      if (panel.hidden) {
+        loadNeighbours(button, panel, passage);
+      } else {
+        panel.hidden = true;
+        button.textContent = "Read surrounding context";
+      }
+    });
+    card.appendChild(button);
+    card.appendChild(panel);
+    return card;
+  }
+
+  function loadNeighbours(button, panel, passage) {
+    var span = Math.max(0, (passage.end - passage.start));
+    var body = {
+      doc_id: passage.doc_id,
+      chunk: passage.start,
+      before: 2,
+      after: Math.min(10, span + 2)
+    };
+    button.disabled = true;
+    button.textContent = "Loading context…";
+    api("/api/read-around", { method: "POST", body: body }).then(function (data) {
+      clear(panel);
+      var chunks = Array.isArray(data.chunks) ? data.chunks : [];
+      if (!chunks.length) {
+        panel.appendChild(el("p", { class: "hint", text: "No neighbouring chunks are available." }));
+      } else {
+        chunks.forEach(function (chunk) {
+          panel.appendChild(el("div", { class: "neighbour" }, [
+            el("div", {
+              class: "neighbour-head",
+              text: "[" + chunk.ordinal + "] " + (chunk.heading_path || "")
+            }),
+            el("p", { class: "neighbour-text", text: chunk.text || "" })
+          ]));
+        });
+      }
+      panel.hidden = false;
+      button.disabled = false;
+      button.textContent = "Hide surrounding context";
+    }).catch(function (err) {
+      panel.hidden = true;
+      button.disabled = false;
+      button.textContent = "Read surrounding context";
+      setStatus(err && err.message ? err.message : "Could not read surrounding context.", true);
+    });
+  }
+
+  function renderEvidence(data) {
+    clearResults();
+    var banners = $("banners");
+    var conflicts = conflictBanner(data.conflicts);
+    if (conflicts) banners.appendChild(conflicts);
+    var weak = weakBanner(data.query_scores);
+    if (weak) banners.appendChild(weak);
+
+    var results = $("results");
+    var passages = Array.isArray(data.passages) ? data.passages : [];
+    var head = el("div", { class: "section-head" }, [
+      el("h2", { text: "Verbatim evidence passages" }),
+      el("span", {
+        class: "count",
+        text: passages.length + (passages.length === 1 ? " passage" : " passages") +
+          (data.queries && data.queries.length ? " · " + data.queries.length +
+            (data.queries.length === 1 ? " query" : " queries") : "")
+      })
+    ]);
+    results.appendChild(head);
+
+    if (!passages.length) {
+      results.appendChild(el("p", {
+        class: "empty",
+        text: "No relevant passages were found. Try different wording, check the domain filter, or widen the context."
+      }));
+      return;
+    }
+    passages.forEach(function (passage, index) {
+      results.appendChild(passageCard(passage, index + 1));
+    });
+
+    state.lastDocIds = passages.map(function (p) { return p.doc_id; })
+      .filter(function (value, index, array) { return array.indexOf(value) === index; });
+    state.lastQuestion = (data.queries || []).join(" | ");
+    renderFeedback();
+  }
+
+  function renderAnswer(data) {
+    clearResults();
+    var banners = $("banners");
+    var conflicts = conflictBanner(data.conflicts);
+    if (conflicts) banners.appendChild(conflicts);
+    var weak = weakBanner(data.query_scores);
+    if (weak) banners.appendChild(weak);
+    if (data.weak_match) {
+      var note = banners.querySelector(".banner.warn");
+      if (!note) {
+        banners.appendChild(banner("warn", "WEAK MATCH", [
+          el("p", { text: "The best passage for this question scores below the relevance threshold. The answer may not be supported by the corpus." })
+        ]));
+      }
+    }
+
+    var results = $("results");
+    var card = el("article", { class: "answer-card" }, [
+      el("div", { class: "eyebrow", text: "Grounded answer" + (data.model ? " · " + data.model : "") })
+    ]);
+    card.appendChild(renderMarkdown(data.answer || ""));
+    results.appendChild(card);
+
+    var passages = Array.isArray(data.passages) ? data.passages : [];
+    var group = el("details", { class: "evidence-group" });
+    var summary = el("summary", {
+      text: "Supporting evidence passages (" + passages.length + ")"
+    });
+    group.appendChild(summary);
+    if (!passages.length) {
+      group.appendChild(el("p", { class: "empty", text: "No passages supported this answer." }));
+    } else {
+      passages.forEach(function (passage, index) {
+        group.appendChild(passageCard(passage, index + 1));
+      });
+    }
+    results.appendChild(group);
+
+    state.lastDocIds = passages.map(function (p) { return p.doc_id; })
+      .filter(function (value, index, array) { return array.indexOf(value) === index; });
+    state.lastQuestion = state.lastQuestion || "";
+    renderFeedback();
+  }
+
+  // ---------------------------------------------------------------------
+  // Accuracy review
+  // ---------------------------------------------------------------------
+  function renderFeedback() {
+    var host = $("feedback-slot");
+    clear(host);
+    var rating = null;
+    var commentInput = el("input", {
+      class: "entry",
+      type: "text",
+      maxLength: 2000,
+      placeholder: "Optional note — which passage was wrong, or what was missing",
+      attrs: { "aria-label": "Optional review comment" }
+    });
+    var note = el("p", { class: "feedback-note" });
+
+    var buttons = ["accurate", "needs_review", "inaccurate"].map(function (value) {
+      var label = value === "accurate" ? "Accurate"
+        : value === "needs_review" ? "Needs review" : "Inaccurate";
+      var btn = el("button", {
+        type: "button",
+        class: "ghost rating-btn",
+        text: label,
+        attrs: { "aria-pressed": "false" }
+      });
+      btn.addEventListener("click", function () {
+        rating = value;
+        buttons.forEach(function (other) { other.setAttribute("aria-pressed", "false"); });
+        btn.setAttribute("aria-pressed", "true");
+      });
+      return btn;
+    });
+
+    var save = el("button", { type: "button", class: "primary", text: "Save" });
+    save.addEventListener("click", function () {
+      if (!rating) {
+        note.textContent = "Choose Accurate, Needs review or Inaccurate first.";
+        return;
+      }
+      var question = state.lastQuestion || "";
+      if (!question) {
+        note.textContent = "Search or ask something before recording a review.";
+        return;
+      }
+      save.disabled = true;
+      note.textContent = "Saving…";
+      api("/api/feedback", {
+        method: "POST",
+        body: {
+          question: question.slice(0, 512),
+          mode: state.mode,
+          rating: rating,
+          comment: commentInput.value.slice(0, 2000),
+          doc_ids: state.lastDocIds.slice(0, 20)
+        }
+      }).then(function () {
+        note.textContent = "Review saved. Thank you.";
+        save.disabled = false;
+      }).catch(function (err) {
+        note.textContent = err && err.message ? err.message : "The review could not be saved.";
+        save.disabled = false;
+      });
+    });
+
+    var wrap = el("div", { class: "feedback" }, [
+      el("p", { class: "feedback-title", text: "Client accuracy review" }),
+      el("div", { class: "feedback-row" }, buttons.concat([commentInput, save])),
+      note
+    ]);
+    host.appendChild(wrap);
+  }
+
+  // ---------------------------------------------------------------------
+  // Submission
+  // ---------------------------------------------------------------------
+  function readQueries() {
+    var raw = $("entry").value || "";
+    if (state.mode === "qa") return null;
+    var lines = raw.split(/\r?\n/).map(function (line) { return line.trim(); })
+      .filter(function (line) { return line.length > 0; });
+    if (lines.length > 8) lines = lines.slice(0, 8);
+    return lines;
+  }
+
+  function submit(event) {
+    if (event) event.preventDefault();
+    if (state.busy) return;
+
+    var context = parseInt($("context").value, 10) || 0;
+    var domain = $("domain").value || null;
+    var question = ($("entry").value || "").trim();
+
+    if (state.mode === "qa") {
+      if (!question) { setStatus("Type a question first.", true); return; }
+      state.lastQuestion = question;
+      state.busy = true;
+      $("submit").disabled = true;
+      setStatus("Retrieving evidence and drafting an answer…", false);
+      api("/api/ask", {
+        method: "POST",
+        body: { question: question, context: context, domain: domain }
+      }).then(function (data) {
+        renderAnswer(data);
+        setStatus("Answer ready.", false);
+      }).catch(function (err) {
+        handleError(err);
+      }).then(function () {
+        state.busy = false;
+        $("submit").disabled = false;
+      });
+      return;
+    }
+
+    var queries = readQueries();
+    if (!queries.length) { setStatus("Enter at least one query.", true); return; }
+    state.busy = true;
+    $("submit").disabled = true;
+    setStatus("Searching…", false);
+    api("/api/evidence", {
+      method: "POST",
+      body: { queries: queries, context: context, max_hits: 12, domain: domain }
+    }).then(function (data) {
+      renderEvidence(data);
+      setStatus("Search complete.", false);
+    }).catch(function (err) {
+      handleError(err);
+    }).then(function () {
+      state.busy = false;
+      $("submit").disabled = false;
+    });
+  }
+
+  // ---------------------------------------------------------------------
+  // Boot
+  // ---------------------------------------------------------------------
+  function loadData() {
+    return api("/api/status").then(function (status) {
+      renderSnapshot(status);
+      setQaAvailability(Boolean(status.qa_enabled));
+      $("sign-out").hidden = !state.authRequired;
+      return Promise.all([
+        api("/api/documents").catch(function () { return { documents: [] }; }),
+        api("/api/conflicts").catch(function () { return { conflicts: [] }; })
+      ]);
+    }).then(function (results) {
+      state.documents = results[0].documents || [];
+      renderDocuments(state.documents);
+      populateDomains(state.documents);
+      renderConflicts(results[1].conflicts || []);
+    }).catch(function (err) {
+      if (err && err.status === 401 && state.authRequired) {
+        renderSnapshotError("Locked");
+        openAuth();
+        return;
+      }
+      renderSnapshotError("Index unavailable");
+      setStatus(err && err.message ? err.message : "Could not reach the server.", true);
+    });
+  }
+
+  function boot() {
+    api("/api/health").then(function (health) {
+      state.authRequired = Boolean(health.auth_required);
+      setQaAvailability(Boolean(health.qa_enabled));
+      // loadData() probes a private route and opens the modal on 401, so an
+      // existing session is reused without asking for the token again.
+      return loadData();
+    }).catch(function (err) {
+      renderSnapshotError("Offline");
+      setStatus(err && err.message ? err.message : "Could not reach the server.", true);
+    });
+  }
+
+  // ---------------------------------------------------------------------
+  // Wiring
+  // ---------------------------------------------------------------------
+  $("mode-evidence").addEventListener("click", function () { applyMode("evidence"); });
+  $("mode-qa").addEventListener("click", function () { applyMode("qa"); });
+  $("query-form").addEventListener("submit", submit);
+  $("context").addEventListener("input", function () {
+    $("context-value").textContent = $("context").value;
+  });
+  $("open-documents").addEventListener("click", function () { openDrawer("drawer-documents"); });
+  $("open-conflicts").addEventListener("click", function () { openDrawer("drawer-conflicts"); });
+  $("scrim").addEventListener("click", closeDrawers);
+  Array.prototype.forEach.call(document.querySelectorAll("[data-close-drawer]"), function (btn) {
+    btn.addEventListener("click", closeDrawers);
+  });
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape") closeDrawers();
+    // The sign-in modal is a gate, not a dismissible dialog: there is no
+    // unauthenticated view to fall back to, so Escape must not close it.
+  });
+  $("auth-form").addEventListener("submit", function (event) {
+    event.preventDefault();
+    var token = $("auth-token").value;
+    if (!token) return;
+    $("auth-submit").disabled = true;
+    $("auth-status").textContent = "Checking…";
+    api("/api/auth/login", { method: "POST", body: { token: token } }).then(function () {
+      $("auth-status").textContent = "";
+      $("auth-submit").disabled = false;
+      closeAuth();
+      return loadData();
+    }).catch(function (err) {
+      $("auth-submit").disabled = false;
+      $("auth-status").textContent = err && err.message ? err.message : "Sign-in failed.";
+    });
+  });
+  $("sign-out").addEventListener("click", function () {
+    api("/api/auth/logout", { method: "POST" }).catch(function () { /* clearing anyway */ })
+      .then(function () {
+        clearResults();
+        renderSnapshotError("Signed out");
+        openAuth();
+      });
+  });
+
+  boot();
+})();
+</script>
+</body>
+</html>

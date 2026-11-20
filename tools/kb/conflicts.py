@@ -199,6 +199,16 @@ def confirmed_conflicts(topic: str | None = None) -> list[dict]:
                 authority_rank.get(doc.meta.authority, 9),
             ):
                 winner, loser = other, doc
+            # Collect any confirmed sidecar notes for this pair.
+            notes: list[str] = []
+            for d in (doc, other):
+                sidecar = load_sidecar(d.path) or {}
+                other_target = other_id if d is doc else doc_id
+                for cand in sidecar.get("conflict_candidates", []):
+                    if cand.get("doc_id") == other_target and cand.get("status") == "confirmed":
+                        note = cand.get("note", "").strip()
+                        if note and note not in notes:
+                            notes.append(note)
             out.append(
                 {
                     "doc_id": doc_id,
@@ -209,6 +219,7 @@ def confirmed_conflicts(topic: str | None = None) -> list[dict]:
                         f"(precedence {winner.meta.precedence} vs {loser.meta.precedence}, "
                         f"authority {winner.meta.authority} vs {loser.meta.authority})"
                     ),
+                    "notes": notes,
                 }
             )
     # De-duplicate symmetric pairs.

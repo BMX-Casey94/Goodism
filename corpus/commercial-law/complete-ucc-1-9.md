@@ -44,6 +44,8 @@ aliases:
 - Uniform Commercial Code
 - the complete UCC
 - Articles 1 to 9
+conflicts_with:
+- book-5-trust-is-everything-01
 ---
 
 ![Image 1](../assets/complete-ucc-1-9/img-001.png)
@@ -572,7 +574,7 @@ Unit".
 
 "Conforming" to Contract; "Termination"; "Cancellation".
 
-### § 2‐107. Goods to Be Severed From Realty: Recording.
+- § 2‐107. Goods to Be Severed From Realty: Recording.
 
 ## PART 2. FORM, FORMATION AND READJUSTMENT OF CONTRACT
 
@@ -2164,7 +2166,7 @@ Whenever the prevailing price or value of any goods regularly bought and sold in
 
                 
 
-**U.C.C. ‐ ARTICLE 2A ‐ LEASES PART 1. GENERAL PROVISIONS.**
+# U.C.C. ‐ ARTICLE 2A ‐ LEASES PART 1. GENERAL PROVISIONS.
 
 - § 2A‐101. SHORT TITLE.
 
@@ -2252,7 +2254,7 @@ LESSOR'S RESIDUAL INTEREST IN GOODS; DELEGATION OF PERFORMANCE; TRANSFER OF RIGH
 
 INTERESTS IN, AND OTHER CLAIMS TO GOODS.
 
-### § 2A‐308. SPECIAL RIGHTS OF CREDITORS.
+- § 2A‐308. SPECIAL RIGHTS OF CREDITORS.
 
 - § 2A‐309. LESSOR'S AND LESSEE'S RIGHTS WHEN GOODS BECOME FIXTURES.
 
@@ -3426,7 +3428,7 @@ Incidental damages to an aggrieved lessor include any commercially reasonable ch
 
 In addition to any other recovery permitted by this Article or other law, the lessor may recover from the lessee an amount that will fully compensate the lessor for any loss of or damage to the lessor's residual interest in the goods caused by the default of the lessee.
 
-**U.C.C. ‐ ARTICLE 3 ‐ NEGOTIABLE INSTRUMENTS PART 1. GENERAL PROVISIONS AND DEFINITIONS**
+# U.C.C. ‐ ARTICLE 3 ‐ NEGOTIABLE INSTRUMENTS PART 1. GENERAL PROVISIONS AND DEFINITIONS
 
 - § 3‐101. SHORT TITLE.
 
@@ -4623,7 +4625,7 @@ duly made to the maker and the note is not paid on the day of presentment.
 
 (i) If the secondary obligor demonstrates prejudice caused by an impairment of its recourse, and the circumstances of the case indicate that the amount of loss is not reasonably susceptible of calculation or requires proof of facts that are not ascertainable, it is presumed that the act impairing recourse caused a loss or impairment equal to the liability of the secondary obligor on the instrument. In that event, the burden of persuasion as to any lesser amount of the loss is on the person entitled to enforce the instrument.
 
-**U.C.C. ‐ ARTICLE 4 ‐ BANK DEPOSITS AND COLLECTIONS PART 1. GENERAL PROVISIONS AND DEFINITIONS**
+# U.C.C. ‐ ARTICLE 4 ‐ BANK DEPOSITS AND COLLECTIONS PART 1. GENERAL PROVISIONS AND DEFINITIONS
 
 - § 4‐101. SHORT TITLE.
 
@@ -4713,7 +4715,7 @@ PART 4. RELATIONSHIP BETWEEN PAYOR BANK AND ITS CUSTOMER
 
 DETERMINING INSUFFICIENCY OF ACCOUNT.
 
-### § 4‐403. CUSTOMER'S RIGHT TO STOP PAYMENT; BURDEN OF PROOF OF LOSS.
+- § 4‐403. CUSTOMER'S RIGHT TO STOP PAYMENT; BURDEN OF PROOF OF LOSS.
 
 - § 4‐404. BANK NOT OBLIGED TO PAY CHECK MORE THAN SIX MONTHS OLD.
 
@@ -5370,7 +5372,7 @@ COMMUNICATION SYSTEM.
 
 ### § 4A‐207. MISDESCRIPTION OF BENEFICIARY.
 
-### § 4A‐208. MISDESCRIPTION OF INTERMEDIARY BANK OR BENEFICIARY'S BANK.
+- § 4A‐208. MISDESCRIPTION OF INTERMEDIARY BANK OR BENEFICIARY'S BANK.
 
 - § 4A‐209. ACCEPTANCE OF PAYMENT ORDER.
 
@@ -5987,7 +5989,7 @@ If a receiving bank has received payment from its customer with respect to a pay
 
 (e) If a funds transfer is made by use of more than one funds‐transfer system and there is inconsistency between choice‐of‐law rules of the systems, the matter in issue is governed by the law of the selected jurisdiction that has the most significant relationship to the matter in issue
 
-U.C.C. ‐ ARTICLE 5 ‐ LETTERS OF CREDIT
+# U.C.C. ‐ ARTICLE 5 ‐ LETTERS OF CREDIT
 
 - § 5‐101. Short Title.
 
@@ -6363,7 +6365,7 @@ A transaction arising out of or associated with a letter of credit that was issu
 
 **ALTERNATIVE A**
 
-**REPEALER OF U.C.C. ‐ ARTICLE 6 ‐ BULK TRANSFERS**
+# REPEALER OF U.C.C. ‐ ARTICLE 6 ‐ BULK TRANSFERS
 
 - § 1. Repeal.
 
@@ -6375,7 +6377,7 @@ A transaction arising out of or associated with a letter of credit that was issu
 
 **ALTERNATIVE B**
 
-**[REVISED] U.C.C. ‐ ARTICLE 6 ‐ BULK SALES**
+# [REVISED] U.C.C. ‐ ARTICLE 6 ‐ BULK SALES
 
 ## PART 1. SUBJECT MATTER AND DEFINITIONS
 
@@ -6943,7 +6945,7 @@ PART 4. WAREHOUSE RECEIPTS AND BILLS OF LADING: GENERAL OBLIGATIONS
 
 ### § 7‐502. Rights Acquired by Due Negotiation.
 
-### § 7‐503. Document of Title to Goods Defeated in Certain Cases.
+- § 7‐503. Document of Title to Goods Defeated in Certain Cases.
 
 ### § 7‐504. Rights Acquired in the Absence of Due Negotiation; Effect of Diversion; Seller's
 
@@ -7619,7 +7621,7 @@ INTERMEDIARY AND EXERCISE OF RIGHTS OF ENTITLEMENT HOLDER.
 
 HOLDER.
 
-### § 8‐511. PRIORITY AMONG SECURITY INTERESTS AND ENTITLEMENT HOLDERS.
+- § 8‐511. PRIORITY AMONG SECURITY INTERESTS AND ENTITLEMENT HOLDERS.
 
 ## PART 1. SHORT TITLE AND GENERAL MATTERS
 
@@ -8512,7 +8514,7 @@ INVESTMENT PROPERTY.
 
 LETTER‐OF‐CREDIT RIGHTS.
 
-### § 9‐307. LOCATION OF DEBTOR.
+- § 9‐307. LOCATION OF DEBTOR.
 
 ### § 9‐308. WHEN SECURITY INTEREST OR AGRICULTURAL LIEN IS PERFECTED;
 
@@ -8678,7 +8680,7 @@ STATEMENT; TIME OF FILING FINANCING STATEMENT.
 
 CONSIGNMENTS, LEASES, OTHER BAILMENTS, AND OTHER TRANSACTIONS.
 
-### § 9‐506. EFFECT OF ERRORS OR OMISSIONS.
+- § 9‐506. EFFECT OF ERRORS OR OMISSIONS.
 
 - § 9‐507. EFFECT OF CERTAIN EVENTS ON EFFECTIVENESS OF FINANCING STATEMENT.
 
@@ -8830,7 +8832,7 @@ EFFECTIVENESS OF FINANCING STATEMENT.
 
 CONTINUATION STATEMENT.
 
-### § 9‐709. PRIORITY.
+- § 9‐709. PRIORITY.
 
 ## PART 1. GENERAL PROVISIONS
 

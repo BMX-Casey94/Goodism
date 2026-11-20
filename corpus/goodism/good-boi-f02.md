@@ -46,6 +46,9 @@ aliases:
 - Goodism book of interpretation
 - paper-slavery book
 - notice writing book
+chunk_max_tokens: 250
+conflicts_with:
+- book-5-trust-is-everything-01
 ---
 
 **: G.-O.-O.-D.-[I.-S.-M.].**
@@ -108,7 +111,7 @@ aliases:
 
 **![Image 1](../assets/good-boi-f02/img-001.png)**
 
-**: G.-O.-O.-D.-B.-O.-C-P.-Chapter-(10)-ten.**
+## : G.-O.-O.-D.-B.-O.-C-P.-Chapter-(10)-ten.
 
 **: Grantor of our dominion book of corporation and person chapter ten.**
 
@@ -285,13 +288,13 @@ Further, CPR Part 52 r52-(1)-(ii)-provides that no permission is required of a-�
 
 **International Law and Standards**
 
-The most significant, and most criticized, feature of Spain’s antiterrorism provisions is the use of incommunicado detention. Incommunicado detention is generally understood as a situation of detention in which an individual is denied access to family members, an attorney, or an independent physician. In some cases, as in Spain, incommunicado detainees do not even have the right to notify anyone about their arrest. While there is no prohibition under international law of incommunicado detention per se, there is significant consensus among United Nations human rights bodies that it can give rise to serious human rights violations and should thus be prohibited. The U.N. Human Rights Committee, charged with monitoring the implementation of the International Covenant on Civil and Political Rights, issued an authoritative statement on the interpretation of the ICCPR’s Article 7 on the prohibition of torture. In General Comment No. 20, adopted in 1992, the Committee recommends that provisions be taken against incommunicado detention.[57](https://www.hrw.org/reports/2005/spain0105/6.htm" \\l "_ftn57)The U.N. Commission on Human Rights has repeatedly reaffirmed this position, most recently in a 2003 resolution, holding the view that “prolonged incommunicado detention may facilitate the perpetration of torture and can in itself constitute a form of cruel, inhuman or degrading treatment or even torture.”[58](https://www.hrw.org/reports/2005/spain0105/6.htm" \\l "_ftn58)  
+The most significant, and most criticized, feature of Spain’s antiterrorism provisions is the use of incommunicado detention. Incommunicado detention is generally understood as a situation of detention in which an individual is denied access to family members, an attorney, or an independent physician. In some cases, as in Spain, incommunicado detainees do not even have the right to notify anyone about their arrest. While there is no prohibition under international law of incommunicado detention per se, there is significant consensus among United Nations human rights bodies that it can give rise to serious human rights violations and should thus be prohibited. The U.N. Human Rights Committee, charged with monitoring the implementation of the International Covenant on Civil and Political Rights, issued an authoritative statement on the interpretation of the ICCPR’s Article 7 on the prohibition of torture. In General Comment No. 20, adopted in 1992, the Committee recommends that provisions be taken against incommunicado detention.[57](https://www.hrw.org/reports/2005/spain0105/6.htm)The U.N. Commission on Human Rights has repeatedly reaffirmed this position, most recently in a 2003 resolution, holding the view that “prolonged incommunicado detention may facilitate the perpetration of torture and can in itself constitute a form of cruel, inhuman or degrading treatment or even torture.”[58](https://www.hrw.org/reports/2005/spain0105/6.htm)  
 
 Despite these general affirmations, many countries continue to practice incommunicado detention, both pursuant to national legal provisions as well as illegally. Its use is usually justified as a necessary measure in the fight against terrorism. The United Kingdom, for example, allows for forty-eight hours incommunicado detention under the Terrorism Act 2000; in June 2003, Australia adopted a Terrorism Act empowering the Australian Security Intelligence Organization to detain and hold suspects incommunicado for up to seven days, a period that can be extended by order of the Attorney General for successive periods of seven days. Countries as varied as Egypt, Serbia and Bolivia all allow incommunicado detention for different periods of time. Countless more countries are cited by human rights organisations for systematically and illegally holding terrorism suspects in incommunicado detention.
 
 **![Image 1](../assets/good-boi-f02/img-001.png)**
 
-**: G.-O.-O.-D.-B.-O.-P-S.-Chapter-(11)-eleven.**
+## : G.-O.-O.-D.-B.-O.-P-S.-Chapter-(11)-eleven.
 
 **With this grantor of our dominion book of paper-slavery chapter eleven.**
 
@@ -417,7 +420,7 @@ Despite these general affirmations, many countries continue to practice incommun
 
 **![Image 1](../assets/good-boi-f02/img-001.png)**
 
-**: G.-O.-O.-D.-B.-O.-S.-J.-Chapter-(12)-twelve.**
+## : G.-O.-O.-D.-B.-O.-S.-J.-Chapter-(12)-twelve.
 
 **: Grantor of our dominion book of standing jurisdiction chapter twelve.**
 
@@ -624,7 +627,7 @@ is no evidence of the **thought** of a crime or the **act** of a crime or the **
 
 **![Image 1](../assets/good-boi-f02/img-001.png)**
 
-**: G.-O.-O.-D.-B.-O.-F.-C.-R.-Chapter-(13)-thirteen.**
+## : G.-O.-O.-D.-B.-O.-F.-C.-R.-Chapter-(13)-thirteen.
 
 **: Grantor of our dominion book of four corner rule chapter thirteen.**
 
@@ -720,7 +723,7 @@ picture we will have the true meaning and not an interpretation.
 
 **![Image 1](../assets/good-boi-f02/img-001.png)**
 
-**: G.-O.-O.-D.-B.-O.-A.-A.-S.-Chapter-(14)-fourteen.**
+## : G.-O.-O.-D.-B.-O.-A.-A.-S.-Chapter-(14)-fourteen.
 
 **: Grantor of our dominion book of autograph & signature chapter fourteen.**
 
@@ -972,7 +975,7 @@ The autograph should be accompanied with “all rights reserved” written below
 
 **![Image 1](../assets/good-boi-f02/img-001.png)**
 
-**: G.-O.-O.-D.-B.-O.-R.-O.-T.-E.-Chapter-(15)-fifteen.**
+## : G.-O.-O.-D.-B.-O.-R.-O.-T.-E.-Chapter-(15)-fifteen.
 
 **: Grantor of our dominion book of right of travel example chapter fifteen.**
 
@@ -1380,7 +1383,7 @@ The autograph should be accompanied with “all rights reserved” written below
 
 **![Image 1](../assets/good-boi-f02/img-001.png)**
 
-**: G.-O.-O.-D.-B.-O.-E.-O.-S.-Chapter-(16)-sixteen.**
+## : G.-O.-O.-D.-B.-O.-E.-O.-S.-Chapter-(16)-sixteen.
 
 **: Grantor of our dominion book of examples of scenarios chapter sixteen.**
 
@@ -1487,7 +1490,7 @@ As found in Black's Law Dictionary, Sixth Edition, page 1142 under: “Person�
 
 **![Image 1](../assets/good-boi-f02/img-001.png)**
 
-**: G.-O.-O.-D.-B.-B.-N.-W.-Chapter-(17)-seventeen.**
+## : G.-O.-O.-D.-B.-B.-N.-W.-Chapter-(17)-seventeen.
 
 **: Grantor of our dominion book of basic notice writing chapter seventeen.**
 
@@ -1795,7 +1798,7 @@ As found in Black's Law Dictionary, Sixth Edition, page 1142 under: “Person�
 
 **![Image 1](../assets/good-boi-f02/img-001.png)**
 
-**: G.-O.-O.-D.-B.-O.-U.-I.-Chapter-(18)-eighteen.**
+## : G.-O.-O.-D.-B.-O.-U.-I.-Chapter-(18)-eighteen.
 
 **: Grantor of our dominion book of useful information chapter eighteen.**
 

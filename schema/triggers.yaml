@@ -1,0 +1,2097 @@
+# One-way query triggers: user wording (misspellings, UK/US spelling pairs,
+# everyday synonyms, acronyms) -> verbatim corpus phrases for FTS expansion.
+# Every corpus_phrase is verified verbatim against corpus/**/*.md.
+triggers:
+- user_phrases:
+  - sestui
+  - setui
+  - cestuy
+  - cest ui que vie
+  - sestui que vie
+  - c.q.v.
+  - cestui que v
+  - cestui que vi
+  corpus_phrases:
+  - cestui que vie
+  - cestui que vie trust
+  - cestui que ( vie ) trust
+  - cest tui que trust
+  docs:
+  - book-5-trust-is-everything-01
+  - good-boi-f02
+  - three-trusts-of-the-world
+  - understanding-cestui-que-vie-1666
+- user_phrases:
+  - sovreign
+  - soverign
+  - soveriegn
+  - sovereignty
+  corpus_phrases:
+  - sovereign
+  - unlienable rights
+  - unlienable inherent rights
+  docs:
+  - book-5-trust-is-everything-01
+  - dw-miller-parse-syntax-a-x
+  - good-boi-f02
+  - passport-for-unregistered-baby
+  - the-new-world-order-epperson
+  - three-trusts-of-the-world
+- user_phrases:
+  - habeus corpus
+  - habias corpus
+  - habeas corpas
+  - habeous corpus
+  corpus_phrases:
+  - habeas corpus
+  - writ of habeas corpus
+  - habeas corpus ad subjiciendum
+  - habeas corus
+  docs:
+  - good-boi-f02
+- user_phrases:
+  - beneficary
+  - benificiary
+  - benefishiary
+  - beneficeries
+  corpus_phrases:
+  - beneficiary
+  - beneficiaries
+  - tertiary beneficiaries
+  docs:
+  - book-5-trust-is-everything-01
+  - complete-ucc-1-9
+  - good-boi-f02
+  - three-trusts-of-the-world
+- user_phrases:
+  - exectutor
+  - executour
+  - exectuor
+  corpus_phrases:
+  - executor
+  - executors
+  - sole executive administrator
+  docs:
+  - book-5-trust-is-everything-01
+  - complete-ucc-1-9
+  - three-trusts-of-the-world
+  - understanding-cestui-que-vie-1666
+- user_phrases:
+  - setlor
+  - settler
+  - settler of trust
+  corpus_phrases:
+  - settlor
+  - settlors
+  docs:
+  - book-5-trust-is-everything-01
+  - complete-ucc-1-9
+- user_phrases:
+  - trusty
+  - truste
+  - trustes
+  corpus_phrases:
+  - trustee
+  - trustees
+  - trustee certificate
+  docs:
+  - book-5-trust-is-everything-01
+  - complete-ucc-1-9
+  - good-boi-f02
+  - three-trusts-of-the-world
+  - understanding-cestui-que-vie-1666
+- user_phrases:
+  - fiducary
+  - feduciary
+  - fidutiary
+  corpus_phrases:
+  - fiduciary
+  - fiduciary duties
+  docs:
+  - book-5-trust-is-everything-01
+  - complete-ucc-1-9
+  - understanding-cestui-que-vie-1666
+- user_phrases:
+  - intervivos
+  - inter vivo
+  - inter-vivos
+  corpus_phrases:
+  - inter vivos
+  - inter vivos trust
+  - express inter vivos trust
+  docs:
+  - book-5-trust-is-everything-01
+- user_phrases:
+  - ecclesiastic
+  - ecclesastical
+  - eclesiastical
+  - ecclesiasical
+  corpus_phrases:
+  - ecclesiastical
+  - ecclesiastical property
+  - ecclesiastical deed- poll
+  docs:
+  - book-5-trust-is-everything-01
+  - three-trusts-of-the-world
+  - understanding-cestui-que-vie-1666
+- user_phrases:
+  - unam santam
+  - unam sanctum
+  - unam sanctorum
+  corpus_phrases:
+  - unam sanctam
+  - papal bull
+  docs:
+  - three-trusts-of-the-world
+- user_phrases:
+  - aeterni regis
+  - eterni regis
+  - aeterni reges
+  corpus_phrases:
+  - aeterni regis
+  - papal bull
+  docs:
+  - three-trusts-of-the-world
+- user_phrases:
+  - romanus pontifex
+  - romanus pontifax
+  - roman pontifex
+  corpus_phrases:
+  - romanus pontifex
+  - papal bull romanus pontifex
+  docs:
+  - three-trusts-of-the-world
+- user_phrases:
+  - illuminatti
+  - iluminati
+  - iluminatti
+  - illuminat
+  corpus_phrases:
+  - illuminati
+  - illuminated ones
+  - adam weishaupt
+  docs:
+  - the-new-world-order-epperson
+- user_phrases:
+  - freemason
+  - free mason
+  - free masons
+  - freemasonary
+  - freemasonry
+  corpus_phrases:
+  - freemasons
+  - masonic order
+  - scottish rite
+  docs:
+  - the-new-world-order-epperson
+- user_phrases:
+  - maitrea
+  - matreya
+  - lord maitrea
+  - mitreya
+  corpus_phrases:
+  - maitreya
+  - lord maitreya
+  - new age messiah
+  docs:
+  - the-new-world-order-epperson
+- user_phrases:
+  - weishaupt
+  - adam weishapt
+  - weishopt
+  - spartacus weishaupt
+  corpus_phrases:
+  - adam weishaupt
+  - spartacus-weishaupt
+  - illuminati
+  docs:
+  - the-new-world-order-epperson
+- user_phrases:
+  - parse syntex
+  - pars syntax
+  - parse-syntex
+  - quantum grammer
+  - quantum gramar
+  corpus_phrases:
+  - parse-syntax
+  - parse syntex
+  - quantum-grammar
+  - quantum-math-language-format
+  docs:
+  - book-5-trust-is-everything-01
+  - dw-miller-parse-syntax-a-x
+  - good-boi-f02
+- user_phrases:
+  - certiorary
+  - certorari
+  - writ of certiorary
+  corpus_phrases:
+  - certiorari
+  docs:
+  - dw-miller-parse-syntax-a-x
+- user_phrases:
+  - non asumpsit
+  - non-assumpsit
+  - non assumsit
+  corpus_phrases:
+  - non assumpsit
+  - without recourse – non assumpsit
+  docs:
+  - good-boi-f02
+- user_phrases:
+  - vi coactis
+  - vicoactus
+  - vi-coactus
+  corpus_phrases:
+  - vi coactus
+  docs:
+  - good-boi-f02
+- user_phrases:
+  - incomunicado
+  - incommunicardo
+  - incommuncado
+  corpus_phrases:
+  - incommunicado
+  - incommunicado detention
+  docs:
+  - good-boi-f02
+- user_phrases:
+  - ens leges
+  - ens-legis
+  - juristic
+  - juristic entity
+  corpus_phrases:
+  - ens legis
+  - juristic person
+  - legal entity
+  docs:
+  - book-5-trust-is-everything-01
+  - complete-ucc-1-9
+  - good-boi-f02
+  - understanding-cestui-que-vie-1666
+- user_phrases:
+  - fide commisary
+  - fideicommissary
+  - fidei commissary
+  - fide commissory
+  corpus_phrases:
+  - fide commissary trust
+  - fide commissary trusts
+  - foreign situs trust
+  docs:
+  - understanding-cestui-que-vie-1666
+- user_phrases:
+  - triregnam
+  - tri-regnum
+  - papal tiarra
+  - papal crown
+  corpus_phrases:
+  - triregnum
+  - papal tiara
+  - triple crown of ba’al
+  docs:
+  - three-trusts-of-the-world
+- user_phrases:
+  - inalienable
+  - inalienable rights
+  - unalienable
+  - unalienable rights
+  corpus_phrases:
+  - unlienable
+  - unlienable rights
+  - unlienable inherent rights
+  - inalienable
+  docs:
+  - book-5-trust-is-everything-01
+  - dw-miller-parse-syntax-a-x
+  - good-boi-f02
+  - passport-for-unregistered-baby
+  - the-new-world-order-epperson
+- user_phrases:
+  - intestate
+  - intestasy
+  - intesticacy
+  - die without will
+  - died without a will
+  corpus_phrases:
+  - intestacy
+  - laws of intestacy
+  - dies intestate
+  - without a valid will
+  docs:
+  - book-5-trust-is-everything-01
+- user_phrases:
+  - negotiable instrament
+  - negociable instrument
+  - negotable instrument
+  - negoitable instrument
+  corpus_phrases:
+  - negotiable instrument
+  - negotiable instruments
+  - negotiable-script
+  docs:
+  - complete-ucc-1-9
+  - dw-miller-parse-syntax-a-x
+  - good-boi-f02
+- user_phrases:
+  - statute of fraud
+  - statutes of frauds
+  - statue of frauds
+  corpus_phrases:
+  - statute of frauds
+  - formal requirements
+  docs:
+  - complete-ucc-1-9
+- user_phrases:
+  - unincorperated
+  - unincorperated association
+  corpus_phrases:
+  - unincorporated
+  - unincorporation
+  - private association
+  docs:
+  - book-5-trust-is-everything-01
+  - dw-miller-parse-syntax-a-x
+  - understanding-cestui-que-vie-1666
+- user_phrases:
+  - bankcruptcy
+  - bankrupcy
+  corpus_phrases:
+  - bankruptcy
+  docs:
+  - book-5-trust-is-everything-01
+  - complete-ucc-1-9
+  - three-trusts-of-the-world
+  - understanding-cestui-que-vie-1666
+- user_phrases:
+  - doola
+  - duola
+  - birth keeper
+  - birth-keeper
+  corpus_phrases:
+  - doula
+  - birthkeeper
+  - independent witness
+  docs:
+  - passport-for-unregistered-baby
+- user_phrases:
+  - mid wife
+  - mid-wife
+  - midwives
+  corpus_phrases:
+  - midwife
+  - midwife witness statement
+  docs:
+  - passport-for-unregistered-baby
+- user_phrases:
+  - parol evidence
+  - parole evidence
+  - verbal evidence
+  - extrinsic evidence
+  corpus_phrases:
+  - parol or extrinsic evidence
+  - extrinsic evidence
+  - consistent additional terms
+  docs:
+  - complete-ucc-1-9
+- user_phrases:
+  - unconscionable
+  - unconcionable
+  - unfair contract term
+  corpus_phrases:
+  - unconscionable
+  - unconscionable contract
+  docs:
+  - complete-ucc-1-9
+- user_phrases:
+  - novis ordo seclorum
+  - novus ordo seculorum
+  - new order of the ages
+  corpus_phrases:
+  - novus ordo seclorum
+  - new world order
+  docs:
+  - the-new-world-order-epperson
+- user_phrases:
+  - annuit coeptus
+  - anuit coeptis
+  - annuit ceptis
+  corpus_phrases:
+  - annuit coeptis
+  - great seal
+  - all-seeing eye
+  docs:
+  - the-new-world-order-epperson
+- user_phrases:
+  - cheque
+  - cheques
+  - bounced cheque
+  - stale cheque
+  - postdated cheque
+  - dishonoured cheque
+  corpus_phrases:
+  - check
+  - checks
+  - dishonor
+  - cashier's check
+  - teller's check
+  docs:
+  - book-5-trust-is-everything-01
+  - complete-ucc-1-9
+  - dw-miller-parse-syntax-a-x
+  - good-boi-f02
+  - passport-for-unregistered-baby
+  - the-new-world-order-epperson
+- user_phrases:
+  - authorised
+  - unauthorised
+  - authorisation
+  - authorised signatory
+  corpus_phrases:
+  - authorized
+  - authorization
+  - authorised signatory
+  - unauthorised signature
+  docs:
+  - book-5-trust-is-everything-01
+  - complete-ucc-1-9
+  - dw-miller-parse-syntax-a-x
+  - good-boi-f02
+  - passport-for-unregistered-baby
+  - the-new-world-order-epperson
+- user_phrases:
+  - capitalized
+  - capitalizing
+  - capitalization
+  - all-caps
+  - all caps
+  corpus_phrases:
+  - capitalised
+  - capitalising
+  - capital letters
+  - all capital letters
+  docs:
+  - book-5-trust-is-everything-01
+  - good-boi-f02
+  - understanding-cestui-que-vie-1666
+- user_phrases:
+  - colour of law
+  - color of law
+  corpus_phrases:
+  - color of law
+  docs:
+  - good-boi-f02
+- user_phrases:
+  - honour
+  - dishonour
+  - dishonoured
+  - honouring
+  corpus_phrases:
+  - honor
+  - dishonor
+  - dishonored
+  - honouring
+  docs:
+  - book-5-trust-is-everything-01
+  - complete-ucc-1-9
+  - dw-miller-parse-syntax-a-x
+  - good-boi-f02
+  - the-new-world-order-epperson
+  - understanding-cestui-que-vie-1666
+- user_phrases:
+  - indorse
+  - indorsement
+  - endorse
+  - endorsement
+  - endorsed
+  corpus_phrases:
+  - indorsement
+  - indorser
+  - indorsed
+  - endorse
+  docs:
+  - book-5-trust-is-everything-01
+  - complete-ucc-1-9
+  - the-new-world-order-epperson
+- user_phrases:
+  - organisation
+  - organisations
+  - organization
+  - organizations
+  corpus_phrases:
+  - organization
+  - organisation
+  - unincorporation
+  docs:
+  - book-5-trust-is-everything-01
+  - complete-ucc-1-9
+  - good-boi-f02
+  - the-new-world-order-epperson
+  - understanding-cestui-que-vie-1666
+- user_phrases:
+  - monetise
+  - monetised
+  - monetize
+  - monetized
+  - securitise
+  - securitised
+  corpus_phrases:
+  - monetised
+  docs:
+  - book-5-trust-is-everything-01
+  - three-trusts-of-the-world
+  - understanding-cestui-que-vie-1666
+- user_phrases:
+  - licence
+  - driver's licence
+  - driving licence
+  - license
+  corpus_phrases:
+  - license
+  - licence
+  docs:
+  - book-5-trust-is-everything-01
+  - complete-ucc-1-9
+  - good-boi-f02
+  - passport-for-unregistered-baby
+- user_phrases:
+  - defence
+  - defences
+  - defense
+  - defenses
+  corpus_phrases:
+  - defense
+  - defence
+  docs:
+  - book-5-trust-is-everything-01
+  - complete-ucc-1-9
+  - good-boi-f02
+  - the-new-world-order-epperson
+- user_phrases:
+  - judgement
+  - judgements
+  - judgment
+  corpus_phrases:
+  - judgment
+  - judgement
+  docs:
+  - book-5-trust-is-everything-01
+  - complete-ucc-1-9
+  - dw-miller-parse-syntax-a-x
+  - good-boi-f02
+  - the-new-world-order-epperson
+- user_phrases:
+  - instalment
+  - instalments
+  - installment
+  - installment contract
+  corpus_phrases:
+  - installment
+  docs:
+  - complete-ucc-1-9
+- user_phrases:
+  - bailee
+  - bailment
+  - warehouse receipt
+  - storage receipt
+  corpus_phrases:
+  - bailee
+  - warehouse receipt
+  - bill of lading
+  docs:
+  - complete-ucc-1-9
+- user_phrases:
+  - cancelled
+  - cancellation
+  - canceled
+  - cancelation
+  corpus_phrases:
+  - cancellation
+  - cancelled
+  - canceled
+  docs:
+  - book-5-trust-is-everything-01
+  - complete-ucc-1-9
+  - good-boi-f02
+- user_phrases:
+  - birth cert
+  - birth certs
+  - birth paper
+  - birth registration
+  - registering a baby
+  corpus_phrases:
+  - birth certificate
+  - certificate of an entry of a birth
+  - registered birth certificate
+  - live birth record
+  docs:
+  - book-5-trust-is-everything-01
+  - good-boi-f02
+  - passport-for-unregistered-baby
+  - three-trusts-of-the-world
+  - understanding-cestui-que-vie-1666
+- user_phrases:
+  - fake person
+  - paper person
+  - corporate person
+  - fiction person
+  - made up person
+  - legal shell
+  corpus_phrases:
+  - legal fiction
+  - legal entity
+  - artificial person
+  - juristic person
+  - strawman
+  docs:
+  - book-5-trust-is-everything-01
+  - complete-ucc-1-9
+  - dw-miller-parse-syntax-a-x
+  - good-boi-f02
+  - the-new-world-order-epperson
+  - three-trusts-of-the-world
+  - understanding-cestui-que-vie-1666
+- user_phrases:
+  - name in capitals
+  - name in all caps
+  - uppercase name
+  - block capitals
+  - all caps name
+  corpus_phrases:
+  - capital letters
+  - all capital letters
+  - capitalised birth certificate
+  docs:
+  - book-5-trust-is-everything-01
+  - good-boi-f02
+  - understanding-cestui-que-vie-1666
+- user_phrases:
+  - dead person trust
+  - missing at sea
+  - presumed dead
+  - declared dead
+  - dead at sea
+  corpus_phrases:
+  - lost at sea
+  - abandoned at sea
+  - dead, lost at sea
+  - presumed lost
+  - cestui que vie trust
+  docs:
+  - book-5-trust-is-everything-01
+  - three-trusts-of-the-world
+  - understanding-cestui-que-vie-1666
+- user_phrases:
+  - who owns me
+  - government owns you
+  - state owns my child
+  - slave bond
+  - birth slavery
+  corpus_phrases:
+  - birth certificate scam
+  - paper slavery
+  - birth-slavery-scam
+  - slave bond
+  docs:
+  - book-5-trust-is-everything-01
+  - good-boi-f02
+  - three-trusts-of-the-world
+  - understanding-cestui-que-vie-1666
+- user_phrases:
+  - sign in blue ink
+  - blue pen
+  - sign in red ink
+  - red pen
+  - sign in black ink
+  - black pen
+  - purple pen
+  - gold pen
+  - pen colour
+  - ink color
+  corpus_phrases:
+  - blue ink
+  - red ink
+  - black ink
+  - purple ink
+  - gold ink
+  docs:
+  - book-5-trust-is-everything-01
+  - good-boi-f02
+  - passport-for-unregistered-baby
+- user_phrases:
+  - unregistered child
+  - unregistered newborn
+  - don't register baby
+  - not registering birth
+  - refuse to register birth
+  corpus_phrases:
+  - unregistered baby
+  - no obligation to register
+  - declaration of denial of consent
+  docs:
+  - book-5-trust-is-everything-01
+  - passport-for-unregistered-baby
+- user_phrases:
+  - passport without birth certificate
+  - baby passport no birth cert
+  - get passport unregistered
+  - hmpo unregistered
+  corpus_phrases:
+  - unregistered baby
+  - statutory declaration
+  - midwife witness statement
+  - live birth record
+  docs:
+  - book-5-trust-is-everything-01
+  - passport-for-unregistered-baby
+  - three-trusts-of-the-world
+  - understanding-cestui-que-vie-1666
+- user_phrases:
+  - cheque bounced
+  - bounced check
+  - stopped cheque
+  - refused cheque
+  - stale check
+  - overdue cheque
+  corpus_phrases:
+  - dishonor
+  - 90 days after its date
+  - stop payment
+  - bank not obliged to pay check
+  docs:
+  - complete-ucc-1-9
+- user_phrases:
+  - thumbprint
+  - fingerprint
+  - blood print
+  - baby footprint
+  - heel prick
+  corpus_phrases:
+  - thumb-print
+  - thumbprint
+  - ink impression
+  - babys foot
+  - blood seals
+  docs:
+  - book-5-trust-is-everything-01
+  - good-boi-f02
+  - three-trusts-of-the-world
+  - understanding-cestui-que-vie-1666
+- user_phrases:
+  - handwritten signature
+  - wet ink
+  - joined up writing
+  - cursive writing
+  - autograph vs signature
+  corpus_phrases:
+  - autograph
+  - auto-graph
+  - cursive
+  - cursive manner
+  - non-cursive
+  docs:
+  - book-5-trust-is-everything-01
+  - complete-ucc-1-9
+  - dw-miller-parse-syntax-a-x
+  - good-boi-f02
+  - passport-for-unregistered-baby
+  - understanding-cestui-que-vie-1666
+- user_phrases:
+  - box rule
+  - four corners
+  - 4 corner rule
+  - outside the box
+  - in the box
+  corpus_phrases:
+  - four corner rule
+  - four-(4)-corner rule
+  - inner-box
+  - outer-box
+  docs:
+  - book-5-trust-is-everything-01
+  - good-boi-f02
+- user_phrases:
+  - put in brackets
+  - square bracket
+  - round bracket
+  - parenthesis
+  - isolate text
+  corpus_phrases:
+  - square brackets
+  - round brackets
+  - parentheses
+  - legally isolate
+  docs:
+  - good-boi-f02
+  - passport-for-unregistered-baby
+- user_phrases:
+  - real person
+  - flesh and blood
+  - living human
+  - living breathing man
+  - living soul
+  corpus_phrases:
+  - living man
+  - living men and women
+  - natural person
+  - man or woman
+  docs:
+  - book-5-trust-is-everything-01
+  - complete-ucc-1-9
+  - good-boi-f02
+  - the-new-world-order-epperson
+  - understanding-cestui-que-vie-1666
+- user_phrases:
+  - secret bank account
+  - strawman account
+  - birth certificate account
+  - treasury account
+  corpus_phrases:
+  - treasury direct account
+  - treasury direct
+  - tda
+  docs:
+  - book-5-trust-is-everything-01
+  - good-boi-f02
+- user_phrases:
+  - status correction
+  - reclaim status
+  - claim your name
+  - correct my status
+  - deed poll
+  corpus_phrases:
+  - status correction
+  - ecclesiastical deed- poll
+  - claim of settlement
+  docs:
+  - book-5-trust-is-everything-01
+  - understanding-cestui-que-vie-1666
+- user_phrases:
+  - unincorporated association
+  - private club
+  - private group
+  - community group
+  - not a company
+  corpus_phrases:
+  - unincorporation
+  - unincorporated
+  - private association
+  - guild
+  docs:
+  - book-5-trust-is-everything-01
+  - dw-miller-parse-syntax-a-x
+  - understanding-cestui-que-vie-1666
+- user_phrases:
+  - lawyer guild
+  - bar association
+  - solicitors
+  - attorneys
+  - crown court bar
+  corpus_phrases:
+  - temple bar
+  - bar associations
+  - the galla of the bar
+  - crown bar
+  docs:
+  - three-trusts-of-the-world
+  - understanding-cestui-que-vie-1666
+- user_phrases:
+  - sea law
+  - law of the sea
+  - water law
+  - admiralty court
+  - maritime law
+  corpus_phrases:
+  - maritime and cannon law
+  - maritime jurisdictions
+  - maritime admiralty law
+  docs:
+  - book-5-trust-is-everything-01
+  - three-trusts-of-the-world
+  - understanding-cestui-que-vie-1666
+- user_phrases:
+  - land law
+  - law of the land
+  - gods law
+  - divine law
+  corpus_phrases:
+  - common law of the land
+  - natural law
+  - divine lore of equity
+  docs:
+  - book-5-trust-is-everything-01
+  - good-boi-f02
+  - passport-for-unregistered-baby
+  - the-new-world-order-epperson
+- user_phrases:
+  - equity beats law
+  - equity overrides law
+  - chancery
+  - equitable title
+  corpus_phrases:
+  - equity prevails
+  - divine lore of equity
+  - law of equity
+  docs:
+  - book-5-trust-is-everything-01
+  - good-boi-f02
+- user_phrases:
+  - pope hat
+  - pope crown
+  - vatican crown
+  - three crowns
+  - triple crown
+  corpus_phrases:
+  - papal tiara
+  - triregnum
+  - triple crown of ba’al
+  - first crown
+  - second crown
+  docs:
+  - three-trusts-of-the-world
+  - understanding-cestui-que-vie-1666
+- user_phrases:
+  - vatican trusts
+  - world trusts
+  - pope trusts
+  - three world trusts
+  corpus_phrases:
+  - three (3) trusts of the world
+  - trusts of the world
+  - three (3) trusts
+  docs:
+  - three-trusts-of-the-world
+- user_phrases:
+  - valid trust requirements
+  - what makes a trust valid
+  - 3 certainties
+  - certainties of a trust
+  corpus_phrases:
+  - the three certainties
+  - certainty of intention
+  - certainty of subject matter
+  - certainty of objects
+  docs:
+  - book-5-trust-is-everything-01
+- user_phrases:
+  - no will
+  - dying without a will
+  - inheritance rules
+  - next of kin
+  corpus_phrases:
+  - intestacy
+  - rules of intestacy
+  - without a valid will
+  - grant of probate
+  docs:
+  - book-5-trust-is-everything-01
+  - the-new-world-order-epperson
+- user_phrases:
+  - unlawful detention
+  - wrongful arrest
+  - locked up without charge
+  - produce the body
+  corpus_phrases:
+  - habeas corpus
+  - writ of habeas corpus
+  - incommunicado
+  - great writ
+  docs:
+  - good-boi-f02
+- user_phrases:
+  - under duress
+  - forced to sign
+  - coerced
+  - signed under threat
+  corpus_phrases:
+  - vi coactus
+  - under protest
+  - without prejudice
+  docs:
+  - book-5-trust-is-everything-01
+  - complete-ucc-1-9
+  - good-boi-f02
+  - the-new-world-order-epperson
+- user_phrases:
+  - reserve my rights
+  - all rights reserved
+  - without giving up rights
+  corpus_phrases:
+  - all rights reserved
+  - without prejudice
+  - under protest
+  docs:
+  - book-5-trust-is-everything-01
+  - complete-ucc-1-9
+  - good-boi-f02
+- user_phrases:
+  - family name
+  - last name
+  - surname
+  - christian name
+  - given name
+  corpus_phrases:
+  - own surname
+  - legal name
+  - registered name
+  docs:
+  - book-5-trust-is-everything-01
+  - good-boi-f02
+  - three-trusts-of-the-world
+- user_phrases:
+  - freehold
+  - fee simple
+  - allodial
+  - owning land outright
+  - land title
+  corpus_phrases:
+  - fee-simple titles
+  - freehold
+  - real property
+  docs:
+  - book-5-trust-is-everything-01
+  - complete-ucc-1-9
+  - good-boi-f02
+  - three-trusts-of-the-world
+  - understanding-cestui-que-vie-1666
+- user_phrases:
+  - car ownership
+  - v5c
+  - logbook
+  - registered keeper
+  - dvla owns my car
+  corpus_phrases:
+  - dvla
+  docs:
+  - book-5-trust-is-everything-01
+- user_phrases:
+  - private trust
+  - family trust
+  - living trust
+  - irrevocable trust
+  corpus_phrases:
+  - private trust
+  - inter vivos trust
+  - express trust
+  - private irrevocable settlement in trust
+  docs:
+  - book-5-trust-is-everything-01
+  - three-trusts-of-the-world
+  - understanding-cestui-que-vie-1666
+- user_phrases:
+  - hidden trust
+  - implied trust
+  - presumed trust
+  corpus_phrases:
+  - secret trust
+  - constructive trust
+  - constructive trust presumption
+  docs:
+  - book-5-trust-is-everything-01
+  - complete-ucc-1-9
+  - understanding-cestui-que-vie-1666
+- user_phrases:
+  - commercial paper
+  - promissory note
+  - bill of exchange
+  - iou
+  - draft
+  corpus_phrases:
+  - negotiable instrument
+  - promissory note
+  - holder in due course
+  docs:
+  - book-5-trust-is-everything-01
+  - complete-ucc-1-9
+  - good-boi-f02
+  - understanding-cestui-que-vie-1666
+- user_phrases:
+  - collateral
+  - lien
+  - secured loan
+  - financing statement
+  - ucc-1
+  - ucc1
+  corpus_phrases:
+  - security interest
+  - secured party
+  - security agreement
+  - financing statement
+  docs:
+  - book-5-trust-is-everything-01
+  - complete-ucc-1-9
+  - good-boi-f02
+  - the-new-world-order-epperson
+- user_phrases:
+  - honest dealing
+  - fair dealing
+  - acting honestly
+  - good faith definition
+  corpus_phrases:
+  - good faith
+  - honesty in fact
+  - reasonable commercial standards of fair dealing
+  docs:
+  - book-5-trust-is-everything-01
+  - complete-ucc-1-9
+  - good-boi-f02
+- user_phrases:
+  - letter of credit
+  - bank guarantee
+  - trade credit
+  corpus_phrases:
+  - letter of credit
+  - letters of credit
+  docs:
+  - complete-ucc-1-9
+- user_phrases:
+  - wire transfer
+  - bank transfer
+  - electronic transfer
+  - payment order
+  corpus_phrases:
+  - funds transfer
+  - payment order
+  - authorized account
+  docs:
+  - complete-ucc-1-9
+- user_phrases:
+  - shares
+  - stocks
+  - broker
+  - securities
+  - investment account
+  corpus_phrases:
+  - securities intermediary
+  - certificated security
+  - adverse claim
+  docs:
+  - complete-ucc-1-9
+- user_phrases:
+  - bulk sale
+  - selling whole business
+  - bulk transfer
+  corpus_phrases:
+  - bulk sale
+  - transfer in bulk
+  - date of the bulk sale
+  docs:
+  - complete-ucc-1-9
+- user_phrases:
+  - equipment lease
+  - leasing goods
+  - finance lease
+  - lessor
+  - lessee
+  corpus_phrases:
+  - finance lease
+  - lease contract
+  - lessor
+  - lessee
+  docs:
+  - complete-ucc-1-9
+- user_phrases:
+  - faulty goods
+  - warranty
+  - implied warranty
+  - merchantable
+  - fit for purpose
+  corpus_phrases:
+  - implied warranty
+  - merchantability
+  - express warranties
+  docs:
+  - complete-ucc-1-9
+- user_phrases:
+  - forged signature
+  - fake signature
+  - signed without permission
+  corpus_phrases:
+  - unauthorised signature
+  - forgery
+  docs:
+  - book-5-trust-is-everything-01
+  - complete-ucc-1-9
+  - the-new-world-order-epperson
+- user_phrases:
+  - dollar bill
+  - one dollar bill
+  - pyramid on dollar
+  - eye on dollar
+  corpus_phrases:
+  - great seal
+  - all-seeing eye
+  - annuit coeptis
+  - novus ordo seclorum
+  docs:
+  - the-new-world-order-epperson
+- user_phrases:
+  - global government
+  - world government
+  - one world
+  - globalism
+  corpus_phrases:
+  - new world order
+  - one world government
+  - new world government
+  - one world religion
+  docs:
+  - the-new-world-order-epperson
+- user_phrases:
+  - devil
+  - satan
+  - light bearer
+  - sun worship
+  - occult
+  corpus_phrases:
+  - lucifer
+  - lucis trust
+  - sun-god
+  - sun god
+  docs:
+  - the-new-world-order-epperson
+- user_phrases:
+  - washington obelisk
+  - egyptian pillar
+  - phallic monument
+  corpus_phrases:
+  - obelisk
+  - obelisks
+  - washington monument
+  docs:
+  - the-new-world-order-epperson
+- user_phrases:
+  - shadow government
+  - cabal
+  - hidden rulers
+  - elites
+  corpus_phrases:
+  - secret societies
+  - secret society
+  - hidden societies
+  - illuminati
+  docs:
+  - the-new-world-order-epperson
+- user_phrases:
+  - new age
+  - aquarian age
+  - blavatsky
+  - alice bailey
+  corpus_phrases:
+  - new age movement
+  - new age
+  - lucis trust
+  - maitreya
+  docs:
+  - the-new-world-order-epperson
+- user_phrases:
+  - human body as ship
+  - vessel meaning
+  - ship metaphor
+  corpus_phrases:
+  - vessel-body-thinking
+  - vessel-planet
+  - charter-vessel
+  docs:
+  - dw-miller-parse-syntax-a-x
+  - good-boi-f02
+- user_phrases:
+  - grammar fraud
+  - word magic
+  - correct sentence
+  - syntax language
+  - david wynn miller
+  corpus_phrases:
+  - parse-syntax
+  - correct sentence structure
+  - quantum-grammar
+  - quantum dictionary
+  docs:
+  - book-5-trust-is-everything-01
+  - dw-miller-parse-syntax-a-x
+  - good-boi-f02
+- user_phrases:
+  - postal rule
+  - post office
+  - postal treaty
+  - mail jurisdiction
+  - stamps
+  corpus_phrases:
+  - universal postal union
+  - upu
+  - special delivery by 1pm
+  docs:
+  - book-5-trust-is-everything-01
+  - good-boi-f02
+  - passport-for-unregistered-baby
+- user_phrases:
+  - child benefit
+  - claiming child benefit
+  - benefits unregistered baby
+  corpus_phrases:
+  - child benefit
+  - back dated
+  - copy of the passport
+  docs:
+  - passport-for-unregistered-baby
+- user_phrases:
+  - who is the informant
+  - mother as informant
+  - registering parent
+  corpus_phrases:
+  - informant
+  - second informant
+  - 'settlor: the informant'
+  docs:
+  - book-5-trust-is-everything-01
+  - good-boi-f02
+  - understanding-cestui-que-vie-1666
+- user_phrases:
+  - debtor vs creditor
+  - secured party creditor
+  - spc
+  - who is the creditor
+  corpus_phrases:
+  - secured party creditor
+  - principal creditor
+  - debt-or
+  - credit-or
+  docs:
+  - book-5-trust-is-everything-01
+  - good-boi-f02
+- user_phrases:
+  - ucc
+  - u.c.c.
+  - u c c
+  corpus_phrases:
+  - uniform commercial code
+  - universal commercial code
+  - u.c.c.
+  - ucc
+  docs:
+  - book-5-trust-is-everything-01
+  - complete-ucc-1-9
+  - dw-miller-parse-syntax-a-x
+- user_phrases:
+  - cqv
+  - c.q.v.
+  - cqva
+  corpus_phrases:
+  - cestui que vie
+  - cestui que vie act 1666
+  - cestui que vie act of 1540
+  - cqv
+  docs:
+  - book-5-trust-is-everything-01
+  - good-boi-f02
+  - three-trusts-of-the-world
+  - understanding-cestui-que-vie-1666
+- user_phrases:
+  - tda
+  - t.d.a.
+  corpus_phrases:
+  - treasury direct account
+  - treasury direct
+  - tda
+  docs:
+  - book-5-trust-is-everything-01
+  - good-boi-f02
+- user_phrases:
+  - upu
+  - u.p.u.
+  corpus_phrases:
+  - universal postal union
+  - upu
+  docs:
+  - book-5-trust-is-everything-01
+  - good-boi-f02
+  - passport-for-unregistered-baby
+- user_phrases:
+  - trs
+  - t.r.s.
+  corpus_phrases:
+  - trust registration service
+  - trust registration service-[trs]
+  docs:
+  - book-5-trust-is-everything-01
+- user_phrases:
+  - nwo
+  - n.w.o.
+  corpus_phrases:
+  - new world order
+  - novus ordo seclorum
+  - one world government
+  docs:
+  - the-new-world-order-epperson
+- user_phrases:
+  - hdc
+  - hidc
+  corpus_phrases:
+  - holder in due course
+  - due course
+  docs:
+  - book-5-trust-is-everything-01
+  - complete-ucc-1-9
+- user_phrases:
+  - goodboi
+  - good boi
+  - g.o.o.d.b.o.i.
+  corpus_phrases:
+  - good-boi
+  - g.-o.-o.-d.-b.-o.-i.
+  docs:
+  - good-boi-f02
+- user_phrases:
+  - goodism
+  - g.o.o.d.i.s.m.
+  corpus_phrases:
+  - goodism
+  - g.-o.-o.-d.-i.-s.-m.
+  - grantor of our dominion
+  docs:
+  - book-5-trust-is-everything-01
+  - good-boi-f02
+- user_phrases:
+  - e&oe
+  - e & o e
+  - e.o.e.
+  corpus_phrases:
+  - errors and omissions excepted
+  docs:
+  - good-boi-f02
+- user_phrases:
+  - ppr
+  - personal rep
+  corpus_phrases:
+  - persons personal representative
+  - personal representative
+  - authorised signatory
+  docs:
+  - book-5-trust-is-everything-01
+  - complete-ucc-1-9
+  - good-boi-f02
+- user_phrases:
+  - what is the 1666 act
+  - 1666 act
+  - great fire of london act
+  corpus_phrases:
+  - cestui que vie act 1666
+  - cestui que vie act of 1666
+  - lost at sea
+  docs:
+  - book-5-trust-is-everything-01
+  - three-trusts-of-the-world
+  - understanding-cestui-que-vie-1666
+- user_phrases:
+  - what is the 1540 act
+  - henry viii trust
+  - 1540 act
+  corpus_phrases:
+  - cestui que vie act of 1540
+  - the cestui que vie act of 1540
+  docs:
+  - good-boi-f02
+  - three-trusts-of-the-world
+  - understanding-cestui-que-vie-1666
+- user_phrases:
+  - how many trusts are there
+  - what are the three trusts
+  - three trusts
+  corpus_phrases:
+  - three (3) trusts of the world
+  - real property, personal property and ecclesiastical property
+  docs:
+  - three-trusts-of-the-world
+- user_phrases:
+  - how do i set up a trust
+  - create a private trust
+  - draft a trust deed
+  - schedule a
+  corpus_phrases:
+  - express trust deed
+  - goodism inter vivos trust
+  - schedule a
+  - the three certainties
+  docs:
+  - book-5-trust-is-everything-01
+- user_phrases:
+  - how do i get a passport
+  - apply for baby passport
+  - statutory declaration passport
+  corpus_phrases:
+  - sample statutory declaration
+  - statutory declaration of non-consent
+  - midwife witness statement
+  docs:
+  - passport-for-unregistered-baby
+- user_phrases:
+  - do i have to register a birth
+  - is birth registration compulsory
+  - legally required to register baby
+  corpus_phrases:
+  - no obligation to register
+  - declaration of denial of consent
+  - denial of consent to register
+  docs:
+  - passport-for-unregistered-baby
+- user_phrases:
+  - what happens when someone dies
+  - estate administration
+  - small estate
+  - holding period
+  corpus_phrases:
+  - grant of probate
+  - laws of intestacy
+  - minimum period of six-(6)-months
+  - deceased estate
+  docs:
+  - book-5-trust-is-everything-01
+  - understanding-cestui-que-vie-1666
+- user_phrases:
+  - what is a corporation
+  - definition of corporation
+  - dartmouth college
+  corpus_phrases:
+  - corporation sole
+  - corporation aggregate
+  - body corporate
+  - dartmouth college against woodward
+  docs:
+  - book-5-trust-is-everything-01
+  - complete-ucc-1-9
+  - good-boi-f02
+  - understanding-cestui-que-vie-1666
+- user_phrases:
+  - how should i sign
+  - best way to sign
+  - strongest signature
+  corpus_phrases:
+  - strongest signature
+  - non-negotiable autograph
+  - without prejudice
+  - without recourse – non assumpsit
+  docs:
+  - good-boi-f02
+- user_phrases:
+  - what is quantum math
+  - miller dictionary
+  - now time
+  - parse syntax rules
+  corpus_phrases:
+  - quantum-math-language
+  - now-time jurisdiction
+  - quantum dictionary
+  - sentence-structure
+  docs:
+  - dw-miller-parse-syntax-a-x
+  - good-boi-f02
+- user_phrases:
+  - who is behind the new world order
+  - masonic conspiracy
+  - epperson book
+  - secret plan
+  corpus_phrases:
+  - new world order
+  - secret societies
+  - freemasons
+  - illuminati
+  docs:
+  - the-new-world-order-epperson
+- user_phrases:
+  - what is the crown
+  - city of london
+  - crown corporation
+  - two queens
+  corpus_phrases:
+  - crown of aragon
+  - crown of spain
+  - her majesty the queen of crown corporation
+  - queen elizabeth ii of windsor
+  docs:
+  - three-trusts-of-the-world
+  - understanding-cestui-que-vie-1666
+- user_phrases:
+  - how does ucc define
+  - commercial law rules
+  - article 9
+  - article 3
+  - article 2
+  corpus_phrases:
+  - uniform commercial code
+  - sale of goods
+  - negotiable instrument
+  - security interest
+  docs:
+  - book-5-trust-is-everything-01
+  - complete-ucc-1-9
+  - dw-miller-parse-syntax-a-x
+  - good-boi-f02
+  - the-new-world-order-epperson
+- user_phrases:
+  - what are the canons
+  - canon law
+  - canon 2036
+  - canon 2057
+  corpus_phrases:
+  - canon 2036
+  - canon 2057
+  - maritime and cannon law
+  docs:
+  - three-trusts-of-the-world
+  - understanding-cestui-que-vie-1666
+- user_phrases:
+  - what is mens rea
+  - elements of a crime
+  - criminal charge
+  - redress
+  corpus_phrases:
+  - mens rea
+  - re-dress ability of the court
+  - lawful jurisdiction
+  docs:
+  - good-boi-f02
+- user_phrases:
+  - what is a document of title
+  - bill of lading
+  - shipping receipt
+  corpus_phrases:
+  - document of title
+  - bill of lading
+  - warehouse receipt
+  docs:
+  - complete-ucc-1-9
+- user_phrases:
+  - what is a record
+  - electronic record
+  - written contract
+  corpus_phrases:
+  - statute of frauds
+  - formal requirements
+  docs:
+  - complete-ucc-1-9
+- user_phrases:
+  - phoenix symbol
+  - eagle on dollar
+  - feathers on great seal
+  corpus_phrases:
+  - phoenix bird
+  - 32 on the right side
+  - 33 on the left side
+  - great seal
+  docs:
+  - the-new-world-order-epperson
+- user_phrases:
+  - masonic oath
+  - freemason secrets
+  - blood oath
+  corpus_phrases:
+  - murder and treason excepted
+  - blood oath
+  - scottish rite
+  docs:
+  - book-5-trust-is-everything-01
+  - good-boi-f02
+  - the-new-world-order-epperson
+- user_phrases:
+  - council notice
+  - correcting records
+  - time limit for reply
+  corpus_phrases:
+  - within this lawful time-frame of
+  - first class recorded post
+  - statutory declaration
+  docs:
+  - good-boi-f02
+  - passport-for-unregistered-baby
+- user_phrases:
+  - what is a hybrid trust
+  - umbrella trust
+  - master trust
+  corpus_phrases:
+  - hybrid remembrance trust
+  - master umbrella trust
+  docs:
+  - book-5-trust-is-everything-01
+- user_phrases:
+  - how to open a bank account for unincorporation
+  - officers of an association
+  - chairman treasurer secretary
+  corpus_phrases:
+  - chairman, treasurer and secretary
+  - unincorporation
+  - private association
+  docs:
+  - book-5-trust-is-everything-01
+  - understanding-cestui-que-vie-1666
+- user_phrases:
+  - who owns my passport
+  - british passport ownership
+  - travel document
+  corpus_phrases:
+  - does not require a british passport
+  - crown corporation
+  - universal postal union
+  docs:
+  - book-5-trust-is-everything-01
+  - good-boi-f02
+  - passport-for-unregistered-baby
+  - understanding-cestui-que-vie-1666
+- user_phrases:
+  - cestui qui vie
+  - setakay
+  - cestui-que-vie
+  corpus_phrases:
+  - cestui qui vie act
+  - setakay
+  - cestui que vie
+  docs:
+  - book-5-trust-is-everything-01
+  - good-boi-f02
+  - three-trusts-of-the-world
+  - understanding-cestui-que-vie-1666
+- user_phrases:
+  - usufruct
+  - usufructuary
+  - right to use but not own
+  - beneficial use
+  corpus_phrases:
+  - beneficial use
+  - right of use of it
+  - beneficial and equitable use
+  docs:
+  - book-5-trust-is-everything-01
+  - three-trusts-of-the-world
+- user_phrases:
+  - hmrc
+  - utr number
+  - unique tax reference
+  - register my trust
+  corpus_phrases:
+  - hmrc
+  - trust registration service
+  - trs
+  - unique tax reference
+  docs:
+  - book-5-trust-is-everything-01
+- user_phrases:
+  - companies house
+  - incorporation certificate
+  - articles of association
+  corpus_phrases:
+  - companies house
+  - incorporation certificate
+  - certificate of incorporation
+  - articles of association
+  docs:
+  - book-5-trust-is-everything-01
+- user_phrases:
+  - hague trust convention
+  - recognition of trusts act
+  - foreign trust recognition
+  corpus_phrases:
+  - hague convention
+  - recognition of trusts act 1987
+  - foreign trust
+  - senior courts act
+  docs:
+  - book-5-trust-is-everything-01
+- user_phrases:
+  - sham trust
+  - illusory trust
+  - piercing the trust
+  - alter ego
+  corpus_phrases:
+  - piercing the trust
+  - illusory trust
+  - alter ego
+  docs:
+  - book-5-trust-is-everything-01
+  - the-new-world-order-epperson
+- user_phrases:
+  - defense playbook
+  - defence playbook
+  - trust challenged in court
+  corpus_phrases:
+  - defence playbook
+  - clean accounting and decision records
+  - trust balance sheet
+  docs:
+  - book-5-trust-is-everything-01
+- user_phrases:
+  - equity maxims
+  - equity looks to intent
+  - clean hands
+  - equity abhors forfeiture
+  corpus_phrases:
+  - equity looks to intent, not form
+  - equity abhors forfeiture
+  - clean hands
+  docs:
+  - book-5-trust-is-everything-01
+- user_phrases:
+  - guthrie test
+  - heel prick test
+  - blood spots
+  - umbilical cord
+  corpus_phrases:
+  - guthrie test
+  - four-(4)-heel pricks
+  - umbilical cord
+  docs:
+  - book-5-trust-is-everything-01
+- user_phrases:
+  - baptism
+  - christening certificate
+  - baptismal certificate
+  corpus_phrases:
+  - baptismal certificate
+  - baptismal ritual
+  docs:
+  - book-5-trust-is-everything-01
+  - three-trusts-of-the-world
+- user_phrases:
+  - empty vessel
+  - sea of commerce
+  corpus_phrases:
+  - empty vessel
+  - sea of commerce
+  docs:
+  - understanding-cestui-que-vie-1666
+- user_phrases:
+  - entick v carrington
+  - cruden v neale
+  corpus_phrases:
+  - entick v carrington
+  - cruden v neale
+  docs:
+  - passport-for-unregistered-baby
+- user_phrases:
+  - right to travel
+  - driving without a licence
+  - private conveyance
+  - travelling not driving
+  corpus_phrases:
+  - right of travel
+  - customary right of travel
+  - driving licence
+  - private conveyance
+  docs:
+  - book-5-trust-is-everything-01
+  - good-boi-f02
+- user_phrases:
+  - v5 logbook
+  corpus_phrases:
+  - v5 logbook
+  - logbook
+  - keeper in trust
+  docs:
+  - book-5-trust-is-everything-01
+- user_phrases:
+  - pulled over by police
+  - road traffic act
+  - stop and search
+  - pace
+  - police caution
+  corpus_phrases:
+  - road traffic act
+  - stop and search
+  - police and criminal evidence act
+  - christie v leachinsky
+  docs:
+  - good-boi-f02
+- user_phrases:
+  - sue the police
+  - police liability
+  - police reform act
+  corpus_phrases:
+  - vicarious liability
+  - police reform act 2002
+  - tortious liabilities
+  docs:
+  - good-boi-f02
+- user_phrases:
+  - sue the crown
+  - crown immunity
+  - crown proceedings act
+  corpus_phrases:
+  - crown proceedings act
+  - discovery of documents
+  docs:
+  - good-boi-f02
+- user_phrases:
+  - corpus delicti
+  - actus reus
+  - no body no crime
+  corpus_phrases:
+  - mens rea
+  - actus reus
+  - corpus delicti
+  docs:
+  - book-5-trust-is-everything-01
+  - good-boi-f02
+- user_phrases:
+  - cpr part 52
+  - civil procedure rule
+  - royal courts of justice
+  - kings court
+  corpus_phrases:
+  - cpr part 52
+  - civil procedure rule
+  - royal courts of justice
+  - kings court
+  docs:
+  - good-boi-f02
+- user_phrases:
+  - petition of rights
+  - bill of rights 1688
+  - bill of rights 1689
+  corpus_phrases:
+  - petition of rights 1627
+  - bill of rights 1688
+  - bill of rights 1689
+  docs:
+  - good-boi-f02
+- user_phrases:
+  - notice template
+  - basic notice writing
+  - notice to agent is notice to principal
+  - conditional notice
+  corpus_phrases:
+  - basic notice writing
+  - notice template
+  - conditional notice
+  - notice to agent is notice to principal
+  docs:
+  - good-boi-f02
+- user_phrases:
+  - silent acquiescence
+  - agreeing by silence
+  corpus_phrases:
+  - silent acquiescence
+  - acquiescence
+  docs:
+  - complete-ucc-1-9
+  - good-boi-f02
+- user_phrases:
+  - affidavit of fact
+  - affidavit of mistake
+  - correction notice
+  - correct my birth record
+  corpus_phrases:
+  - affidavit of fact
+  - affidavit of mistake
+  - correction notice
+  - correction of our name
+  docs:
+  - book-5-trust-is-everything-01
+  - good-boi-f02
+- user_phrases:
+  - special appearance
+  - standing in court
+  corpus_phrases:
+  - special appearance
+  - true beneficiary
+  docs:
+  - book-5-trust-is-everything-01
+  - good-boi-f02
+- user_phrases:
+  - silver coin
+  - troy ounce
+  corpus_phrases:
+  - troy ounce silver coin
+  - silver coin
+  docs:
+  - good-boi-f02
+- user_phrases:
+  - certificate of diplomatic identity
+  - diplomatic id
+  corpus_phrases:
+  - certificate of diplomatic identity
+  - certificate of diplomatic
+  docs:
+  - book-5-trust-is-everything-01
+  - good-boi-f02
+- user_phrases:
+  - repo man
+  - car repossessed
+  - seized collateral
+  corpus_phrases:
+  - repossessions
+  - disposition of collateral
+  - notification of disposition
+  docs:
+  - complete-ucc-1-9
+- user_phrases:
+  - farmers lien
+  - agricultural lien
+  - crop loan
+  corpus_phrases:
+  - agricultural lien
+  - farm products
+  - commingled goods
+  docs:
+  - complete-ucc-1-9
+- user_phrases:
+  - quo warranto
+  - challenge a public office
+  - usurp
+  - serf
+  - monad
+  corpus_phrases:
+  - quo-warranto
+  - usurp
+  - serf
+  - monad
+  docs:
+  - dw-miller-parse-syntax-a-x
+  - the-new-world-order-epperson
+- user_phrases:
+  - cfr
+  - council on foreign relations
+  - federal reserve
+  corpus_phrases:
+  - council on foreign relations
+  - federal reserve
+  docs:
+  - complete-ucc-1-9
+  - the-new-world-order-epperson
+- user_phrases:
+  - acknowledgement
+  - acknowledgment
+  corpus_phrases:
+  - acknowledgement
+  - acknowledgment
+  docs:
+  - book-5-trust-is-everything-01
+  - complete-ucc-1-9
+  - the-new-world-order-epperson
+- user_phrases:
+  - traveller
+  - traveler
+  - centre
+  - center
+  - fulfil
+  - fulfill
+  corpus_phrases:
+  - traveller
+  - traveler
+  - centre
+  - fulfil
+  docs:
+  - book-5-trust-is-everything-01
+  - complete-ucc-1-9
+  - the-new-world-order-epperson
+  - three-trusts-of-the-world
+  - understanding-cestui-que-vie-1666
+- user_phrases:
+  - recognise
+  - recognize
+  corpus_phrases:
+  - recognise
+  - recognize
+  docs:
+  - book-5-trust-is-everything-01
+  - complete-ucc-1-9
+  - good-boi-f02
+  - passport-for-unregistered-baby
+  - the-new-world-order-epperson

@@ -45,6 +45,9 @@ aliases:
 - Cestui Que Vie Act explainer
 - 1666 Act commentary
 - the CQV canons
+chunk_max_tokens: 250
+conflicts_with:
+- three-trusts-of-the-world
 ---
 
 # Trueman’s Understanding of the Cestui Que Vie Act Of 1666

@@ -46,6 +46,10 @@ aliases:
 - three crowns
 - the Vatican trusts
 - legal ownership of all souls
+chunk_max_tokens: 250
+conflicts_with:
+- book-5-trust-is-everything-01
+- understanding-cestui-que-vie-1666
 ---
 
 # THE – THREE – (3) – TRUSTS – OF – THE – WORLD

@@ -31,3 +31,19 @@ def test_phrases_become_quoted_fts_phrases():
     expr = _fts_escape("good faith", extra_phrases=["honesty in fact", 'say "hi"'])
     assert '"good"' in expr and '"honesty in fact"' in expr
     assert '"say ""hi"""' in expr
+
+
+def test_one_way_triggers_expand_misspellings_and_synonyms(tmp_path):
+    trig = tmp_path / "triggers.yaml"
+    trig.write_text(
+        'triggers:\n  - user_phrases: ["sestui", "birth cert"]\n'
+        '    corpus_phrases: ["cestui que vie", "certificate of an entry of a birth"]\n',
+        encoding="utf-8",
+    )
+    assert lexicon.expansions("whats sestui about", path=tmp_path / "none.yaml", triggers_path=trig) == [
+        "cestui que vie",
+        "certificate of an entry of a birth",
+    ]
+    # One-way: corpus phrase alone does not trigger user phrases
+    assert lexicon.expansions("cestui que vie", path=tmp_path / "none.yaml", triggers_path=trig) == []
+

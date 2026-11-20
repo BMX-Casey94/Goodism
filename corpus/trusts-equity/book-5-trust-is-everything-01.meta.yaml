@@ -1,0 +1,38 @@
+doc_id: book-5-trust-is-everything-01
+section_map: []
+conflict_candidates:
+- doc_id: good-boi-f02
+  note: 'Ink colour meaning: book-5 (ch. 1 legend) lists ''Red = Security'', whereas book-5 (trustee section)
+    and good-boi-f02 state ''Red = Life'' / living only.'
+  passage_a: Gold / purple = Goodism b) Blue = Commerce c) Red = Security d) Green = Naas
+  passage_b: The colour red refers to the living only
+  status: confirmed
+- doc_id: good-boi-f02
+  note: 'Chicago Manual of Style edition: good-boi-f02 cites edition 16 (Article 11~147), whereas book-5
+    cites edition 17 (page 666).'
+  passage_a: Chicago styles Manual, edition seventeen
+  passage_b: Chicargo-Manual-Styles-Dictionary-Edition-sixteen-(16)
+  status: confirmed
+- doc_id: good-boi-f02
+  note: 'Bill of Rights date: good-boi-f02 cites both 1688 and 1689, whereas book-5 cites 1689.'
+  passage_a: Bill of Rights (1689)
+  passage_b: Bill of Rights 1688
+  status: confirmed
+- doc_id: three-trusts-of-the-world
+  note: 'Unam Sanctam date and issuing pope: three-trusts subtitle says 1306 and body says Pope Boniface
+    VII (while also citing 1302); book-5 cites 1302 and Pope Benefice VIII (8th).'
+  passage_a: Unam Sanctum ... 1302 ... Pope Benefice VIII (8th)
+  passage_b: SINCE 1306 !! / In 1302, Pope Boniface ... Pope Boniface VII
+  status: confirmed
+- doc_id: three-trusts-of-the-world
+  note: '1540 Cestui Que Vie Act origin: book-5 attributes it to King Henry, whereas three-trusts states
+    the Venetians assisted in creating it.'
+  passage_a: first certificate was create by King Henry in the year of 1540
+  passage_b: The Venetians assisted in the creation of the 1st ( First ) Cestui Que Vie Act of 1540
+  status: confirmed
+- doc_id: complete-ucc-1-9
+  note: 'Statute title: book-5 refers to the ''Universal Commercial Code'', whereas complete-ucc-1-9 gives
+    the statutory title ''Uniform Commercial Code''.'
+  passage_a: Universal Commercial Code-[UCC]
+  passage_b: This [Act] may be cited as the Uniform Commercial Code.
+  status: confirmed

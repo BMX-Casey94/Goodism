@@ -47,6 +47,11 @@ aliases:
 - Goodism trust book
 - the Goodism Inter Vivos Trust guide
 - one man and his pen
+chunk_max_tokens: 250
+conflicts_with:
+- good-boi-f02
+- three-trusts-of-the-world
+- complete-ucc-1-9
 ---
 
 **Book number-(5)-five;**

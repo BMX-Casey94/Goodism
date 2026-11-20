@@ -40,3 +40,10 @@ def test_render_truncates_but_always_shows_first_passage():
 
 def test_render_empty_is_explicit():
     assert "No relevant passages" in render_markdown(["q"], [], max_chars=1000)
+
+
+def test_render_flags_weak_match_below_threshold():
+    out = render_markdown(["weather in manchester"], [_passage("irrelevant")], max_chars=10_000, top_scores=[-9.2])
+    assert "WEAK MATCH" in out
+    good = render_markdown(["cestui que vie"], [_passage("relevant")], max_chars=10_000, top_scores=[2.5])
+    assert "WEAK MATCH" not in good

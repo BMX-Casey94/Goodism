@@ -324,7 +324,11 @@ def ingest_file(
     # the text, so no base64 reaches the proofreader, the corpus or the index.
     # Corpus and staging files are both one level below corpus/, so the
     # relative link is identical for either destination.
+    # Validate caller-supplied id before any asset write so invalid/escaping ids
+    # never write files to disk.
     asset_doc_id = overrides.get("id") or _slugify(path.stem)
+    if not re.match(r"^[a-z0-9]+(?:-[a-z0-9]+)*$", asset_doc_id):
+        raise ValueError(f"invalid document id: {asset_doc_id!r}")
     conversion.text = assets.externalise_images(
         conversion.text, asset_doc_id, config.CORPUS_DIR / "_" / "x.md",
         source=path.suffix.lstrip(".").lower() or "docx",
@@ -345,24 +349,31 @@ def ingest_file(
         final_text, gate, edit_log = apply_edits(original_text, proposed, original_text)
         edits_applied = sum(1 for e in edit_log if e["verdict"] == "accept")
         edits_rejected = len(edit_log) - edits_applied
-        if gate.verdict == Verdict.REVIEW:
-            review_flags.append("integrity gate requires human review of some changes")
+        if gate.verdict != Verdict.ACCEPT:
+            review_flags.append(f"integrity gate verdict={gate.verdict.value}; requires human review")
 
     # Metadata: LLM proposal, human overridable, then strict validation.
     vocab = _load_vocabs()
     proposed_meta = propose_metadata(client, final_text, vocab) if client else {}
+    raw_prec = overrides.get("precedence") if overrides.get("precedence") is not None else proposed_meta.get("precedence", 50)
+    try:
+        precedence = max(1, min(int(raw_prec), 100))
+    except (TypeError, ValueError):
+        precedence = 50
+    resolved_src = path.resolve()
+    raw_root = config.RAW_DIR.resolve()
     meta_dict = {
         "id": overrides.get("id") or _slugify(proposed_meta.get("id") or path.stem),
         "title": overrides.get("title") or proposed_meta.get("title") or path.stem,
         "domain": overrides.get("domain") or proposed_meta.get("domain"),
         "topics": overrides.get("topics") or proposed_meta.get("topics") or [],
         "doc_type": overrides.get("doc_type") or proposed_meta.get("doc_type"),
-        "source_file": path.relative_to(config.RAW_DIR).as_posix()
-        if path.is_relative_to(config.RAW_DIR)
+        "source_file": resolved_src.relative_to(raw_root).as_posix()
+        if resolved_src.is_relative_to(raw_root)
         else f"inbox/{path.name}",
         "source_sha256": source_sha,
-        "authority": overrides.get("authority") or proposed_meta.get("authority", "supporting"),
-        "precedence": int(overrides.get("precedence") or proposed_meta.get("precedence", 50)),
+        "authority": overrides.get("authority") or "supporting",
+        "precedence": precedence,
         "status": "draft",
         "extraction_method": conversion.extraction_method,
         "ocr_confidence": conversion.confidence,
@@ -373,8 +384,12 @@ def ingest_file(
     }
     meta = validate_meta(meta_dict, check_vocab=True, source_root=None)
 
-    # Destination: staging for anything flagged or vision-derived.
-    staged = bool(review_flags) or conversion.extraction_method in {"ocr", "vision"}
+    # Destination: staging for anything flagged, gate != ACCEPT, or vision-derived.
+    staged = (
+        bool(review_flags)
+        or (gate is not None and gate.verdict != Verdict.ACCEPT)
+        or conversion.extraction_method in {"ocr", "vision"}
+    )
     base_dir = config.STAGING_DIR if staged else (config.CORPUS_DIR / meta.domain)
     base_dir.mkdir(parents=True, exist_ok=True)
     corpus_path = base_dir / f"{meta.id}.md"

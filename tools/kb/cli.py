@@ -46,9 +46,17 @@ def ingest(
 
     config.ensure_dirs()
     client = _client_or_none(not no_llm)
-    targets = [config.RAW_INBOX / file] if file else [
-        p for p in sorted(config.RAW_INBOX.iterdir()) if p.is_file()
-    ]
+    if file is not None:
+        if Path(file).is_absolute() or ".." in Path(file).parts or "/" in file or "\\" in file:
+            typer.echo("error: --file must be a plain filename inside raw/inbox", err=True)
+            raise typer.Exit(2)
+        target = (config.RAW_INBOX / file).resolve()
+        if not target.is_relative_to(config.RAW_INBOX.resolve()):
+            typer.echo("error: --file escapes raw/inbox", err=True)
+            raise typer.Exit(2)
+        targets = [target]
+    else:
+        targets = [p for p in sorted(config.RAW_INBOX.iterdir()) if p.is_file()]
     if not targets:
         typer.echo("raw/inbox is empty")
         raise typer.Exit(0)

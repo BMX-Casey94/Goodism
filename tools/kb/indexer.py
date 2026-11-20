@@ -107,6 +107,8 @@ def _unpack_embedding(blob: bytes) -> list[float]:
 
 
 def _cosine(a: list[float], b: list[float]) -> float:
+    if len(a) != len(b):
+        raise ValueError(f"embedding dimension mismatch: {len(a)} vs {len(b)}")
     dot = 0.0
     norm_a = 0.0
     norm_b = 0.0
@@ -144,6 +146,8 @@ class Embedder:
             self._client = OpenAI(
                 base_url=os.environ.get("KB_EMBEDDING_BASE_URL") or None,
                 api_key=os.environ.get("KB_EMBEDDING_API_KEY") or os.environ.get("OPENAI_API_KEY"),
+                timeout=60.0,
+                max_retries=2,
             )
         return self._client
 
@@ -155,18 +159,38 @@ class Embedder:
         return [item.embedding for item in response.data]
 
 
-def _load_manifest_records() -> dict[tuple[str, str], dict]:
-    """Map (doc_id, section_path-normalised heading path) -> manifest record."""
+@lru_cache(maxsize=2)
+def _load_manifest_cached(path: str, mtime: float, size: int) -> dict[tuple[str, str], dict]:
     records: dict[tuple[str, str], dict] = {}
-    if not config.MANIFEST_PATH.exists():
-        return records
-    for line in config.MANIFEST_PATH.read_text(encoding="utf-8").splitlines():
+    for line in Path(path).read_text(encoding="utf-8").splitlines():
         line = line.strip()
         if not line:
             continue
-        record = json.loads(line)
-        records[(record["doc_id"], record["section_path"])] = record
+        try:
+            record = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if not isinstance(record, dict) or "doc_id" not in record or "section_path" not in record:
+            continue
+        key = (record["doc_id"], record["section_path"])
+        prev = records.get(key)
+        if prev is None or (record.get("version", 0), record.get("published_at", "")) >= (
+            prev.get("version", 0),
+            prev.get("published_at", ""),
+        ):
+            records[key] = record
     return records
+
+
+def _load_manifest_records() -> dict[tuple[str, str], dict]:
+    """Map (doc_id, section_path-normalised heading path) -> latest manifest record."""
+    if not config.MANIFEST_PATH.exists():
+        return {}
+    try:
+        st = config.MANIFEST_PATH.stat()
+        return _load_manifest_cached(str(config.MANIFEST_PATH), st.st_mtime, st.st_size)
+    except OSError:
+        return {}
 
 
 @dataclass
@@ -447,17 +471,22 @@ class Reranker:
         return hits[:keep]
 
 
+MAX_FTS_QUERY_CHARS = 512
+MAX_FTS_TERMS = 32
+
+
 def _fts_escape(query: str, extra_phrases: list[str] | None = None) -> str:
-    """Build a safe FTS5 MATCH expression from a free-text query.
+    """Build a safe, bounded FTS5 MATCH expression from a free-text query.
 
     Splits into terms and double-quotes each one, joining with OR, so user
     punctuation (?, ", *, etc.) can never be parsed as FTS5 operators.
+    Input and term count are capped to prevent superlinear FTS5 CPU DoS.
     ``extra_phrases`` (from the lexicon) are added as exact quoted phrases.
     """
-    terms = re.findall(r"[\w'-]+", query)
-    parts = [f'"{t}"' for t in terms]
+    terms = re.findall(r"[\w'-]+", (query or "")[:MAX_FTS_QUERY_CHARS])[:MAX_FTS_TERMS]
+    parts = [f'"{t[:64]}"' for t in terms]
     for phrase in extra_phrases or []:
-        phrase = " ".join(phrase.split())
+        phrase = " ".join(phrase.split())[:120]
         if phrase:
             parts.append('"' + phrase.replace('"', '""') + '"')
     if not parts:
@@ -561,15 +590,17 @@ def search(
         if not fused:
             return []
 
-        id_list = ",".join(str(cid) for cid, _, _ in fused)
+        ids = [int(cid) for cid, _, _ in fused]
+        placeholders = ",".join("?" * len(ids))
         detail_rows = conn.execute(
             f"""
             SELECT c.id, c.doc_id, d.title, c.heading_path, c.text,
                    d.authority, d.precedence, d.status, c.ordinal
             FROM chunks c
             JOIN documents d ON d.doc_id = c.doc_id AND d.snapshot_id = c.snapshot_id
-            WHERE c.id IN ({id_list})
-            """
+            WHERE c.id IN ({placeholders})
+            """,
+            ids,
         ).fetchall()
         details = {row[0]: row for row in detail_rows}
 

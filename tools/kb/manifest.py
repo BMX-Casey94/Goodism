@@ -49,15 +49,27 @@ def read_manifest() -> list[dict]:
     records = []
     for line in config.MANIFEST_PATH.read_text(encoding="utf-8").splitlines():
         line = line.strip()
-        if line:
-            records.append(json.loads(line))
+        if not line:
+            continue
+        try:
+            rec = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if isinstance(rec, dict) and "doc_id" in rec and "section_path" in rec:
+            records.append(rec)
     return records
 
 
 def _latest_records_by_section() -> dict[tuple[str, str], dict]:
     latest: dict[tuple[str, str], dict] = {}
     for record in read_manifest():
-        latest[(record["doc_id"], record["section_path"])] = record
+        key = (record["doc_id"], record["section_path"])
+        prev = latest.get(key)
+        if prev is None or (record.get("version", 0), record.get("published_at", "")) >= (
+            prev.get("version", 0),
+            prev.get("published_at", ""),
+        ):
+            latest[key] = record
     return latest
 
 

@@ -111,7 +111,10 @@ def _split_blocks(section_text: str, section_start: int) -> list[_Block]:
     return blocks
 
 
-_DATA_URI_RE = re.compile(r"!\[[^\]]*\]\(data:image/[^)]*\)")
+_DATA_URI_RE = re.compile(
+    r"!\[[^\]\n]{0,500}\]\((?:data:|data%3a)\s*image/[^)\n]{0,14000000}\)",
+    re.IGNORECASE,
+)
 _IMAGE_PLACEHOLDER = "[embedded image omitted from index]"
 
 

@@ -154,9 +154,22 @@ def _looks_like_spelling_fix(before: str, after: str) -> bool:
     # Unknown or rare original, common replacement, small distance.
     if freq_after >= 3.0 and freq_before < 3.0 and _edit_distance(a, b) <= 2:
         return True
-    # Both known words, near-identical form (transposition / doubled letter).
-    if freq_before >= 3.0 and freq_after >= 3.0 and _edit_distance(a, b) <= 1:
-        return True
+    # Substituting one valid common word for another (e.g. insure->ensure,
+    # nine->fine) is a potential meaning change, never an auto-accepted typo.
+    return False
+
+
+_EDGE_PUNCT = ".,;:!?\"'()[]{}“”‘’—–-…"
+
+
+def _has_forbidden_control(text: str) -> bool:
+    import unicodedata
+
+    for ch in text:
+        if ch in ("\n", "\t", "\r"):
+            continue
+        if unicodedata.category(ch) in {"Cf", "Cc", "Cs", "Co", "Cn"}:
+            return True
     return False
 
 
@@ -164,6 +177,10 @@ def _classify_pair(before: str, after: str, position: int) -> Change:
     """Classify one token-level substitution."""
     if before == after:
         return Change(Category.UNCHANGED, Verdict.ACCEPT, before, after, position, "identical")
+
+    if _has_forbidden_control(after) and not _has_forbidden_control(before):
+        return Change(Category.REWORD, Verdict.REJECT, before, after, position,
+                      "introduces invisible or control character")
 
     # Number or date involvement is an automatic reject, no exceptions.
     if _NUMBER_RE.search(before + after) or _DATEISH_RE.search(before + " " + after):
@@ -174,21 +191,31 @@ def _classify_pair(before: str, after: str, position: int) -> Change:
     if low_before in _NEGATIONS or low_after in _NEGATIONS:
         return Change(Category.NEGATION, Verdict.REJECT, before, after, position,
                       "change touches a negation")
+    if (low_before.endswith("n't") or low_after.endswith("n't")) and low_before != low_after:
+        return Change(Category.NEGATION, Verdict.REJECT, before, after, position,
+                      "change touches a negation contraction")
 
     if _CITATION_RE.search(before) or _CITATION_RE.search(after):
         return Change(Category.CITATION, Verdict.REJECT, before, after, position,
                       "change touches a citation marker")
 
-    # Whitespace/hyphenation/case categories.
+    # Hyphenation: prefix hyphens like re-sign/resign or re-cover/recover change meaning.
     if low_before.replace("-", "") == low_after.replace("-", ""):
+        if re.match(r"^(re|co|pre|post|non|un)-", low_before) or re.match(
+            r"^(re|co|pre|post|non|un)-", low_after
+        ):
+            return Change(Category.HYPHENATION, Verdict.REVIEW, before, after, position,
+                          "prefix hyphen change may alter meaning")
         return Change(Category.HYPHENATION, Verdict.ACCEPT, before, after, position,
                       "hyphenation only")
     if low_before == low_after:
         return Change(Category.CASE, Verdict.ACCEPT, before, after, position, "case only")
 
-    # Punctuation-only: same letters, different surrounding punctuation.
-    strip = lambda s: re.sub(r"[^A-Za-z0-9]", "", s).lower()
-    if strip(before) == strip(after) and strip(before):
+    # Punctuation-only: only strip leading/trailing punctuation, never internal
+    # apostrophes (lessee's -> lessees, shouldn't -> shouldnt) or control chars.
+    b_core = before.strip(_EDGE_PUNCT).lower()
+    a_core = after.strip(_EDGE_PUNCT).lower()
+    if b_core and b_core == a_core:
         return Change(Category.PUNCTUATION, Verdict.ACCEPT, before, after, position,
                       "punctuation only")
 
@@ -211,6 +238,15 @@ def compare(original: str, edited: str) -> GateResult:
     Whitespace-only differences at the file level are folded in first so
     token alignment stays stable.
     """
+    if _has_forbidden_control(edited) and not _has_forbidden_control(original):
+        return GateResult(
+            verdict=Verdict.REJECT,
+            changes=[
+                Change(Category.REWORD, Verdict.REJECT, "", "", 0,
+                       "edited text introduces invisible or control characters")
+            ],
+        )
+
     orig_tokens = _tokenise(original)
     edit_tokens = _tokenise(edited)
 
@@ -228,13 +264,21 @@ def compare(original: str, edited: str) -> GateResult:
             for k, (b, a) in enumerate(zip(before_span, after_span)):
                 changes.append(_classify_pair(b, a, i1 + k))
         else:
-            # Insert/delete or unequal replace: check whitespace-only.
+            # Insert/delete or unequal replace.
             joined_before = " ".join(before_span)
             joined_after = " ".join(after_span)
             if re.sub(r"\s+", "", joined_before) == re.sub(r"\s+", "", joined_after):
-                changes.append(Change(Category.WHITESPACE, Verdict.ACCEPT,
-                                      joined_before, joined_after, i1,
-                                      "whitespace only"))
+                # Token boundary changed (e.g. "not able"->"notable", "100 000"->"100000").
+                if _NUMBER_RE.search(joined_before + joined_after) or any(
+                    t.lower() in _NEGATIONS for t in before_span + after_span
+                ):
+                    changes.append(Change(Category.NUMBER, Verdict.REJECT,
+                                          joined_before, joined_after, i1,
+                                          "token split/merge touches number or negation"))
+                else:
+                    changes.append(Change(Category.WHITESPACE, Verdict.REVIEW,
+                                          joined_before, joined_after, i1,
+                                          "word split/merge requires review"))
             elif not _NUMBER_RE.search(joined_before + joined_after) and (
                 " ".join(before_span).replace("-", " ").lower()
                 == " ".join(after_span).replace("-", " ").lower()

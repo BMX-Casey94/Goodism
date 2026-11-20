@@ -10,8 +10,10 @@ size, and (for PDFs) the source page. Alt text is a neutral label
 from __future__ import annotations
 
 import base64
+import binascii
 import hashlib
 import json
+import os
 import re
 from pathlib import Path
 
@@ -19,26 +21,58 @@ from . import config
 
 ASSETS_DIR = config.CORPUS_DIR / "assets"
 INDEX_FILE = ASSETS_DIR / "index.jsonl"
-_DATA_URI = re.compile(r"!\[([^\]]*)\]\(data:image/([a-zA-Z0-9.+-]+);base64,([^)]*)\)")
+# Bounded to prevent quadratic ReDoS on repeated '![' and oversized payloads.
+_DATA_URI = re.compile(
+    r"!\[[^\]\n]{0,500}\]\(data:image/([a-zA-Z0-9.+-]{1,20});base64,([A-Za-z0-9+/=\s]{0,14000000})\)",
+    re.IGNORECASE,
+)
 _EXT = {"jpeg": "jpg", "jpg": "jpg", "png": "png", "gif": "gif", "bmp": "bmp", "webp": "webp"}
+_DOC_ID_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+_ASSET_NAME_RE = re.compile(r"^[A-Za-z0-9._-]+$")
 _REF = re.compile(r"!\[[^\]]*\]\(((?:\.\./)+assets/[^)\s]+)\)")
+MAX_IMAGE_BYTES = 10 * 1024 * 1024  # 10 MiB per extracted image
+
+
+def _sniff_image_ext(data: bytes) -> str | None:
+    """Return canonical raster extension from magic bytes, or None if unsupported."""
+    if data.startswith(b"\x89PNG\r\n\x1a\n"):
+        return "png"
+    if data.startswith(b"\xff\xd8\xff"):
+        return "jpg"
+    if data.startswith((b"GIF87a", b"GIF89a")):
+        return "gif"
+    if len(data) >= 12 and data[:4] == b"RIFF" and data[8:12] == b"WEBP":
+        return "webp"
+    if data.startswith(b"BM"):
+        return "bmp"
+    return None
 
 
 def _load_index() -> list[dict]:
     if not INDEX_FILE.exists():
         return []
-    return [json.loads(l) for l in INDEX_FILE.read_text(encoding="utf-8").splitlines() if l.strip()]
+    rows: list[dict] = []
+    for line in INDEX_FILE.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        rows.append(json.loads(line))
+    return rows
 
 
 def _append_index(rows: list[dict]) -> None:
     if not rows:
         return
     ASSETS_DIR.mkdir(parents=True, exist_ok=True)
-    existing = {(r["doc_id"], r["file"]) for r in _load_index()}
+    try:
+        existing = {(r["doc_id"], r["file"]) for r in _load_index()}
+    except (OSError, json.JSONDecodeError, KeyError):
+        existing = set()
     with INDEX_FILE.open("a", encoding="utf-8", newline="\n") as fh:
         for row in rows:
             if (row["doc_id"], row["file"]) not in existing:
                 fh.write(json.dumps(row, ensure_ascii=False, sort_keys=True) + "\n")
+                existing.add((row["doc_id"], row["file"]))
 
 
 def _dimensions(data: bytes) -> tuple[int | None, int | None]:
@@ -54,26 +88,55 @@ def _dimensions(data: bytes) -> tuple[int | None, int | None]:
 
 
 def _write_asset(doc_id: str, name: str, data: bytes) -> Path:
-    target = ASSETS_DIR / doc_id / name
+    if not _DOC_ID_RE.match(doc_id):
+        raise ValueError(f"invalid asset doc_id: {doc_id!r}")
+    if not _ASSET_NAME_RE.match(name) or ".." in name:
+        raise ValueError(f"invalid asset filename: {name!r}")
+    root = ASSETS_DIR.resolve()
+    root.mkdir(parents=True, exist_ok=True)
+    doc_dir = (root / doc_id)
+    if doc_dir.exists() and (doc_dir.is_symlink() or Path(os.path.realpath(doc_dir)) != doc_dir.resolve()):
+        raise ValueError("asset directory is a symlink/junction")
+    target = (doc_dir / name).resolve()
+    if not target.is_relative_to(root):
+        raise ValueError("asset path escapes corpus/assets")
     target.parent.mkdir(parents=True, exist_ok=True)
-    target.write_bytes(data)
+    if target.exists() and target.is_symlink():
+        raise ValueError("asset target is a symlink")
+    tmp = target.with_suffix(target.suffix + ".tmp")
+    tmp.write_bytes(data)
+    tmp.replace(target)
     return target
 
 
 def externalise_images(text: str, doc_id: str, doc_path: Path, source: str = "docx") -> str:
     """Replace inline base64 images with relative file links; return new text."""
+    if not _DOC_ID_RE.match(doc_id):
+        raise ValueError(f"invalid asset doc_id: {doc_id!r}")
     rows: list[dict] = []
     seen: dict[str, str] = {}  # sha -> filename (identical images share one file)
     counter = 0
 
     def repl(match: re.Match) -> str:
         nonlocal counter
-        subtype, payload = match.group(2).lower(), match.group(3)
-        data = base64.b64decode(payload)
+        subtype, payload = match.group(1).lower(), match.group(2)
+        # Strict allowlist: reject svg, php, xhtml, or any non-raster subtype.
+        if subtype not in _EXT:
+            return match.group(0)
+        try:
+            data = base64.b64decode(payload, validate=False)
+        except (binascii.Error, ValueError):
+            return match.group(0)
+        if not data or len(data) > MAX_IMAGE_BYTES:
+            return match.group(0)
+        sniffed = _sniff_image_ext(data)
+        # Allow synthetic tiny test PNGs/bytes only if magic matches; reject spoofed scripts/SVGs.
+        if sniffed is None:
+            return match.group(0)
         sha = hashlib.sha256(data).hexdigest()
         if sha not in seen:
             counter += 1
-            name = f"img-{counter:03d}.{_EXT.get(subtype, subtype)}"
+            name = f"img-{counter:03d}.{sniffed}"
             _write_asset(doc_id, name, data)
             w, h = _dimensions(data)
             rows.append(
@@ -103,6 +166,8 @@ def extract_pdf_figures(pdf_path: Path, doc_id: str, min_edge: int = 150) -> lis
     """
     import pymupdf
 
+    if not _DOC_ID_RE.match(doc_id):
+        raise ValueError(f"invalid asset doc_id: {doc_id!r}")
     rows: list[dict] = []
     seen: set[str] = set()
     with pymupdf.open(pdf_path) as pdf:
@@ -110,7 +175,12 @@ def extract_pdf_figures(pdf_path: Path, doc_id: str, min_edge: int = 150) -> lis
             for info in page.get_images(full=True):
                 xref = info[0]
                 img = pdf.extract_image(xref)
-                data, ext = img["image"], _EXT.get(img["ext"].lower(), img["ext"].lower())
+                data = img["image"]
+                if not data or len(data) > MAX_IMAGE_BYTES:
+                    continue
+                ext = _sniff_image_ext(data) or _EXT.get(img["ext"].lower())
+                if ext is None:
+                    continue
                 if min(img["width"], img["height"]) < min_edge:
                     continue
                 sha = hashlib.sha256(data).hexdigest()
@@ -131,12 +201,19 @@ def extract_pdf_figures(pdf_path: Path, doc_id: str, min_edge: int = 150) -> lis
 
 
 def check_references(doc_path: Path, text: str) -> list[str]:
-    """Return problems: unresolved links or hashes that differ from the index."""
+    """Return problems: escaping links, unresolved links, or hash mismatches."""
     problems: list[str] = []
-    index = {(r["doc_id"], r["file"]): r for r in _load_index()}
+    try:
+        index = {(r["doc_id"], r["file"]): r for r in _load_index()}
+    except (OSError, json.JSONDecodeError, KeyError) as exc:
+        return [f"corrupt assets index: {type(exc).__name__}"]
+    assets_root = ASSETS_DIR.resolve()
     for ref in _REF.findall(text):
         target = (doc_path.parent / ref).resolve()
-        if not target.exists():
+        if not target.is_relative_to(assets_root):
+            problems.append(f"image path escapes corpus/assets: {ref}")
+            continue
+        if not target.exists() or not target.is_file() or target.is_symlink():
             problems.append(f"missing image: {ref}")
             continue
         row = index.get((target.parent.name, target.name))

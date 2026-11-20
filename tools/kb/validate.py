@@ -14,6 +14,7 @@ Checks:
 from __future__ import annotations
 
 import json
+import re
 import sys
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -62,8 +63,10 @@ def validate_corpus(report: ValidationReport) -> dict[str, str]:
             continue
 
         raw_text = path.read_text(encoding="utf-8")
-        if "data:image" in raw_text:
+        if re.search(r"(?:data:|data%3a)\s*image/", raw_text, re.IGNORECASE):
             report.error(f"{rel}: inline base64 image found; store images under corpus/assets/")
+        if "---BEGIN RETRIEVED PASSAGE" in raw_text or "---END RETRIEVED PASSAGE---" in raw_text:
+            report.error(f"{rel}: corpus body contains reserved MCP passage delimiter")
         for problem in assets.check_references(path, raw_text):
             report.error(f"{rel}: {problem}")
 
@@ -71,8 +74,21 @@ def validate_corpus(report: ValidationReport) -> dict[str, str]:
             report.error(f"{rel}: duplicate id '{doc.meta.id}' also used by {ids[doc.meta.id]}")
         ids[doc.meta.id] = path
 
-        source = config.RAW_DIR / doc.meta.source_file
-        if not source.exists():
+        sf = Path(doc.meta.source_file)
+        if sf.is_absolute() or ".." in sf.parts:
+            report.error(f"{rel}: source_file '{doc.meta.source_file}' must be relative inside raw/")
+            source = None
+        else:
+            cand = (config.RAW_DIR / sf).resolve()
+            if not cand.is_relative_to(config.RAW_DIR.resolve()):
+                report.error(f"{rel}: source_file '{doc.meta.source_file}' escapes raw/")
+                source = None
+            else:
+                source = cand
+
+        if source is None:
+            pass
+        elif not source.exists():
             # raw/ is deliberately not committed, so a fresh clone has no
             # originals. The recorded source_sha256 still identifies the source.
             report.warn(
@@ -104,15 +120,26 @@ def validate_corpus(report: ValidationReport) -> dict[str, str]:
                 f"{rel}: {doc.meta.extraction_method} confidence {doc.meta.ocr_confidence} below 0.9"
             )
 
-        sidecar = load_sidecar(path)
+        try:
+            sidecar = load_sidecar(path)
+        except FrontMatterError as exc:
+            report.error(f"{rel}: {exc}")
+            sidecar = None
         if sidecar is not None:
             if sidecar.get("doc_id") != doc.meta.id:
                 report.error(f"{rel}: sidecar doc_id mismatch")
             paragraphs = doc.body.split("\n\n")
-            for section in sidecar.get("section_map", []):
+            section_map = sidecar.get("section_map", [])
+            if not isinstance(section_map, list):
+                report.error(f"{rel}: sidecar section_map must be a list")
+                section_map = []
+            for section in section_map:
+                if not isinstance(section, dict):
+                    report.error(f"{rel}: sidecar section_map entry must be a mapping")
+                    continue
                 # section_map uses paragraph anchors from the structurer; bounds check
                 start_paragraph = section.get("start_paragraph", 0)
-                if not (0 <= start_paragraph) or start_paragraph > len(paragraphs):
+                if not isinstance(start_paragraph, int) or not (0 <= start_paragraph) or start_paragraph > len(paragraphs):
                     report.error(
                         f"{rel}: sidecar section '{section.get('heading')}' out of range"
                     )
@@ -180,18 +207,54 @@ def validate_manifest(report: ValidationReport, corpus_hashes: dict[str, str]) -
         covered_docs.add(doc_id)
         versions_by_doc.setdefault(doc_id, []).append(record.get("version", 0))
 
-        file_path = config.ROOT / record.get("file_path", "")
-        if not file_path.exists():
-            report.error(f"manifest line {line_no}: file missing: {record.get('file_path')}")
+        rel_file = record.get("file_path")
+        if not isinstance(rel_file, str) or not rel_file.strip():
+            report.error(f"manifest line {line_no}: missing file_path")
+            continue
+        rel_p = Path(rel_file)
+        if rel_p.is_absolute() or ".." in rel_p.parts:
+            report.error(f"manifest line {line_no}: file_path escapes repo: {rel_file}")
+            continue
+        file_path = (config.ROOT / rel_p).resolve()
+        if not file_path.is_relative_to(config.ROOT.resolve()):
+            report.error(f"manifest line {line_no}: file_path escapes repo: {rel_file}")
+            continue
+        if not file_path.exists() or not file_path.is_file():
+            report.error(f"manifest line {line_no}: file missing: {rel_file}")
             continue
         file_bytes = file_path.read_bytes()
         import hashlib
 
         if hashlib.sha256(file_bytes).hexdigest() != record.get("file_sha256"):
             report.error(
-                f"manifest line {line_no}: file_sha256 mismatch for {record.get('file_path')} "
+                f"manifest line {line_no}: file_sha256 mismatch for {rel_file} "
                 "(published file must remain byte-identical to the on-chain record)"
             )
+
+        # Verify section_sha256 against the chunked corpus body when present.
+        expected_sec_sha = record.get("section_sha256")
+        sec_path = record.get("section_path")
+        if expected_sec_sha and sec_path:
+            try:
+                from .chunker import chunk_document
+                from .frontmatter import split_front_matter, validate_meta
+
+                data, body = split_front_matter(file_path.read_text(encoding="utf-8"))
+                meta = validate_meta(data, check_vocab=False, source_root=None)
+                matching_hashes = {
+                    sha256_text(ch.text)
+                    for ch in chunk_document(
+                        meta.id, meta.title, body, meta.chunk_max_tokens
+                    )
+                    if ch.heading_path == sec_path
+                }
+                if expected_sec_sha not in matching_hashes:
+                    report.error(
+                        f"manifest line {line_no}: section_sha256 mismatch for "
+                        f"{doc_id} :: {sec_path}"
+                    )
+            except FrontMatterError as exc:
+                report.error(f"manifest line {line_no}: failed to verify section hash: {exc}")
 
         supersedes = record.get("supersedes_txid")
         if supersedes and supersedes not in seen_txids:

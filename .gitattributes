@@ -1,4 +1,12 @@
 corpus/** text eol=lf
+corpus/**/*.png binary
+corpus/**/*.jpg binary
+corpus/**/*.jpeg binary
+corpus/**/*.gif binary
+corpus/**/*.webp binary
+corpus/**/*.bmp binary
+*.pdf binary
+*.docx binary
 manifest/** text eol=lf
 *.jsonl text eol=lf
 *.yaml text eol=lf

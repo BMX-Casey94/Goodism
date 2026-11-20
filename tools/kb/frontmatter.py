@@ -110,7 +110,7 @@ def split_front_matter(text: str) -> tuple[dict, str]:
         raise FrontMatterError("file does not start with a '---' front matter fence")
     try:
         data = yaml.safe_load(match.group(1))
-    except yaml.YAMLError as exc:
+    except (yaml.YAMLError, RecursionError) as exc:
         raise FrontMatterError(f"invalid YAML front matter: {exc}") from exc
     if not isinstance(data, dict):
         raise FrontMatterError("front matter must be a YAML mapping")
@@ -158,11 +158,14 @@ def validate_meta(
             )
 
     if source_root is not None:
-        source_path = source_root / meta.source_file
+        sf = Path(meta.source_file)
+        if sf.is_absolute() or ".." in sf.parts:
+            raise FrontMatterError(f"source_file '{meta.source_file}' must be a relative path inside raw/")
+        source_path = (source_root / sf).resolve()
+        if not source_path.is_relative_to(source_root.resolve()):
+            raise FrontMatterError(f"source_file '{meta.source_file}' escapes raw/")
         if not source_path.exists():
-            raise FrontMatterError(
-                f"source_file '{meta.source_file}' not found under {source_root}"
-            )
+            raise FrontMatterError(f"source_file '{meta.source_file}' not found in raw/")
 
     return meta
 

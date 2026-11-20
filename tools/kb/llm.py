@@ -119,7 +119,10 @@ class LLMClient:
         try:
             response = client.chat.completions.create(**kwargs)
         except Exception as exc:  # provider-specific exception types
-            raise LLMError(f"LLM call failed for role={role} model={chosen}: {exc}") from exc
+            import re
+
+            safe_msg = re.sub(r"(Bearer\s+|sk-|xai-)[A-Za-z0-9\-_]{8,}", r"\1<redacted>", str(exc))
+            raise LLMError(f"LLM call failed for role={role} model={chosen}: {safe_msg}") from exc
 
         usage_dict = None
         if getattr(response, "usage", None) is not None:

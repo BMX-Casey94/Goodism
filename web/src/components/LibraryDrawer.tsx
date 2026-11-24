@@ -89,7 +89,7 @@ export function LibraryDrawer({
                       {doc.authority}
                     </span>
                     <span className="rounded-full border border-stone-200 px-2 py-0.5 font-mono text-[10px] text-stone-500 dark:border-zinc-700 dark:text-zinc-400">
-                      {doc.chunk_count} chunks
+                      {doc.sections ?? 0} sections
                     </span>
                   </div>
                   {doc.summary && (
@@ -118,9 +118,9 @@ export function LibraryDrawer({
                       {c.doc_id} vs {c.conflicts_with}
                     </div>
                   </div>
-                  {c.prevailing && (
+                  {c.prevails && (
                     <div className="mt-1.5 text-[11px] font-medium text-amber-900 dark:text-amber-300">
-                      Prevailing: {c.prevailing}
+                      Prevailing: {c.prevails}
                     </div>
                   )}
                   {(c.notes || c.reason) && (

@@ -29,7 +29,7 @@ export interface Passage {
 export interface ConflictRecord {
   doc_id: string;
   conflicts_with: string;
-  prevailing?: string;
+  prevails?: string;
   reason?: string;
   notes?: string;
   topic?: string;
@@ -40,19 +40,17 @@ export interface DocumentSummary {
   title: string;
   domain: string;
   authority: string;
-  precedence: number;
-  status: string;
   summary: string;
-  chunk_count: number;
+  sections: number;
   topics?: string[];
 }
 
 export interface IndexStatus {
-  version: number;
+  pinned_snapshot: number;
   embedding_model: string;
-  doc_count: number;
-  chunk_count: number;
-  built_at?: string;
+  documents: number;
+  chunks: number;
+  created_at?: string;
   qa_enabled?: boolean;
   llm_model?: string;
 }

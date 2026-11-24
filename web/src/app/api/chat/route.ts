@@ -54,7 +54,7 @@ function buildEvidencePrompt(
       .map(
         (c) =>
           `- ${c.doc_id} vs ${c.conflicts_with}` +
-          (c.prevailing ? ` (prevailing: ${c.prevailing})` : "") +
+          (c.prevails ? ` (prevailing: ${c.prevails})` : "") +
           (c.notes || c.reason ? ` — ${c.notes || c.reason}` : "")
       )
       .join("\n");

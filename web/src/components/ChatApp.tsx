@@ -339,8 +339,8 @@ export function ChatApp() {
               <div className="flex items-center gap-2 text-[11px] text-stone-500 dark:text-zinc-400">
                 {meta?.status ? (
                   <span>
-                    {meta.status.doc_count} documents ·{" "}
-                    {meta.status.chunk_count.toLocaleString("en-GB")} sections
+                    {meta.status.documents ?? 0} documents ·{" "}
+                    {(meta.status.chunks ?? 0).toLocaleString("en-GB")} sections
                   </span>
                 ) : (
                   <span>Evidence-first assistant</span>

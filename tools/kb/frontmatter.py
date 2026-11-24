@@ -164,7 +164,10 @@ def validate_meta(
         source_path = (source_root / sf).resolve()
         if not source_path.is_relative_to(source_root.resolve()):
             raise FrontMatterError(f"source_file '{meta.source_file}' escapes raw/")
-        if not source_path.exists():
+        # raw/ is private and is not in the repository. A clone (and the Vercel
+        # build) has no originals; the corpus Markdown is enough to index.
+        # When raw/ is present, a missing original is still an ingest error.
+        if source_root.exists() and not source_path.exists():
             raise FrontMatterError(f"source_file '{meta.source_file}' not found in raw/")
 
     return meta

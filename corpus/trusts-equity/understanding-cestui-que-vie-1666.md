@@ -133,7 +133,7 @@ Cestui Que Vie “Trust“ How we’re all dry shafted by trickery! 👺
 2. **In 1931, the “EMERGENCY“ RELIEF “ AND CONSTRUCTIONS ACT 1931 – 1932; and**
 3. **In 2001, the “PATRIOT“ ACT 2001;**
 
-**( NOTICE EVERY SEVENTY (70) years apart…..! I predict 2071 there will be another Act 😀 )**
+**(NOTICE EVERY SEVENTY (70) years apart…..! I predict 2071 there will be another Act 😀)**
 
 ### Canon 2044
 
@@ -189,7 +189,7 @@ Cestui Que Vie “Trust“ How we’re all dry shafted by trickery! 👺
 
 ### Canon 2057
 
-**Any Administrator or Executor that refuses to immediately dissolve a Cestui Que Vie “TRUST“ upon a “PERSON“ establishing their “STATUS and COMPETENCY“ is guilty of “FRAUD“ and “FUNDAMENTAL BREACH“ of their “FIDUCIARY DUTIES“ requiring their immediate “REMOVAL and PUNISHMENT. ( mash peha – unlucky ).**
+**Any Administrator or Executor that refuses to immediately dissolve a Cestui Que Vie “TRUST“ upon a “PERSON“ establishing their “STATUS and COMPETENCY“ is guilty of “FRAUD“ and “FUNDAMENTAL BREACH“ of their “FIDUCIARY DUTIES“ requiring their immediate “REMOVAL and PUNISHMENT. (mash peha – unlucky).**
 
 ## I HAVE INCLUDED REFERENCES IN ORDER FOR YOU TO START YOUR OWN RESEARCH!!
 

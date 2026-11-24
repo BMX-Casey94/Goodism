@@ -708,7 +708,7 @@ Yes we were taught this at school for those unlucky enough to go there; it is il
 
 **“The birth-certificate clausula rebus sic stantibus”;**
 
-**[ It is illegal to use a legal name ]**
+**[It is illegal to use a legal name]**
 
 **For this is our interpretation of the fraud by the- three-(3)-birth certificates being the start of the- modern day slavery of all men and women on this- plane of earth;**
 
@@ -818,7 +818,7 @@ Yes we were taught this at school for those unlucky enough to go there; it is il
 
 **“Certificate of an entry                                       “Certificate of birth**
 
-**of a birth”                                                  [ Of = Without in trust law ]**
+**of a birth”                                                  [Of = Without in trust law]**
 
 **: John-Henry.**
 

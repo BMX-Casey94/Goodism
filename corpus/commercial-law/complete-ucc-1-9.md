@@ -1238,7 +1238,7 @@ Unless otherwise agreed
 
 (a)-payment is due at the time and place at which the buyer is to receive the goods even though the place of shipment is the place of delivery;
 
-[ 41 ]
+[41]
 
 (b)-if the seller is required or authorized to send the goods, the seller may ship them under reservation, and may tender the documents of title, but the buyer may inspect the goods after their arrival before payment is due unless the inspection is inconsistent with the terms of the contract (Section 2‐513);
 
@@ -3274,7 +3274,7 @@ a supplier is answerable over the following apply:
 
 ### § 2A‐519. LESSEE'S DAMAGES FOR NON‐DELIVERY, REPUDIATION, DEFAULT, AND BREACH OF WARRANTY IN REGARD TO ACCEPTED GOODS.
 
-(1)-Except as otherwise provided with respect to damages liquidated in the lease agreement (Section 2A‐504) or otherwise determined pursuant to agreement of the parties ( Sections 1‐302 and 2A‐503), if a lessee elects not to cover or a lessee elects to cover and the cover is by lease agreement that for any reason does not qualify for treatment under Section 2A‐518(2), or is by purchase or otherwise, the measure of damages for non‐delivery or repudiation by the lessor or for rejection or revocation of acceptance by the lessee is the present value, as of the date of the default, of the then market rent minus the present value as of the same date of the original rent, computed for the remaining lease term of the original lease agreement, together with incidental and consequential damages, less expenses saved in consequence of the lessor's default.
+(1)-Except as otherwise provided with respect to damages liquidated in the lease agreement (Section 2A‐504) or otherwise determined pursuant to agreement of the parties (Sections 1‐302 and 2A‐503), if a lessee elects not to cover or a lessee elects to cover and the cover is by lease agreement that for any reason does not qualify for treatment under Section 2A‐518(2), or is by purchase or otherwise, the measure of damages for non‐delivery or repudiation by the lessor or for rejection or revocation of acceptance by the lessee is the present value, as of the date of the default, of the then market rent minus the present value as of the same date of the original rent, computed for the remaining lease term of the original lease agreement, together with incidental and consequential damages, less expenses saved in consequence of the lessor's default.
 
 (2)-Market rent is to be determined as of the place for tender or, in cases of rejection after arrival or revocation of acceptance, as of the place of arrival.
 
@@ -3370,7 +3370,7 @@ a supplier is answerable over the following apply:
 
 (1)-After a default by a lessee under the lease contract of the type described in Section 2A‐523(1) or 2A‐523(3)(a) or after the lessor refuses to deliver or takes possession of goods (Section 2A‐525 or 2A‐526), or, if agreed, after other default by a lessee, the lessor may dispose of the goods concerned or the undelivered balance thereof by lease, sale, or otherwise.
 
-(2)-Except as otherwise provided with respect to damages liquidated in the lease agreement (Section 2A‐504) or otherwise determined pursuant to agreement of the parties ( Sections 1‐302 and 2A‐503), if the disposition is by lease agreement substantially similar to the original lease agreement and the new lease agreement is made in good faith and in a commercially reasonable manner, the lessor may recover from the lessee as damages (i) accrued and unpaid rent as of the date of the commencement of the term of the new lease agreement, (ii) the present value, as of the same date, of the total rent for the then remaining lease term of the original lease agreement minus the present value, as of the same date, of the rent under the new lease agreement applicable to that period of the new lease term which is comparable to the then remaining term of the original lease agreement, and (iii) any incidental damages allowed under Section 2A‐530, less expenses saved in consequence of the lessee's default.
+(2)-Except as otherwise provided with respect to damages liquidated in the lease agreement (Section 2A‐504) or otherwise determined pursuant to agreement of the parties (Sections 1‐302 and 2A‐503), if the disposition is by lease agreement substantially similar to the original lease agreement and the new lease agreement is made in good faith and in a commercially reasonable manner, the lessor may recover from the lessee as damages (i) accrued and unpaid rent as of the date of the commencement of the term of the new lease agreement, (ii) the present value, as of the same date, of the total rent for the then remaining lease term of the original lease agreement minus the present value, as of the same date, of the rent under the new lease agreement applicable to that period of the new lease term which is comparable to the then remaining term of the original lease agreement, and (iii) any incidental damages allowed under Section 2A‐530, less expenses saved in consequence of the lessee's default.
 
 (3)-If the lessor's disposition is by lease agreement that for any reason does not qualify for treatment under subsection (2), or is by sale or otherwise, the lessor may recover from the lessee as if the lessor had elected not to dispose of the goods and Section 2A‐ 528 governs.
 
@@ -3380,7 +3380,7 @@ a supplier is answerable over the following apply:
 
 ### § 2A‐528. LESSOR'S DAMAGES FOR NON‐ACCEPTANCE, FAILURE TO PAY, REPUDIATION, OR OTHER DEFAULT.
 
-(1)-Except as otherwise provided with respect to damages liquidated in the lease agreement (Section 2A‐504) or otherwise determined pursuant to agreement of the parties ( Sections 1‐302 and 2A‐503), if a lessor elects to retain the goods or a lessor elects to dispose of the goods and the disposition is by lease agreement that for any reason does not qualify for treatment under Section 2A‐527(2), or is by sale or otherwise, the lessor may recover from the lessee as damages for a default of the type described in Section 2A‐523(1) or 2A‐523(3)(a), or, if agreed, for other default of the lessee, (i) accrued and unpaid rent as of the date of default if the lessee has never taken possession of the goods, or, if the lessee has taken possession of the goods, as of the date the lessor repossesses the goods or an earlier date on which the lessee makes a tender of the goods to the lessor, (ii) the present value as of the date determined under clause (i) of the total rent for the then remaining lease term of the original lease agreement minus the present value as of the same date of the market rent at the place where the goods are located computed for the same lease term, and (iii) any incidental damages allowed under Section 2A‐530, less expenses saved in consequence of the lessee's default.
+(1)-Except as otherwise provided with respect to damages liquidated in the lease agreement (Section 2A‐504) or otherwise determined pursuant to agreement of the parties (Sections 1‐302 and 2A‐503), if a lessor elects to retain the goods or a lessor elects to dispose of the goods and the disposition is by lease agreement that for any reason does not qualify for treatment under Section 2A‐527(2), or is by sale or otherwise, the lessor may recover from the lessee as damages for a default of the type described in Section 2A‐523(1) or 2A‐523(3)(a), or, if agreed, for other default of the lessee, (i) accrued and unpaid rent as of the date of default if the lessee has never taken possession of the goods, or, if the lessee has taken possession of the goods, as of the date the lessor repossesses the goods or an earlier date on which the lessee makes a tender of the goods to the lessor, (ii) the present value as of the date determined under clause (i) of the total rent for the then remaining lease term of the original lease agreement minus the present value as of the same date of the market rent at the place where the goods are located computed for the same lease term, and (iii) any incidental damages allowed under Section 2A‐530, less expenses saved in consequence of the lessee's default.
 
 (2)-If the measure of damages provided in subsection (1) is inadequate to put a lessor in as good a position as performance would have, the measure of damages is the present value of the profit, including reasonable overhead, the lessor would have made from full performance by the lessee, together with any incidental damages allowed under Section 2A‐530, due allowance for costs reasonably incurred and due credit for payments or proceeds of disposition.
 
@@ -5085,7 +5085,7 @@ the draft is unauthorised; and
 
 (c) Receipt by a collecting bank of a final settlement for an item is a realisation on its security interest in the item, accompanying documents, and proceeds. So long as the bank does not receive final settlement for the item or give up possession of the item or possession or control of the accompanying documents for purposes other than collection, the security interest continues to that extent and is subject to Article 9, but:
 
-(1) no security agreement is necessary to make the security interest enforceable ( Section 9‐203(b)(3)(A));
+(1) no security agreement is necessary to make the security interest enforceable (Section 9‐203(b)(3)(A));
 
 (2) no filing is required to perfect the security interest; and
 
@@ -6708,7 +6708,7 @@ seller within three years before the date the list is sent or delivered to the b
 
 (6) The following assets are the subject of the sale: __________________________.
 
-[ 291 ]
+[291]
 
             
 
@@ -9870,7 +9870,7 @@ debtor or its designated custodian;
 
 (B) if the debtor designates a custodian that is the designated custodian with
 
-which the authoritative copy of the electronic chattel paper is maintained for [ 416 ]
+which the authoritative copy of the electronic chattel paper is maintained for [416]
 
                             
 
@@ -12327,29 +12327,29 @@ concerning the disposition and the obligation secured is available.
 1. A particular phrasing of the notification is not required.
 2. The following form of notification, when completed, provides sufficient information:
 
-[Name and address of secured party ].                            [Date ].    
+[Name and address of secured party].                            [Date].    
 
 **NOTICE OF OUR PLAN TO SELL PROPERTY**
 
-[Name and address of any obligor who is also a debtor ] Subject: [Identification of Transaction ]
+[Name and address of any obligor who is also a debtor] Subject: [Identification of Transaction]
 
-We have your [describe collateral ], because you broke promises in our agreement. [For a public disposition: ]
+We have your [describe collateral], because you broke promises in our agreement. [For a public disposition:]
 
 We will sell [describe collateral] at public sale. A sale could include a lease or license. The sale will be held as follows:
 
 Date: _____.                       Time: _____.                         Place: _____.   
 
-You may attend the sale and bring bidders if you want. [For a private disposition: ]
+You may attend the sale and bring bidders if you want. [For a private disposition:]
 
 We will sell [describe collateral] at private sale sometime after [date]. A sale could include a lease or license.
 
 The money that we get from the sale (after paying our costs) will reduce the amount you owe. If we get less money than you owe, you [will or will not, as applicable] ] still owe us the difference. If we get more money than you owe, you will get the extra money, unless we must pay it to someone else.
 
-You can get the property back at any time before we sell it by paying us the full amount you owe (not just the past due payments), including our expenses. To learn the exact amount you must pay, call us at [telephone number ] ].
+You can get the property back at any time before we sell it by paying us the full amount you owe (not just the past due payments), including our expenses. To learn the exact amount you must pay, call us at [telephone number] ].
 
-If you want us to explain to you in writing how we have figured the amount that you owe us, you may call us at " [telephone number ] ] [or write us at [secured party's address] ] and request a written explanation. [We will charge you $ _____ for the explanation if we sent you another written explanation of the amount you owe us within the last six months.]
+If you want us to explain to you in writing how we have figured the amount that you owe us, you may call us at " [telephone number] ] [or write us at [secured party's address]] and request a written explanation. [We will charge you $ _____ for the explanation if we sent you another written explanation of the amount you owe us within the last six months.]
 
-If you need more information about the sale call us at [telephone number] ] [or write us at [secured party's address] ].
+If you need more information about the sale call us at [telephone number] ] [or write us at [secured party's address]].
 
 We are sending this notice to the following other people who have an interest in [describe collateral] or who owe money under your agreement: [Names of all other debtors and obligors, if any]
 

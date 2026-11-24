@@ -58,7 +58,7 @@ the Birth. The family were given:
 • If the above is not practicable (as in the case of an NHS midwife sent to a home
 birth), get a Doula, Birthkeeper, or independent witness to make a signed
 declaration along the following lines:
-"I, [ Doula or Birthkeeper's full name], hereby declare and confirm
+"I, [Doula or Birthkeeper's full name], hereby declare and confirm
 that I was present on [insert day of week, day of month and year] at
 [insert time] at the address known to me as [insert address in lower
 case and post-code in square brackets) when the mother known to

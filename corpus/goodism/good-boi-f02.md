@@ -91,7 +91,7 @@ conflicts_with:
 
 **Chapter-(18)-eighteen: Useful information:…………..Page 73 – 80**
 
-**[ As writ on page sixty-seven-(67)-of this book ]**
+**[As writ on page sixty-seven-(67)-of this book]**
 
 **For the knowledge of the consequence by the- capitalising of word(s)-in a doc-u-ment is with-**
 
@@ -107,7 +107,7 @@ conflicts_with:
 
 **capitalised word[s]-and not just letter[s]-for we- believe this is not English and by foreign-gloss.**
 
-**[ As writ on page sixty-seven-(67)-of this book ]**
+**[As writ on page sixty-seven-(67)-of this book]**
 
 **![Image 1](../assets/good-boi-f02/img-001.png)**
 
@@ -117,7 +117,7 @@ conflicts_with:
 
 **“The birth-certificate clausula rebus sic stantibus”**
 
-**[ It is illegal to use a legal name ]**
+**[It is illegal to use a legal name]**
 
 **With this interpretation of the fraud by the three-(3)-birth certificates being the start of the modern- day slavery of all men and women on this earth.**
 
@@ -324,7 +324,7 @@ Despite these general affirmations, many countries continue to practice incommun
 
 **Certificate of an entry                                          Certificate of birth**
 
-**of a birth.                                                    [ Of = Without in trust law ]**
+**of a birth.                                                    [Of = Without in trust law]**
 
 **John Henry**
 
@@ -603,7 +603,7 @@ With this fact of the taking away of either the **fuel**, the **ignition** or th
 
 is no evidence of the **thought** of a crime or the **act** of a crime or the **evidence** itself then- there must be no crime being or have been commit.
 
-**[ For we can only ever sight a fact and  we only ever see a fiction ]**
+**[For we can only ever sight a fact and  we only ever see a fiction]**
 
 **![Image 2](../assets/good-boi-f02/img-002.png)**
 
@@ -687,7 +687,7 @@ picture we will have the true meaning and not an interpretation.
 
 **[“Davies- V Andrews, Tex.Civ.App, 361 S.W.2d 419, 423 – Blacks Law - 5th Ed. Page 591”]**
 
-**And this combine with the definition and description of [ Square brackets ] found in the-**
+**And this combine with the definition and description of [Square brackets] found in the-**
 
 **“Plymouth University Foundation Degree Guidelines” on essay writing.**
 
@@ -1157,7 +1157,7 @@ The autograph should be accompanied with “all rights reserved” written below
 
 **: choice of vessel on the postal Road and shipping Lane here-in.**
 
-**1~-“John SMITH.p.-p.-Of-[ the address of thy fiction as by: John.-& John SNITH]-[A.-~3~-~4~-H.-L.].**
+**1~-“John SMITH.p.-p.-Of-[the address of thy fiction as by: John.-& John SNITH]-[A.-~3~-~4~-H.-L.].**
 
 **2~-“Julie LENNARD”-acting as the-“Chief-Executive-Officer-of D.-V.-L.-A.-Longview-road-**
 
@@ -1486,7 +1486,7 @@ As found in Black's Law Dictionary, Sixth Edition, page 1142 under: “Person�
 
 **With this extract of the acceptance by the-“Silent- Acquiescence”.**
 
-**[ With this reference of the remedy in this page- seventy-nine-(79)- of this book ]**
+**[With this reference of the remedy in this page- seventy-nine-(79)- of this book]**
 
 **![Image 1](../assets/good-boi-f02/img-001.png)**
 
@@ -1752,7 +1752,7 @@ As found in Black's Law Dictionary, Sixth Edition, page 1142 under: “Person�
 
 **We as John Doe do not believe that anyone in authority is supposed to do harm to any of its inhabitants there-of; and**
 
-**The law states that the minimum we are allowed to live on is the allocated amount issued by the Department of Work and Pensions [ D.W.P. ];**
+**The law states that the minimum we are allowed to live on is the allocated amount issued by the Department of Work and Pensions [D.W.P.];**
 
 **We as John Doe already survive on less than the minimum stated in law; and**
 

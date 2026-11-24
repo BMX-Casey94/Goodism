@@ -244,7 +244,12 @@ export function ChatApp() {
                 t.id === assistantId
                   ? {
                       ...t,
-                      mode: payload.mode === "evidence" ? "evidence" : "qa",
+                      mode:
+                        payload.mode === "evidence"
+                          ? "evidence"
+                          : payload.mode === "chat"
+                            ? "chat"
+                            : "qa",
                       model: typeof payload.model === "string" ? payload.model : "",
                       passages: Array.isArray(payload.passages)
                         ? (payload.passages as Passage[])
@@ -473,9 +478,11 @@ export function ChatApp() {
                       ) : turn.streaming ? (
                         <div className="flex items-center gap-2 py-1 text-xs text-stone-500 dark:text-zinc-400">
                           <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-amber-600" />
-                          {turn.passages
-                            ? `Found ${turn.passages.length} passages · Drafting answer…`
-                            : "Searching knowledge base…"}
+                          {turn.mode === "chat"
+                            ? "Drafting reply…"
+                            : turn.passages
+                              ? `Found ${turn.passages.length} passages · Drafting answer…`
+                              : "Searching knowledge base…"}
                         </div>
                       ) : null}
 
@@ -496,7 +503,7 @@ export function ChatApp() {
                         />
                       )}
 
-                      {!turn.streaming && turn.userQuestion && (
+                      {!turn.streaming && turn.userQuestion && turn.mode !== "chat" && (
                         <FeedbackBar
                           question={turn.userQuestion}
                           mode={turn.mode === "evidence" ? "evidence" : "qa"}

@@ -67,7 +67,7 @@ export interface ChatTurn {
   id: string;
   role: "user" | "assistant";
   content: string;
-  mode?: "qa" | "evidence";
+  mode?: "qa" | "evidence" | "chat";
   model?: string;
   passages?: Passage[];
   conflicts?: ConflictRecord[];

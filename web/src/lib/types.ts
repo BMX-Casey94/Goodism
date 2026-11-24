@@ -84,4 +84,5 @@ export interface MetaPayload {
   llmConfigured: boolean;
   model: string;
   backendReachable: boolean;
+  backendError?: string | null;
 }

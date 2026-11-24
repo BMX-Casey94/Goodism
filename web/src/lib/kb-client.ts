@@ -8,8 +8,21 @@ export class BackendError extends Error {
   }
 }
 
+function runtimeEnv(name: string): string {
+  // Computed access so Next.js does not inline the value at build time.
+  // Vercel service bindings are injected only when the function runs.
+  return (process.env[name] ?? "").trim();
+}
+
 function getBackendBaseUrl(): string {
-  const raw = (process.env.KB_BACKEND_URL || "http://127.0.0.1:8080").trim();
+  const bound = runtimeEnv("KB_BACKEND_URL");
+  const raw = bound || (process.env.VERCEL ? "" : "http://127.0.0.1:8080");
+  if (!raw) {
+    throw new BackendError(
+      503,
+      "The retrieval service address was not provided to this deployment."
+    );
+  }
   return raw.endsWith("/") ? raw : `${raw}/`;
 }
 
@@ -18,7 +31,7 @@ function getBackendHeaders(extra?: Record<string, string>): Record<string, strin
     Accept: "application/json",
     ...extra,
   };
-  const token = (process.env.KB_BACKEND_TOKEN || "").trim();
+  const token = runtimeEnv("KB_BACKEND_TOKEN");
   if (token) {
     headers["Authorization"] = `Bearer ${token}`;
   }

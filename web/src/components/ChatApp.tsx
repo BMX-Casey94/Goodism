@@ -395,9 +395,7 @@ export function ChatApp() {
         <div className="border-b border-amber-200 bg-amber-50 px-4 py-2 text-center text-xs text-amber-900 dark:border-amber-900/60 dark:bg-amber-950/40 dark:text-amber-200">
           <span className="inline-flex items-center gap-1.5 font-medium">
             <WifiOff className="h-3.5 w-3.5" />
-            Knowledge base retrieval server is currently offline. Check{" "}
-            <code className="font-mono">KB_BACKEND_URL</code> or start{" "}
-            <code className="font-mono">python -m server.web_app</code>.
+            {meta.backendError || "The retrieval service did not respond."}
           </span>
         </div>
       )}

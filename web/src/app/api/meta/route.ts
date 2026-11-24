@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { isAuthenticated } from "@/lib/auth";
-import { kbFetch } from "@/lib/kb-client";
+import { BackendError, kbFetch } from "@/lib/kb-client";
 import type { ConflictRecord, DocumentSummary, IndexStatus, MetaPayload } from "@/lib/types";
 
 export async function GET() {
@@ -13,12 +13,20 @@ export async function GET() {
   const llmConfigured = Boolean((process.env.OPENROUTER_API_KEY || "").trim());
 
   const [statusRes, docsRes, conflictsRes] = await Promise.allSettled([
-    kbFetch<IndexStatus>("/api/status", { timeoutMs: 8_000 }),
-    kbFetch<{ documents: DocumentSummary[] }>("/api/documents", { timeoutMs: 8_000 }),
-    kbFetch<{ conflicts: ConflictRecord[] }>("/api/conflicts", { timeoutMs: 8_000 }),
+    kbFetch<IndexStatus>("/api/status", { timeoutMs: 20_000 }),
+    kbFetch<{ documents: DocumentSummary[] }>("/api/documents", { timeoutMs: 20_000 }),
+    kbFetch<{ conflicts: ConflictRecord[] }>("/api/conflicts", { timeoutMs: 20_000 }),
   ]);
 
   const backendReachable = statusRes.status === "fulfilled";
+  let backendError: string | null = null;
+  if (!backendReachable) {
+    const reason = statusRes.reason;
+    backendError =
+      reason instanceof BackendError
+        ? reason.message
+        : "The retrieval service did not respond.";
+  }
   const payload: MetaPayload = {
     status: statusRes.status === "fulfilled" ? statusRes.value : null,
     documents: docsRes.status === "fulfilled" ? docsRes.value.documents ?? [] : [],
@@ -27,6 +35,7 @@ export async function GET() {
     llmConfigured,
     model,
     backendReachable,
+    backendError,
   };
 
   return NextResponse.json(payload, {

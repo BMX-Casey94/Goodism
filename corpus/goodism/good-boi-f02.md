@@ -184,7 +184,7 @@ conflicts_with:
 
 1. **[Grammar]:**
 
-**A category used in the classification of pronouns, possessive determiners, and verb- forms, according to whether they indicate the speaker ( first person )- the addressee ( second person ), or a third party ( third person ).**
+**A category used in the classification of pronouns, possessive determiners, and verb- forms, according to whether they indicate the speaker (first person)- the addressee (second person), or a third party (third person).**
 
 1. **[CHRISTIAN-THEOLOGY]:**
 
@@ -1806,7 +1806,7 @@ As found in Black's Law Dictionary, Sixth Edition, page 1142 under: “Person�
 
 **Law - This derives from the Magna Carta 1215 and states the law of the land- although in 1250 a new Magna Carta was written and duplicated difference- been all rights were removed.**
 
-**The government at this time tried to hide the 1215 and use the 1250 version- but the 1215 was created by living man / woman ( TREATY ) and the 1250 by a- corporation known as the crown.**
+**The government at this time tried to hide the 1215 and use the 1250 version- but the 1215 was created by living man / woman (TREATY) and the 1250 by a- corporation known as the crown.**
 
 **It wasn’t until 1689 when the Bill Of Rights 1689 was written thus stopping all- confusion between the 1215 and the 1250 Magna Carta as this re introduced- all Rights that were tried to be removed by the 1250 version....**
 
@@ -1828,8 +1828,8 @@ As found in Black's Law Dictionary, Sixth Edition, page 1142 under: “Person�
 1. **Government owned by Crown corporation.**
 2. **Birth Certificate created / owned by Crown.**
 3. **By using Birth Cert you become government employee.**
-4. **As government employee you have to follow policies and procedures of- that corporation I.e. Statutory Rules of law ( Acts )**
-5. **When you state the full title MR / MRS JON DOE and the date- corporation was created ( Birth Cert created ) you create a verbal- contract called joinder which gives your consent to be punished under- statute law**
+4. **As government employee you have to follow policies and procedures of- that corporation I.e. Statutory Rules of law (Acts)**
+5. **When you state the full title MR / MRS JON DOE and the date- corporation was created (Birth Cert created) you create a verbal- contract called joinder which gives your consent to be punished under- statute law**
 
 **Who holds written authority for the use of a crown copyright owned birth- certificate name with no title and with only a likeness of  your name but with- use of capitalised grammar non-existent in an English dictionary ??**
 

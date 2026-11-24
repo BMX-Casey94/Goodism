@@ -126,8 +126,9 @@ def validate_meta(
     """Validate a front matter dict into a DocumentMeta.
 
     When ``check_vocab`` is set, domain/topics/doc_type are checked against
-    the controlled vocabularies. When ``source_root`` is given, the
-    referenced source file must exist under it.
+    the controlled vocabularies. When ``source_root`` is given, ``source_file``
+    must stay inside it. The original itself may be absent: ``raw/`` is not
+    part of the repository, and indexing uses the committed Markdown.
     """
     try:
         meta = DocumentMeta.model_validate(data)
@@ -164,11 +165,6 @@ def validate_meta(
         source_path = (source_root / sf).resolve()
         if not source_path.is_relative_to(source_root.resolve()):
             raise FrontMatterError(f"source_file '{meta.source_file}' escapes raw/")
-        # raw/ is private and is not in the repository. A clone (and the Vercel
-        # build) has no originals; the corpus Markdown is enough to index.
-        # When raw/ is present, a missing original is still an ingest error.
-        if source_root.exists() and not source_path.exists():
-            raise FrontMatterError(f"source_file '{meta.source_file}' not found in raw/")
 
     return meta
 

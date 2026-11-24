@@ -35,8 +35,16 @@ from .hashing import sha256_text
 SCHEMA_VERSION = 1
 
 
-def _connect(db_path: Path | None = None) -> sqlite3.Connection:
-    path = db_path or config.INDEX_DB_PATH
+def _connect(db_path: Path | None = None, *, readonly: bool = False) -> sqlite3.Connection:
+    path = (db_path or config.INDEX_DB_PATH).resolve()
+    if readonly:
+        # Read-only so a query never creates a journal. Vercel's runtime
+        # filesystem is read-only outside /tmp.
+        if not path.is_file():
+            raise RuntimeError("index is empty; run `kb build-index` first")
+        conn = sqlite3.connect(f"{path.as_uri()}?mode=ro", uri=True)
+        conn.execute("PRAGMA query_only=ON")
+        return conn
     path.parent.mkdir(parents=True, exist_ok=True)
     conn = sqlite3.connect(path)
     conn.execute("PRAGMA journal_mode=WAL")
@@ -517,7 +525,7 @@ def search(
     embedder: Embedder | None = None,
 ) -> list[SearchHit]:
     """Hybrid search over the pinned snapshot with RRF fusion + rerank."""
-    conn = _connect(db_path)
+    conn = _connect(db_path, readonly=True)
     try:
         snapshot_id = _pinned_snapshot(conn)
         if embedder is None:
@@ -653,7 +661,7 @@ def get_neighbours(
     db_path: Path | None = None,
 ) -> list[dict]:
     """Chunks around ``ordinal`` in the pinned snapshot, in document order."""
-    conn = _connect(db_path)
+    conn = _connect(db_path, readonly=True)
     try:
         snapshot_id = _pinned_snapshot(conn)
         rows = conn.execute(
@@ -668,7 +676,7 @@ def get_neighbours(
 
 
 def list_indexed_documents(db_path: Path | None = None) -> list[dict]:
-    conn = _connect(db_path)
+    conn = _connect(db_path, readonly=True)
     try:
         snapshot_id = _pinned_snapshot(conn)
         rows = conn.execute(
@@ -690,7 +698,7 @@ def list_indexed_documents(db_path: Path | None = None) -> list[dict]:
 
 def index_status(db_path: Path | None = None) -> dict:
     """Snapshot pin + counts, exposed via the MCP get_index_status tool."""
-    conn = _connect(db_path)
+    conn = _connect(db_path, readonly=True)
     try:
         snapshot_id = _pinned_snapshot(conn)
         row = conn.execute(

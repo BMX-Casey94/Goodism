@@ -17,7 +17,12 @@
       "root": ".",
       "runtime": "python",
       "entrypoint": "server/web_app.py",
-      "buildCommand": "KB_EMBEDDING_MODEL=fts-only python -m tools.kb.cli build-index"
+      "buildCommand": "KB_EMBEDDING_MODEL=fts-only python -m tools.kb.cli build-index",
+      "functions": {
+        "server/web_app.py": {
+          "includeFiles": "{index/**,corpus/**,schema/**,manifest/**,server/bot_system_prompt.md}"
+        }
+      }
     }
   },
   "rewrites": [

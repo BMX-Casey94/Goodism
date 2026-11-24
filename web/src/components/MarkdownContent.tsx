@@ -48,7 +48,13 @@ function renderInline(text: string, keyPrefix: string): React.ReactNode[] {
   return nodes;
 }
 
-export function MarkdownContent({ content }: { content: string }) {
+export function MarkdownContent({
+  content,
+  compact = false,
+}: {
+  content: string;
+  compact?: boolean;
+}) {
   const lines = content.replace(/\r\n/g, "\n").split("\n");
   const blocks: React.ReactNode[] = [];
   let i = 0;
@@ -72,16 +78,20 @@ export function MarkdownContent({ content }: { content: string }) {
     }
 
     // Headings
-    const headingMatch = /^(#{1,3})\s+(.+)$/.exec(line.trim());
+    const headingMatch = /^(#{1,6})\s+(.+)$/.exec(line.trim());
     if (headingMatch) {
       const level = headingMatch[1].length;
       const text = headingMatch[2];
-      const cls =
-        level === 1
-          ? "mt-5 mb-2 text-lg font-semibold tracking-tight text-stone-950 dark:text-zinc-50"
+      const size = compact
+        ? level === 1
+          ? "text-sm"
+          : "text-[0.8125rem]"
+        : level === 1
+          ? "text-lg"
           : level === 2
-          ? "mt-4 mb-1.5 text-base font-semibold tracking-tight text-stone-950 dark:text-zinc-50"
-          : "mt-3 mb-1 text-sm font-semibold text-stone-900 dark:text-zinc-100";
+            ? "text-base"
+            : "text-sm";
+      const cls = `mt-3 mb-1 font-semibold tracking-tight text-stone-950 first:mt-0 dark:text-zinc-50 ${size}`;
       blocks.push(
         <h3 key={blockKey++} className={cls}>
           {renderInline(text, `h-${blockKey}`)}
@@ -172,5 +182,5 @@ export function MarkdownContent({ content }: { content: string }) {
     );
   }
 
-  return <div className="text-[0.95rem]">{blocks}</div>;
+  return <div className={compact ? "text-[0.8125rem] leading-relaxed" : "text-[0.95rem]"}>{blocks}</div>;
 }

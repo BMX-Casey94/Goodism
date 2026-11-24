@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { BookOpen, ChevronDown, ChevronRight, Expand, ShieldCheck, AlertTriangle } from "lucide-react";
 import type { NeighbourChunk, Passage } from "@/lib/types";
+import { MarkdownContent } from "./MarkdownContent";
 
 interface SourcesDrawerProps {
   passages: Passage[];
@@ -111,9 +112,9 @@ export function SourcesDrawer({ passages, defaultOpen = false }: SourcesDrawerPr
                 </div>
               </div>
 
-              <p className="mt-2 whitespace-pre-wrap rounded-lg bg-white/90 p-2.5 text-xs leading-relaxed text-stone-700 ring-1 ring-stone-200/70 dark:bg-zinc-950/70 dark:text-zinc-300 dark:ring-zinc-800">
-                {p.text.trim()}
-              </p>
+              <div className="mt-2 rounded-lg bg-white/90 p-3 text-stone-700 ring-1 ring-stone-200/70 dark:bg-zinc-950/70 dark:text-zinc-300 dark:ring-zinc-800">
+                <MarkdownContent content={p.text.trim()} compact />
+              </div>
 
               <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
                 <button
@@ -152,9 +153,9 @@ export function SourcesDrawer({ passages, defaultOpen = false }: SourcesDrawerPr
                       <div className="font-mono text-[10px] text-stone-500 dark:text-zinc-400">
                         [{ch.ordinal}] {ch.heading_path}
                       </div>
-                      <p className="mt-0.5 whitespace-pre-wrap leading-relaxed text-stone-700 dark:text-zinc-300">
-                        {ch.text.trim()}
-                      </p>
+                      <div className="mt-0.5 text-stone-700 dark:text-zinc-300">
+                        <MarkdownContent content={ch.text.trim()} compact />
+                      </div>
                     </div>
                   ))}
                 </div>

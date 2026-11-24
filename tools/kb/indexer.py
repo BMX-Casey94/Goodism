@@ -152,6 +152,8 @@ class Embedder:
         return self._client
 
     def embed(self, texts: list[str]) -> list[list[float]]:
+        if self.model == "fts-only":
+            return [[] for _ in texts]
         if self._local is not None:
             return self._local.embed(texts)
         client = self._get_client()
@@ -336,7 +338,7 @@ def build_index(
                         chunk.end,
                         chunk.text,
                         chunk.display,
-                        _pack_embedding(embedding),
+                        _pack_embedding(embedding) if embedding else None,
                     ),
                 )
             total_chunks += len(chunks)
@@ -551,25 +553,26 @@ def search(
         keyword_rank = {row[0]: i + 1 for i, row in enumerate(keyword_rows)}
 
         # Vector leg (exact cosine over the snapshot's chunks).
-        query_vec = embedder.embed([query])[0]
         vector_rank: dict[int, int] = {}
-        rows = conn.execute(
-            f"""
-            SELECT c.id, c.embedding
-            FROM chunks c
-            JOIN documents d ON d.doc_id = c.doc_id AND d.snapshot_id = c.snapshot_id
-            WHERE c.snapshot_id = ? {doc_filter}
-            """,
-            params,
-        ).fetchall()
-        scored = [
-            (row[0], _cosine(query_vec, _unpack_embedding(row[1])))
-            for row in rows
-            if row[1] is not None
-        ]
-        scored.sort(key=lambda item: item[1], reverse=True)
-        for i, (chunk_id, _) in enumerate(scored[: config.SEARCH_CANDIDATES_PER_LEG]):
-            vector_rank[chunk_id] = i + 1
+        if embedder.model != "fts-only":
+            query_vec = embedder.embed([query])[0]
+            rows = conn.execute(
+                f"""
+                SELECT c.id, c.embedding
+                FROM chunks c
+                JOIN documents d ON d.doc_id = c.doc_id AND d.snapshot_id = c.snapshot_id
+                WHERE c.snapshot_id = ? {doc_filter}
+                """,
+                params,
+            ).fetchall()
+            scored = [
+                (row[0], _cosine(query_vec, _unpack_embedding(row[1])))
+                for row in rows
+                if row[1] is not None
+            ]
+            scored.sort(key=lambda item: item[1], reverse=True)
+            for i, (chunk_id, _) in enumerate(scored[: config.SEARCH_CANDIDATES_PER_LEG]):
+                vector_rank[chunk_id] = i + 1
 
         # Reciprocal rank fusion.
         candidate_ids = set(keyword_rank) | set(vector_rank)

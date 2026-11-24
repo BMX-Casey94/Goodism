@@ -8,7 +8,6 @@ import {
   Moon,
   Plus,
   SlidersHorizontal,
-  Sparkles,
   Square,
   Sun,
   WifiOff,
@@ -329,8 +328,11 @@ export function ChatApp() {
       <header className="sticky top-0 z-30 border-b border-stone-200/80 bg-[#faf9f6]/85 backdrop-blur-md dark:border-zinc-800/80 dark:bg-[#0d0e11]/85">
         <div className="mx-auto flex h-14 max-w-4xl items-center justify-between gap-3 px-4">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-stone-900 text-amber-300 dark:bg-zinc-100 dark:text-stone-900">
-              <Sparkles className="h-4 w-4" />
+            <div
+              aria-hidden="true"
+              className="flex h-8 w-8 items-center justify-center rounded-lg border border-stone-200 bg-stone-900 font-serif text-sm font-semibold text-stone-50 dark:border-zinc-700 dark:bg-zinc-100 dark:text-zinc-950"
+            >
+              G
             </div>
             <div>
               <h1 className="font-serif text-[0.98rem] font-semibold leading-tight tracking-tight text-stone-950 dark:text-zinc-50">
@@ -404,10 +406,7 @@ export function ChatApp() {
       <main className="flex-1 overflow-y-auto">
         <div className="mx-auto max-w-3xl px-4 pb-8 pt-6">
           {turns.length === 0 ? (
-            <div className="mx-auto flex max-w-2xl flex-col items-center pt-10 text-center sm:pt-16">
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-stone-900 text-amber-300 shadow-sm dark:bg-zinc-100 dark:text-stone-900">
-                <Sparkles className="h-6 w-6" />
-              </div>
+            <div className="mx-auto flex max-w-2xl flex-col items-center pt-12 text-center sm:pt-20">
               <h2 className="font-serif text-2xl font-semibold tracking-tight text-stone-950 sm:text-3xl dark:text-zinc-50">
                 Ask the Goodism Knowledge Base
               </h2>
@@ -445,8 +444,11 @@ export function ChatApp() {
                   </div>
                 ) : (
                   <div key={turn.id} className="flex items-start gap-3">
-                    <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-amber-100 text-amber-800 dark:bg-amber-950/70 dark:text-amber-400">
-                      <Sparkles className="h-3.5 w-3.5" />
+                    <div
+                      aria-hidden="true"
+                      className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-stone-200 bg-stone-100 font-serif text-xs font-semibold text-stone-800 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200"
+                    >
+                      G
                     </div>
 
                     <div className="min-w-0 flex-1">

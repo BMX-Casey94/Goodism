@@ -1,0 +1,31 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "services": {
+    "web": {
+      "root": "web",
+      "framework": "nextjs",
+      "bindings": [
+        {
+          "type": "service",
+          "service": "kb",
+          "format": "url",
+          "env": "KB_BACKEND_URL"
+        }
+      ]
+    },
+    "kb": {
+      "root": ".",
+      "runtime": "python",
+      "entrypoint": "server/web_app.py",
+      "buildCommand": "KB_EMBEDDING_MODEL=fts-only python -m tools.kb.cli build-index"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": {
+        "service": "web"
+      }
+    }
+  ]
+}

@@ -8,9 +8,9 @@ export class BackendError extends Error {
   }
 }
 
-function getBackendUrl(): string {
+function getBackendBaseUrl(): string {
   const raw = (process.env.KB_BACKEND_URL || "http://127.0.0.1:8080").trim();
-  return raw.replace(/\/+$/, "");
+  return raw.endsWith("/") ? raw : `${raw}/`;
 }
 
 function getBackendHeaders(extra?: Record<string, string>): Record<string, string> {
@@ -39,7 +39,8 @@ export async function kbFetch<T>(
     options?.timeoutMs ?? DEFAULT_TIMEOUT_MS
   );
   const method = options?.method ?? "GET";
-  const url = `${getBackendUrl()}${path}`;
+  const relativePath = path.replace(/^\/+/, "");
+  const url = new URL(relativePath, getBackendBaseUrl()).toString();
 
   try {
     const res = await fetch(url, {

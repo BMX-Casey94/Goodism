@@ -607,6 +607,8 @@ def _feedback_path() -> Path:
     override = (os.environ.get("KB_WEB_FEEDBACK_PATH") or "").strip()
     if override:
         return Path(override)
+    if os.environ.get("VERCEL") == "1":
+        return Path("/tmp/goodism-client-feedback.jsonl")
     return config.ROOT / "review" / "client-feedback.jsonl"
 
 
@@ -1234,6 +1236,13 @@ def main() -> None:
         workers=1,
         log_level=(os.environ.get("KB_WEB_LOG_LEVEL") or "info").strip() or "info",
     )
+
+
+# ASGI entrypoint for Vercel Python Services (`server/web_app.py:app`) and `vercel dev`.
+try:
+    app = create_app()
+except RuntimeError:  # pragma: no cover - e.g. imported under unsafe non-loopback env in tests
+    app = None
 
 
 if __name__ == "__main__":

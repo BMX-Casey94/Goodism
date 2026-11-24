@@ -246,7 +246,7 @@ Scope and delineation of term is necessary for determining those to whom **[**F
 
 **By the shortening of the word “corporation” we get this word “Corps” which is derivative- of this word “Corpus-Juris” and this means “Out-law” or “No Law”.**
 
-**For the “world” is one of a “corporate world” and with the “corporate world” being- under the “legal jurisdiction” and the “legal jurisdiction ” not being that of the “lawful- jurisdiction” and this ultimately means that there is no law.**
+**For the “world” is one of a “corporate world” and with the “corporate world” being- under the “legal jurisdiction” and the “legal jurisdiction” not being that of the “lawful- jurisdiction” and this ultimately means that there is no law.**
 
 **For we are a lawless state throughout this world as there is only the “legal” re-cog-nised.**
 
@@ -376,7 +376,7 @@ Despite these general affirmations, many countries continue to practice incommun
 
 **For we can only assume one-(1)-role and be in one-(1)-office at any one-(1)-given time- and so when we answer this common question for example of:**
 
-**“ State your name to the court ? “**
+**“State your name to the court ?“**
 
 **We usually by our miss-led education and miss-guidance and direction by our mother and- father by a similar education do state the detail of that of a “debt-or” and not that of a- “credit-or” and this allows the authority to step down into the office we are not in for the- facilitation of business and this makes them now the beneficiary of our estate does it not.**
 
@@ -394,7 +394,7 @@ Despite these general affirmations, many countries continue to practice incommun
 
 **By the adding of the word[s]-is for the modification of the fact with that what it is not.**
 
-**For now we will have “ red-pen” and no longer a “pen” and so this is the “Color of law”.**
+**For now we will have “red-pen” and no longer a “pen” and so this is the “Color of law”.**
 
 **For the give here-say calling is the fact.       For the hereditary family calling is the fact.**
 
@@ -402,7 +402,7 @@ Despite these general affirmations, many countries continue to practice incommun
 
 **Also by adding the two-(2)-fact[s]-together we have now modify both of the fact[s]-into- that what they are not and thus created a “fictional name” and not that of a calling.**
 
-**For the nature will call and as they say “ nature calls”.**
+**For the nature will call and as they say “nature calls”.**
 
 **With our mother and father giving us a Christian calling… this is never give writ down… this is always give by being orally omit and this is the “government policy” to write this- down as per our page seventeen-(17)-of this book of our interpretation[s].**
 

@@ -756,7 +756,7 @@ Yes we were taught this at school for those unlucky enough to go there; it is il
 
 **For we can only assume one-(1)-role and be in one-(1)-office at any one-(1)-given time- and so when we answer this common question for example of:**
 
-**“ State your name to the court / caught ? “**
+**“State your name to the court / caught ?“**
 
 **For the people usually by this-“miss-led education”-and-“miss-guidance”-and direction- with their mother and father being in a similar-“education”-do state the details with that- of a-“debt-or”-and not that of a-“credit-or”-and this allows the authority to step down- into the office we are not in for the facilitation of business and this makes them now in- the-“creditor office”-and as the beneficiary of our estate does it not;**
 

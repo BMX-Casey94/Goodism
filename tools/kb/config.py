@@ -30,6 +30,23 @@ MANIFEST_PATH = MANIFEST_DIR / "manifest.jsonl"
 MANIFEST_ANCHOR_PATH = MANIFEST_DIR / "manifest.anchor.json"
 INDEX_DIR = ROOT / "index"
 INDEX_DB_PATH = INDEX_DIR / "kb.sqlite"
+BUNDLED_INDEX_PATH = SERVER_DIR / "data" / "kb.sqlite"
+
+
+def index_db_path() -> Path:
+    """Where queries should open the SQLite index.
+
+    ``index/`` is gitignored, and Vercel omits gitignored paths from the
+    deployed function even when the build creates them. The Vercel build
+    writes ``server/data/kb.sqlite`` instead, and that is what the runtime reads.
+    """
+    override = os.environ.get("KB_INDEX_PATH", "").strip()
+    if override:
+        path = Path(override)
+        return path if path.is_absolute() else ROOT / path
+    if os.environ.get("VERCEL") == "1":
+        return BUNDLED_INDEX_PATH
+    return INDEX_DB_PATH
 
 # Chunking tunables (structure-aware; never split mid-table or mid-list).
 CHUNK_MIN_TOKENS = 300
@@ -69,4 +86,8 @@ def load_dotenv_if_present() -> None:
 def ensure_dirs() -> None:
     """Create runtime directories that are git-ignored or lazily used."""
     for path in (RAW_INBOX, STAGING_DIR, INDEX_DIR, EVAL_RESULTS_DIR, PROOFS_DIR):
-        path.mkdir(parents=True, exist_ok=True)
+        try:
+            path.mkdir(parents=True, exist_ok=True)
+        except OSError:
+            # Vercel's runtime filesystem is read-only outside /tmp.
+            continue

@@ -22,6 +22,7 @@ import os
 import re
 import sqlite3
 import struct
+import threading
 import time
 from dataclasses import dataclass
 from functools import lru_cache
@@ -35,8 +36,11 @@ from .hashing import sha256_text
 SCHEMA_VERSION = 1
 
 
+_runtime_index_lock = threading.Lock()
+
+
 def _connect(db_path: Path | None = None, *, readonly: bool = False) -> sqlite3.Connection:
-    path = (db_path or config.INDEX_DB_PATH).resolve()
+    path = _resolve_index_path(db_path)
     if readonly:
         # Read-only so a query never creates a journal. Vercel's runtime
         # filesystem is read-only outside /tmp.
@@ -47,9 +51,38 @@ def _connect(db_path: Path | None = None, *, readonly: bool = False) -> sqlite3.
         return conn
     path.parent.mkdir(parents=True, exist_ok=True)
     conn = sqlite3.connect(path)
-    conn.execute("PRAGMA journal_mode=WAL")
+    # One file, so a build artifact does not depend on a sibling -wal file.
+    if os.environ.get("VERCEL") == "1" or os.environ.get("KB_INDEX_PATH"):
+        conn.execute("PRAGMA journal_mode=DELETE")
+    else:
+        conn.execute("PRAGMA journal_mode=WAL")
     conn.execute("PRAGMA foreign_keys=ON")
     return conn
+
+
+def _resolve_index_path(db_path: Path | None) -> Path:
+    if db_path is not None:
+        return db_path.resolve()
+    path = config.index_db_path().resolve()
+    if path.is_file() or os.environ.get("VERCEL") != "1":
+        return path
+    return _build_vercel_index(path)
+
+
+def _build_vercel_index(preferred: Path) -> Path:
+    """Build a keyword index into /tmp when the bundled file was not shipped."""
+    with _runtime_index_lock:
+        if preferred.is_file():
+            return preferred
+        target = Path("/tmp/goodism-kb.sqlite")
+        if not target.is_file():
+            build_index(
+                full=True,
+                db_path=target,
+                embedder=Embedder("fts-only"),
+                note="vercel-runtime",
+            )
+        return target
 
 
 def _create_schema(conn: sqlite3.Connection) -> None:

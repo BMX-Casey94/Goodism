@@ -1238,11 +1238,9 @@ def main() -> None:
     )
 
 
-# ASGI entrypoint for Vercel Python Services (`server/web_app.py:app`) and `vercel dev`.
-try:
-    app = create_app()
-except RuntimeError:  # pragma: no cover - e.g. imported under unsafe non-loopback env in tests
-    app = None
+# Vercel's Python runtime detects the ASGI app by a top-level assignment
+# named `app` (it does not follow assignments nested in try/except).
+app = create_app()
 
 
 if __name__ == "__main__":
